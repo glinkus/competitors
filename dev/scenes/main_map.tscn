@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ovry3hn8e6yi"]
+[gd_scene load_steps=5 format=3 uid="uid://ovry3hn8e6yi"]
 
 [ext_resource type="Texture2D" uid="uid://8f2bbieaapfe" path="res://assets/Square.png" id="1_2ff8o"]
 [ext_resource type="PackedScene" uid="uid://dtdn8ecpgcw77" path="res://scenes/joystick.tscn" id="1_gi35i"]
 [ext_resource type="PackedScene" uid="uid://v4mdg6rccrv1" path="res://nodes/player.tscn" id="2_47m23"]
+[ext_resource type="PackedScene" uid="uid://d0rrf0q4cntmi" path="res://nodes/spawner.tscn" id="4_c5jwc"]
 
 [node name="MainMap" type="Node2D"]
 
@@ -20,3 +21,6 @@ texture = ExtResource("1_2ff8o")
 
 [node name="Player" parent="." instance=ExtResource("2_47m23")]
 position = Vector2(87.0001, 92.0001)
+
+[node name="Spawner" parent="." instance=ExtResource("4_c5jwc")]
+script = null
