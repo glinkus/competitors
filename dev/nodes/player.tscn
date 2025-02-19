@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://v4mdg6rccrv1"]
+
+[ext_resource type="Script" path="res://scripts/player_controler.gd" id="1_d1kte"]
+[ext_resource type="Texture2D" uid="uid://ikwmo6458tbu" path="res://assets/Triangle.png" id="1_ouixg"]
+[ext_resource type="Script" path="res://scripts/shoot_manager.gd" id="3_blciq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ittmq"]
+
+[node name="Player" type="CharacterBody2D"]
+scale = Vector2(6.68, 6.68)
+script = ExtResource("1_d1kte")
+max_speed = 800.0
+deceleration = 800.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ittmq")
+
+[node name="Body" type="Sprite2D" parent="."]
+scale = Vector2(0.0390625, 0.045045)
+texture = ExtResource("1_ouixg")
+
+[node name="Nose" type="Sprite2D" parent="Body"]
+modulate = Color(1, 0, 1, 1)
+position = Vector2(0, -172.814)
+scale = Vector2(0.233524, 0.233524)
+texture = ExtResource("1_ouixg")
+
+[node name="ShootManager" type="Node2D" parent="."]
+script = ExtResource("3_blciq")
+
+[node name="ShootSpot" type="Node2D" parent="ShootManager"]
+position = Vector2(0, -9.13174)
