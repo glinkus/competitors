@@ -3,6 +3,7 @@ extends CharacterBody2D
 @onready var joystick = $"../Camera2D/Joystick"
 
 # Movement variables
+@export var heal: float = 10.0
 @export var max_speed: float = 100.0
 @export var acceleration: float = 800.0
 @export var deceleration: float = 1000.0
@@ -12,7 +13,6 @@ extends CharacterBody2D
 @export var screen_width: float = 1080  # Width of the screen/map
 @export var screen_height: float = 1920  # Height of the screen/map
 @export var screen_offset: float = 50  # Height of the screen/map
-
 
 func _physics_process(delta: float) -> void:
 	# Get input for movement
@@ -63,3 +63,8 @@ func wrap_around_screen():
 
 	# Update the player's global position
 	global_position = position
+
+func take_damage(damage):
+	heal += damage
+	#if heal <= 0:
+		#game_over()

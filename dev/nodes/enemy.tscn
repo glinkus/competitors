@@ -1,16 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1jnf7e7fn2s4"]
+[gd_scene load_steps=4 format=3 uid="uid://b1jnf7e7fn2s4"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_brehg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4vi7a"]
 radius = 20.0
 
-[node name="Enemy" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_pegws"]
+radius = 21.0
+
+[node name="Enemy" type="CharacterBody2D" groups=["Enemy"]]
 position = Vector2(20, 20)
 script = ExtResource("1_brehg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_4vi7a")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_pegws")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 8
@@ -30,4 +38,5 @@ color = Color(1, 0, 0, 1)
 wait_time = 2.0
 autostart = true
 
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

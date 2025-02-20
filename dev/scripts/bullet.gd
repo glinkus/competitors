@@ -1,7 +1,7 @@
 extends Area2D
 
 @export var speed = 100
-@export var damage = 1
+@export var damage = -1
 var direction = Vector2.RIGHT  # Default direction (right)
 
 # Method to set the bullet's rotation and direction
@@ -22,3 +22,8 @@ func _on_area_entered(area):
 	#if area is Enemy:
 	#	area.take_damage(damage)
 	#	queue_free()
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Enemy"):
+		body.take_damage(damage)
+		queue_free()

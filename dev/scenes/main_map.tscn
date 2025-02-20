@@ -23,4 +23,3 @@ texture = ExtResource("1_2ff8o")
 position = Vector2(87.0001, 92.0001)
 
 [node name="Spawner" parent="." instance=ExtResource("4_c5jwc")]
-script = null
