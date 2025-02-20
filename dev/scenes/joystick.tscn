@@ -16,7 +16,7 @@ texture = ExtResource("1_qfbu1")
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_qaak7")
 script = ExtResource("4_p17fr")
-maxLength = 70
+maxLength = 80
 
 [node name="Button" type="Button" parent="."]
 modulate = Color(1, 0, 1, 0.415686)
