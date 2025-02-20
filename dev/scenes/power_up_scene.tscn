@@ -1,0 +1,97 @@
+[gd_scene load_steps=7 format=3 uid="uid://c7pc6634oi6o0"]
+
+[ext_resource type="FontFile" uid="uid://compj47jyyuo6" path="res://Kanit/Kanit-ExtraBoldItalic.ttf" id="1_8do42"]
+[ext_resource type="FontFile" uid="uid://c2grvjpbtb0t7" path="res://Sigmar/Sigmar-Regular.ttf" id="1_lofbi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_avfu8"]
+bg_color = Color(0.83, 0.489147, 0.3652, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4fl52"]
+bg_color = Color(0.83, 0.489147, 0.3652, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wsg27"]
+bg_color = Color(1, 0.592157, 0.439216, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f78u5"]
+bg_color = Color(0.83, 0.489147, 0.3652, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(1, 0.839216, 0.439216, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 53.0
+offset_top = 351.0
+offset_right = 1138.0
+offset_bottom = 476.0
+theme_override_colors/font_color = Color(1, 0.439216, 0.65098, 1)
+theme_override_fonts/font = ExtResource("1_8do42")
+theme_override_font_sizes/font_size = 65
+text = "Sveikiname pasiekus naują lygį!"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 713.0
+offset_right = 840.0
+offset_bottom = 1013.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_lofbi")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_avfu8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4fl52")
+theme_override_styles/normal = SubResource("StyleBoxFlat_wsg27")
+text = "Padidinti greitį"
+autowrap_mode = 2
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 1164.0
+offset_right = 840.0
+offset_bottom = 1464.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_lofbi")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_avfu8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_f78u5")
+theme_override_styles/normal = SubResource("StyleBoxFlat_wsg27")
+text = "Padidinti šaudymo diapazoną"
+autowrap_mode = 2
