@@ -1,5 +1,6 @@
 extends Node
 
+var high_score = 0
 var score = 0
 var is_game_over = false
 
@@ -12,3 +13,5 @@ func start_game():
 
 func game_over():
 	is_game_over = true
+	if high_score < score:
+		high_score = score

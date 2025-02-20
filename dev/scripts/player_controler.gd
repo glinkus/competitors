@@ -18,6 +18,7 @@ var target_look_position: Vector2 = Vector2.ZERO
 var tap_start_time = 0.0
 var tap_start_position = Vector2()
 const TAP_THRESHOLD = 0.2  
+var move_direction
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
@@ -33,7 +34,7 @@ func _input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	var direction = joystick.posVector
-
+	move_direction = direction
 	if direction.length() > 0:
 		direction = direction.normalized()
 
@@ -43,16 +44,26 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.move_toward(Vector2.ZERO, deceleration * delta)
 
 	move_and_slide()
-	
+
+	rotate_to_movement_direction(delta)
+
 	rotate_to_tapped_position(delta)
+
 	wrap_around_screen()
-	
-func rotate_to_tapped_position(delta : float):
+
+func rotate_to_movement_direction(delta: float) -> void:
+	if velocity.length() > 0:
+		#var move_direction = velocity.normalized()
+		var move_angle = move_direction.angle()
+		move_angle += deg_to_rad(90)
+
+		rotation = lerp_angle(rotation, move_angle, rotation_speed * delta)
+
+func rotate_to_tapped_position(delta: float) -> void:
 	if target_look_position != Vector2.ZERO:
 		var direction_to_target = (target_look_position - global_position).normalized()
-		var target_angle = direction_to_target.angle()  # Get the angle to the target
-		# Adjust the angle to make the triangle point in the correct direction
-		target_angle += deg_to_rad(90)  # Add 90 degrees offset to align the triangle's point
+		var target_angle = direction_to_target.angle()
+		target_angle += deg_to_rad(90)
 		rotation = lerp_angle(rotation, target_angle, rotation_speed * delta)
 
 func wrap_around_screen():

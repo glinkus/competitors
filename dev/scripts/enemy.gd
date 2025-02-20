@@ -5,6 +5,7 @@ Creator: Darius Rupsys
 
 @onready var target: CharacterBody2D = $"../../Player"
 @onready var death_particles: GPUParticles2D = $DeathParticles
+@onready var camera_2d: Camera2D = $"../../Camera2D"
 
 @export var type: float = 0
 @export var heal: float = 1.0
@@ -15,20 +16,21 @@ var ready_to_go = false
 
 func _ready() -> void:
 	visible = false
+	print(type)
 	match type:
-		0:
+		1.0:
 			heal = 1.0
 			damage = -1.0
 			speed = 400.0
 			max_speed = 400.0
 			scale = Vector2(1, 1)
-		1:
+		2.0:
 			heal = 2.0
 			damage = -1.5
 			speed = 250.0
 			max_speed = 250.0
 			scale = Vector2(1.5, 1.5)
-		2:
+		3.0:
 			heal = 3.0
 			damage = -2.0
 			speed = 150.0
@@ -50,6 +52,7 @@ func take_damage(dmg):
 	if heal <= 0:
 		#drop_xp()
 		Globals.score += 1
+		camera_2d.shake_camera(10.0 * type)
 		var childs = get_children()
 		for child in childs:
 			if child != death_particles:

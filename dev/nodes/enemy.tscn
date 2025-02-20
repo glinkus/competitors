@@ -36,7 +36,7 @@ grow_vertical = 2
 color = Color(1, 0, 0, 1)
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 3.0
 autostart = true
 
 [node name="DeathParticles" parent="." instance=ExtResource("2_l46q0")]

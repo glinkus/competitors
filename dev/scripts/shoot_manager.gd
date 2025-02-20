@@ -2,7 +2,7 @@ extends Node2D
 
 signal laser_shot(laser_scene, location)
 
-@export var rate_of_fire = 1
+@export var rate_of_fire = 0.5
 @export var bullet_speed = 800
 @onready var laser_container = $"."
 @onready var shoot_spot = $ShootSpot

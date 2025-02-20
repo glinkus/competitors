@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://da0a5rh6svc46"]
+[gd_scene load_steps=6 format=3 uid="uid://dptvmddpjdtt8"]
 
 [ext_resource type="FontFile" uid="uid://c2grvjpbtb0t7" path="res://Sigmar/Sigmar-Regular.ttf" id="1_rgt88"]
 [ext_resource type="Script" path="res://scripts/startup_button.gd" id="2_57q45"]

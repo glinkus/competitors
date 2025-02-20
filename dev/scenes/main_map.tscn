@@ -1,16 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://ovry3hn8e6yi"]
+[gd_scene load_steps=6 format=3 uid="uid://ovry3hn8e6yi"]
 
 [ext_resource type="Texture2D" uid="uid://8f2bbieaapfe" path="res://assets/Square.png" id="1_2ff8o"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="1_4c562"]
 [ext_resource type="PackedScene" uid="uid://dtdn8ecpgcw77" path="res://scenes/joystick.tscn" id="1_gi35i"]
 [ext_resource type="PackedScene" uid="uid://v4mdg6rccrv1" path="res://nodes/player.tscn" id="2_47m23"]
 [ext_resource type="PackedScene" uid="uid://d0rrf0q4cntmi" path="res://nodes/spawner.tscn" id="4_c5jwc"]
 
 [node name="MainMap" type="Node2D"]
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(536, 959)
-
-[node name="Joystick" parent="Camera2D" instance=ExtResource("1_gi35i")]
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -33,5 +29,13 @@ texture = ExtResource("1_2ff8o")
 
 [node name="Player" parent="." instance=ExtResource("2_47m23")]
 position = Vector2(87.0001, 92.0001)
+acceleration = 10000.0
+deceleration = 10000.0
 
 [node name="Spawner" parent="." instance=ExtResource("4_c5jwc")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(536, 959)
+script = ExtResource("1_4c562")
+
+[node name="Joystick" parent="Camera2D" instance=ExtResource("1_gi35i")]

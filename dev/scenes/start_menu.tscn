@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cnpcyu0xtwr8h"]
+[gd_scene load_steps=3 format=3 uid="uid://yrwnvbkto0op"]
 
-[ext_resource type="PackedScene" uid="uid://da0a5rh6svc46" path="res://scenes/start_button.tscn" id="1_1r4fr"]
+[ext_resource type="PackedScene" uid="uid://dptvmddpjdtt8" path="res://scenes/start_button.tscn" id="1_1r4fr"]
 [ext_resource type="FontFile" uid="uid://compj47jyyuo6" path="res://Kanit/Kanit-ExtraBoldItalic.ttf" id="1_sr0g4"]
 
 [node name="StartMenu" type="Control"]
