@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3 uid="uid://da0a5rh6svc46"]
+
+[ext_resource type="FontFile" uid="uid://c2grvjpbtb0t7" path="res://Sigmar/Sigmar-Regular.ttf" id="1_rgt88"]
+[ext_resource type="Script" path="res://scripts/startup_button.gd" id="2_57q45"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5i32t"]
+bg_color = Color(0.999998, 0.456235, 0.235431, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ioj8"]
+bg_color = Color(0.761981, 0.271489, 2.88785e-07, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tdd2j"]
+bg_color = Color(1, 0.592157, 0.439216, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1079.0
+offset_bottom = -1919.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 579.0
+offset_bottom = 133.0
+theme_override_colors/font_hover_color = Color(0.80807, 0.900636, 1.6942e-05, 1)
+theme_override_colors/font_color = Color(0.913725, 1, 0.439216, 1)
+theme_override_fonts/font = ExtResource("1_rgt88")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_5i32t")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7ioj8")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tdd2j")
+text = "Pradėti"
+script = ExtResource("2_57q45")
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

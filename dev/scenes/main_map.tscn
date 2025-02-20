@@ -12,6 +12,18 @@ position = Vector2(536, 959)
 
 [node name="Joystick" parent="Camera2D" instance=ExtResource("1_gi35i")]
 
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(1, 0.839216, 0.439216, 1)
+
 [node name="Square" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.215686)
 position = Vector2(540, 960.5)
