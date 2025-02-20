@@ -5,15 +5,15 @@ Creator: Darius Rupsys
 
 @export var mob_scene: PackedScene
 var danger_sprite = preload("res://nodes/danger_sprite.tscn")
-
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var time: float = 0.0
 
 func _ready() -> void:
 	pass # Replace with function body.
 
 
 func _process(delta: float) -> void:
-	pass
+	time += delta
 
 
 func _on_timer_timeout() -> void:
@@ -48,7 +48,27 @@ func _on_timer_timeout() -> void:
 	danger_sprite_location.x = max(25, min(danger_sprite_location.x, screen_size.y-25))
 	danger_sprite_location.y = max(60, min(danger_sprite_location.y, screen_size.x-60))
 	danger.position = danger_sprite_location
-	var type = rng.randi_range(0, 3)
+	#var type = rng.randi_range(0, 3)
+	var type = get_enemy_type_based_on_probabilities()
 	mob.type = type
 	add_child(mob)
 	add_child(danger)
+	
+var slow_probability = 0.7  # Lėtų priešų pradžios tikimybė
+var fast_probability = 0.2  # Greitų priešų pradžios tikimybė
+var very_fast_probability = 0.1  # Labai greitų priešų pradžios tikimybė
+# Funkcija, kuri apskaičiuoja tipo tikimybę pagal žaidimo laiką
+func update_enemy_probabilities():
+	var time_factor = time
+	slow_probability = max(0.2, 0.7 - time_factor * 0.1)  # Lėtų mažinimas
+	fast_probability = min(0.4, 0.2 + time_factor * 0.1)  # Greitų didinimas
+	very_fast_probability = min(0.4, 0.1 + time_factor * 0.1)  # Labai greitų didinimas
+
+func get_enemy_type_based_on_probabilities():
+	var rand_val = rng.randf()
+	if rand_val < slow_probability:
+		return 0
+	elif rand_val < slow_probability + fast_probability:
+		return 1
+	else:
+		return 2

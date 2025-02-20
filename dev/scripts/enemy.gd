@@ -4,6 +4,7 @@ Creator: Darius Rupsys
 '''
 
 @onready var target: CharacterBody2D = $"../../Player"
+@onready var death_particles: GPUParticles2D = $DeathParticles
 
 @export var type: float = 0
 @export var heal: float = 1.0
@@ -49,6 +50,12 @@ func take_damage(dmg):
 	if heal <= 0:
 		#drop_xp()
 		Globals.score += 1
+		var childs = get_children()
+		for child in childs:
+			if child != death_particles:
+				child.queue_free()
+		death_particles.emitting = true
+		await death_particles.finished
 		queue_free()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
