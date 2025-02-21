@@ -1,6 +1,7 @@
 extends Node
 
-const POWER_UP_SCENE = preload("res://scenes/power_up_scene.tscn")
+#const POWER_UP_SCENE = preload("res://scenes/power_up_scene.tscn")
+const POWER_UP_SCENE = preload("res://scenes/level_up_gui.tscn")
 
 var high_score = 0
 var score = 0
@@ -35,6 +36,10 @@ func game_over():
 	get_tree().change_scene_to_file("res://scenes/the_end.tscn")
 
 func take_xp():
-	score += 1
+	score += 10
 	if score % 20 == 0:
 		pause_game()
+
+func apply_upgrade(upgrade_id: int):
+	var player = get_tree().get_first_node_in_group("Player")
+	player.apply_upgrade(upgrade_id)

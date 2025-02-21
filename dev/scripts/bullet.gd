@@ -6,10 +6,11 @@ extends Area2D
 var direction = Vector2.RIGHT  # Default direction (right)
 
 # Method to set the bullet's rotation and direction
-func initialize_bullet(new_rotation: float, new_direction: Vector2, bullet_speed: float):
+func initialize_bullet(new_rotation: float, new_direction: Vector2, bullet_speed: float, new_damage: float):
 	rotation = new_rotation  # Set the bullet's rotation
 	direction = new_direction.normalized()  # Normalize the direction vector to ensure consistent speed
 	speed = bullet_speed
+	damage = new_damage
 
 func _physics_process(delta):
 	# Move the bullet in the specified direction

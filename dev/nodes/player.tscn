@@ -1,19 +1,24 @@
-[gd_scene load_steps=8 format=3 uid="uid://v4mdg6rccrv1"]
+[gd_scene load_steps=13 format=3 uid="uid://v4mdg6rccrv1"]
 
 [ext_resource type="Script" path="res://scripts/player_controler.gd" id="1_d1kte"]
 [ext_resource type="Texture2D" uid="uid://ikwmo6458tbu" path="res://assets/Triangle.png" id="1_ouixg"]
+[ext_resource type="Resource" uid="uid://buucufmdejot8" path="res://recoureses/stats/default_stats.tres" id="2_dckci"]
 [ext_resource type="Texture2D" uid="uid://blnoud0ij7rxy" path="res://assets/ship_0001.png" id="3_2l54h"]
 [ext_resource type="Script" path="res://scripts/shoot_manager.gd" id="3_blciq"]
+[ext_resource type="Script" path="res://recoureses/upgrades/base_upgrade_resource.gd" id="3_w8vlp"]
 [ext_resource type="PackedScene" uid="uid://clgyg2d057pdf" path="res://nodes/death_particles.tscn" id="4_kt82x"]
+[ext_resource type="Resource" uid="uid://bed7gmygedosn" path="res://recoureses/upgrades/damage_upgrade_common.tres" id="4_onb8e"]
+[ext_resource type="Resource" uid="uid://c46j51pjxdiku" path="res://recoureses/upgrades/fire_rate_upgrade_common.tres" id="5_3nu10"]
 [ext_resource type="AudioStream" uid="uid://cioj8e65yfmbg" path="res://Sounds/sound-fx-button-press_F_minor.wav" id="5_uy8ba"]
+[ext_resource type="Resource" uid="uid://ch2eyievgf8rm" path="res://recoureses/upgrades/speed_upgrade_common.tres" id="6_7wkl3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ittmq"]
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 scale = Vector2(6.68, 6.68)
 script = ExtResource("1_d1kte")
-max_speed = 800.0
-deceleration = 800.0
+stats = ExtResource("2_dckci")
+upgrade_array = Array[ExtResource("3_w8vlp")]([ExtResource("4_onb8e"), ExtResource("5_3nu10"), ExtResource("6_7wkl3")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ittmq")
@@ -38,8 +43,9 @@ texture = ExtResource("1_ouixg")
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_2l54h")
 
-[node name="ShootManager" type="Node2D" parent="."]
+[node name="ShootManager" type="Node2D" parent="." node_paths=PackedStringArray("shoot_spot_array")]
 script = ExtResource("3_blciq")
+shoot_spot_array = [NodePath("ShootSpot")]
 
 [node name="ShootSpot" type="Node2D" parent="ShootManager"]
 position = Vector2(0, -9.13174)

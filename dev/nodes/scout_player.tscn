@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://cduyhi23tqsjn"]
+
+[ext_resource type="Script" path="res://scripts/player_controler.gd" id="1_i1ylr"]
+[ext_resource type="Texture2D" uid="uid://be3tmckjlq86k" path="res://assets/kenney_pixel-shmup/Ships/ship_0000.png" id="2_h3yxc"]
+[ext_resource type="Script" path="res://scripts/shoot_manager.gd" id="3_qygbj"]
+[ext_resource type="PackedScene" uid="uid://clgyg2d057pdf" path="res://nodes/death_particles.tscn" id="5_ednix"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ittmq"]
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+scale = Vector2(6.68, 6.68)
+script = ExtResource("1_i1ylr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ittmq")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_ittmq")
+
+[node name="Body" type="Sprite2D" parent="."]
+scale = Vector2(0.32747, 0.32747)
+texture = ExtResource("2_h3yxc")
+
+[node name="ShootManager" type="Node2D" parent="."]
+script = ExtResource("3_qygbj")
+rate_of_fire = 0.2
+bullet_speed = 1000
+
+[node name="ShootSpot" type="Node2D" parent="ShootManager"]
+position = Vector2(0, -3.89222)
+
+[node name="DeathParticles" parent="." instance=ExtResource("5_ednix")]
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://buucufmdejot8"]
+
+[ext_resource type="Script" path="res://recoureses/stats/stat_resource.gd" id="1_26ax2"]
+
+[resource]
+script = ExtResource("1_26ax2")
+health = 10
+max_speed = 800
+acceleration = 800
+deceleration = 800
+rotation_speed = 10
+fire_rate = 0.6
+bullet_speed = 800.0
+damage = -1.0

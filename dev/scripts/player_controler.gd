@@ -1,14 +1,13 @@
 extends CharacterBody2D
+class_name PlayerControler
 
 @onready var joystick = $"../Camera2D/Joystick"
 @onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var death_particles: GPUParticles2D = $DeathParticles
 
-@export var heal: float = 1.0
-@export var max_speed: float = 100.0
-@export var acceleration: float = 800.0
-@export var deceleration: float = 1000.0
-@export var rotation_speed: float = 10.0 
+@export var stats : Stats
+
+@export var upgrade_array : Array[BaseUpgradeResource]
 
 @export var screen_width: float = 1080  
 @export var screen_height: float = 1920  
@@ -20,6 +19,7 @@ var tap_start_time = 0.0
 var tap_start_position = Vector2()
 const TAP_THRESHOLD = 0.2  
 var move_direction
+
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
@@ -40,9 +40,9 @@ func _physics_process(delta: float) -> void:
 		direction = direction.normalized()
 
 	if direction != Vector2.ZERO:
-		velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
+		velocity = velocity.move_toward(direction * stats.max_speed, stats.acceleration * delta)
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, deceleration * delta)
+		velocity = velocity.move_toward(Vector2.ZERO, stats.deceleration * delta)
 
 	move_and_slide()
 
@@ -57,14 +57,14 @@ func rotate_to_movement_direction(delta: float) -> void:
 		#var move_direction = velocity.normalized()
 		var move_angle = move_direction.angle()
 		move_angle += deg_to_rad(90)
-		rotation = lerp_angle(rotation, move_angle, rotation_speed * delta)
+		rotation = lerp_angle(rotation, move_angle, stats.rotation_speed * delta)
 
 func rotate_to_tapped_position(delta: float) -> void:
 	if target_look_position != Vector2.ZERO:
 		var direction_to_target = (target_look_position - global_position).normalized()
 		var target_angle = direction_to_target.angle()
 		target_angle += deg_to_rad(90)
-		rotation = lerp_angle(rotation, target_angle, rotation_speed * delta)
+		rotation = lerp_angle(rotation, target_angle, stats.rotation_speed * delta)
 
 func wrap_around_screen():
 	# Get the player's global position
@@ -84,13 +84,22 @@ func wrap_around_screen():
 
 	# Update the player's global position
 	global_position = position
+	
+func apply_upgrade(upgrade_id: int):
+	for upgrade in upgrade_array:
+		if upgrade.upgrade_id == upgrade_id:
+			upgrade.apply_upgrade(stats)
+			print("damage %s" % stats.damage)
+			print("speed %s" % stats.max_speed)
+			print("firerate %s" % stats.fire_rate)
 
 func take_damage(damage):
-	heal += damage
-	print(heal)
-	if heal <= 0:
+	stats.health += damage
+	print(stats.health)
+	if stats.health  <= 0:
 		DeathSoundPlayer.play()
 		await get_tree().create_timer(0.1).timeout
+		camera_2d.shake_camera(40.0)
 		var childs = get_children()
 		for child in childs:
 			if child != death_particles:

@@ -22,7 +22,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	time += delta
 	timer.wait_time -= delta/60
-	print(timer.wait_time)
+	#print(timer.wait_time)
 
 
 func _on_timer_timeout() -> void:
