@@ -11,12 +11,16 @@ func _process(delta: float) -> void:
 
 
 func _on_button_pressed() -> void:
+	Click.play()
+	get_tree().create_timer(0.3)
 	Globals.resume_game()
 	queue_free()
 	pass # Replace with function body.
 
 
 func _on_button_2_pressed() -> void:
+	Click.play()
+	get_tree().create_timer(0.3)
 	Globals.resume_game()
 	queue_free()
 	pass # Replace with function body.

@@ -18,6 +18,8 @@ config/icon="res://assets/icon.svg"
 [autoload]
 
 Globals="*res://scripts/globals.gd"
+DeathSoundPlayer="*res://Sounds/death_sound_player.tscn"
+Click="*res://Sounds/click.tscn"
 
 [display]
 

@@ -11,5 +11,7 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_button_pressed() -> void:
+	Click.play()
+	get_tree().create_timer(0.3)
 	Globals.start_game()
 	#get_tree().change_scene_to_file("res://scenes/main_map.tscn")

@@ -4,7 +4,7 @@ extends CharacterBody2D
 @onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var death_particles: GPUParticles2D = $DeathParticles
 
-@export var heal: float = 10.0
+@export var heal: float = 1.0
 @export var max_speed: float = 100.0
 @export var acceleration: float = 800.0
 @export var deceleration: float = 1000.0
@@ -58,10 +58,9 @@ func rotate_to_movement_direction(delta: float) -> void:
 		var move_angle = move_direction.angle()
 		move_angle += deg_to_rad(90)
 		rotation = lerp_angle(rotation, move_angle, rotation_speed * delta)
-		target_look_position = Vector2.ZERO
 
 func rotate_to_tapped_position(delta: float) -> void:
-	if target_look_position != Vector2.ZERO and move_direction <= 0:
+	if target_look_position != Vector2.ZERO:
 		var direction_to_target = (target_look_position - global_position).normalized()
 		var target_angle = direction_to_target.angle()
 		target_angle += deg_to_rad(90)
@@ -90,11 +89,15 @@ func take_damage(damage):
 	heal += damage
 	print(heal)
 	if heal <= 0:
-		camera_2d.shake_camera(40.0)
+		DeathSoundPlayer.play()
+		await get_tree().create_timer(0.1).timeout
 		var childs = get_children()
 		for child in childs:
 			if child != death_particles:
 				child.queue_free()
 		death_particles.emitting = true
-		await death_particles.finished
+		await death_particles.finished  
 		Globals.game_over()
+
+func _on_shoot_sound_finished() -> void:
+	pass # Replace with function body.

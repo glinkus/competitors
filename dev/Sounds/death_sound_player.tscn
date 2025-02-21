@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://crnrbty26uvjp"]
+
+[ext_resource type="AudioStream" uid="uid://xapld03hw2sm" path="res://Sounds/sound-fx-death_129bpm_A_major.wav" id="1_bdwa4"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_bdwa4")

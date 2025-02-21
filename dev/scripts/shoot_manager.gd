@@ -7,6 +7,7 @@ signal laser_shot(laser_scene, location)
 @onready var laser_container = $"."
 @onready var shoot_spot = $ShootSpot
 @onready var bullet_scene = preload("res://scenes/bullet.tscn")
+@onready var bullet_sound = $ShootSound
 var shoot_cd := false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -31,4 +32,5 @@ func shoot():
 	var bullet_direction = Vector2(0, -1).rotated(player_rotation).normalized()
 	# Set the bullet's rotation and direction
 	bullet.initialize_bullet(player_rotation, bullet_direction, bullet_speed)
+	bullet_sound.play()
 	# Calculate the movement direction based on the player's rotation

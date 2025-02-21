@@ -12,6 +12,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-
 func _on_button_to_main_menu_pressed() -> void:
+	Click.play()
+	get_tree().create_timer(0.3)
 	Globals.main_menu()

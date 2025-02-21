@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bblex8yqbemd7"]
+[gd_scene load_steps=9 format=3 uid="uid://bblex8yqbemd7"]
 
 [ext_resource type="FontFile" uid="uid://compj47jyyuo6" path="res://Kanit/Kanit-ExtraBoldItalic.ttf" id="1_qlpvw"]
 [ext_resource type="FontFile" uid="uid://d0ihgny5jby4s" path="res://Kanit/Kanit-SemiBoldItalic.ttf" id="2_r2syn"]
@@ -23,6 +23,20 @@ corner_radius_top_left = 32
 corner_radius_top_right = 32
 corner_radius_bottom_right = 32
 corner_radius_bottom_left = 32
+
+[sub_resource type="GDScript" id="GDScript_x8wkd"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -136,5 +150,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_qck7u")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_qck7u")
 theme_override_styles/normal = SubResource("StyleBoxFlat_8w2bk")
 text = "Pagrindinis"
+script = SubResource("GDScript_x8wkd")
 
 [connection signal="pressed" from="ButtonToMainMenu" to="." method="_on_button_to_main_menu_pressed"]
