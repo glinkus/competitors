@@ -16,7 +16,6 @@ var ready_to_go = false
 
 func _ready() -> void:
 	visible = false
-	print(type)
 	match type:
 		1.0:
 			heal = 1.0
@@ -52,15 +51,19 @@ func take_damage(dmg):
 	if heal <= 0:
 		#drop_xp()
 		Globals.score += 1
-		camera_2d.shake_camera(10.0 * type)
-		var childs = get_children()
-		for child in childs:
-			if child != death_particles:
-				child.queue_free()
-		death_particles.emitting = true
-		await death_particles.finished
-		queue_free()
+		death()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		body.take_damage(damage)
+		death()
+
+func death():
+	camera_2d.shake_camera(10.0 * type)
+	var childs = get_children()
+	for child in childs:
+		if child != death_particles:
+			child.queue_free()
+	death_particles.emitting = true
+	await death_particles.finished
+	queue_free()

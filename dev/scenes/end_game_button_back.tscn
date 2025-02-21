@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bt45brnvc5vcp"]
+[gd_scene load_steps=5 format=3 uid="uid://p3mlabnn7ahe"]
 
 [ext_resource type="FontFile" uid="uid://c2grvjpbtb0t7" path="res://Sigmar/Sigmar-Regular.ttf" id="1_4f5jt"]
 [ext_resource type="Script" path="res://scripts/end_game_button_back.gd" id="1_eu1w0"]
@@ -31,11 +31,14 @@ grow_vertical = 2
 script = ExtResource("1_eu1w0")
 
 [node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 8.0
-offset_right = 588.0
-offset_bottom = 134.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -289.0
+offset_right = 289.0
+offset_bottom = 126.0
+grow_horizontal = 2
 theme_override_colors/font_hover_color = Color(0.913725, 1, 0.439216, 1)
 theme_override_colors/font_pressed_color = Color(0.913725, 1, 0.439216, 1)
 theme_override_colors/font_color = Color(0.913725, 1, 0.439216, 1)

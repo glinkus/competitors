@@ -1,7 +1,8 @@
 extends CharacterBody2D
 
 @onready var joystick = $"../Camera2D/Joystick"
-
+@onready var camera_2d: Camera2D = $"../Camera2D"
+@onready var death_particles: GPUParticles2D = $DeathParticles
 
 @export var heal: float = 10.0
 @export var max_speed: float = 100.0
@@ -87,5 +88,13 @@ func wrap_around_screen():
 
 func take_damage(damage):
 	heal += damage
-	#if heal <= 0:
-		#game_over()
+	print(heal)
+	if heal <= 0:
+		camera_2d.shake_camera(40.0)
+		var childs = get_children()
+		for child in childs:
+			if child != death_particles:
+				child.queue_free()
+		death_particles.emitting = true
+		await death_particles.finished
+		Globals.game_over()

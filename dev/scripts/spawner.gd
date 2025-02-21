@@ -49,8 +49,8 @@ func _on_timer_timeout() -> void:
 	danger_sprite_location.x = max(25, min(danger_sprite_location.x, screen_size.x-25))
 	danger_sprite_location.y = max(60, min(danger_sprite_location.y, screen_size.y-60))
 	danger.position = danger_sprite_location
-	var type = rng.randi_range(1, 4)
-	#var type = get_enemy_type_based_on_probabilities()
+	#var type = rng.randi_range(1, 4)
+	var type = get_enemy_type_based_on_probabilities()
 	mob.type = type
 	
 	add_child(mob)

@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://v4mdg6rccrv1"]
+[gd_scene load_steps=6 format=3 uid="uid://v4mdg6rccrv1"]
 
 [ext_resource type="Script" path="res://scripts/player_controler.gd" id="1_d1kte"]
 [ext_resource type="Texture2D" uid="uid://ikwmo6458tbu" path="res://assets/Triangle.png" id="1_ouixg"]
 [ext_resource type="Script" path="res://scripts/shoot_manager.gd" id="3_blciq"]
+[ext_resource type="PackedScene" uid="uid://clgyg2d057pdf" path="res://nodes/death_particles.tscn" id="4_kt82x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ittmq"]
 
@@ -35,5 +36,7 @@ script = ExtResource("3_blciq")
 
 [node name="ShootSpot" type="Node2D" parent="ShootManager"]
 position = Vector2(0, -9.13174)
+
+[node name="DeathParticles" parent="." instance=ExtResource("4_kt82x")]
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
