@@ -7,6 +7,7 @@ var score = 0
 var is_game_over = false
 
 func _ready() -> void:
+	#process_mode = PROCESS_MODE_ALWAYS
 	main_menu()
 
 func main_menu():
@@ -23,9 +24,17 @@ func pause_game():
 	get_tree().paused = true
 	var power_up_scene = POWER_UP_SCENE.instantiate()
 	get_tree().root.add_child(power_up_scene)
+	
+func resume_game():
+	get_tree().paused = false
 
 func game_over():
 	is_game_over = true
 	if high_score < score:
 		high_score = score
 	get_tree().change_scene_to_file("res://scenes/the_end.tscn")
+
+func take_xp():
+	score += 1
+	if score % 20 == 0:
+		pause_game()

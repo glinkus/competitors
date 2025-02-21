@@ -52,9 +52,9 @@ func _on_timer_timeout() -> void:
 	#var type = rng.randi_range(1, 4)
 	var type = get_enemy_type_based_on_probabilities()
 	mob.type = type
-	
-	add_child(mob)
 	add_child(danger)
+	await get_tree().create_timer(3).timeout
+	add_child(mob)
 
 var slow_probability = 0.7
 var fast_probability = 0.2

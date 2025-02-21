@@ -57,11 +57,11 @@ func rotate_to_movement_direction(delta: float) -> void:
 		#var move_direction = velocity.normalized()
 		var move_angle = move_direction.angle()
 		move_angle += deg_to_rad(90)
-
 		rotation = lerp_angle(rotation, move_angle, rotation_speed * delta)
+		target_look_position = Vector2.ZERO
 
 func rotate_to_tapped_position(delta: float) -> void:
-	if target_look_position != Vector2.ZERO:
+	if target_look_position != Vector2.ZERO and move_direction <= 0:
 		var direction_to_target = (target_look_position - global_position).normalized()
 		var target_angle = direction_to_target.angle()
 		target_angle += deg_to_rad(90)

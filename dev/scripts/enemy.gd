@@ -2,7 +2,7 @@ extends CharacterBody2D
 '''
 Creator: Darius Rupsys
 '''
-
+const EXPERIENCE_POINTS = preload("res://nodes/experience_points.tscn")
 @onready var target: CharacterBody2D = $"../../Player"
 @onready var death_particles: GPUParticles2D = $DeathParticles
 @onready var camera_2d: Camera2D = $"../../Camera2D"
@@ -49,8 +49,9 @@ func _on_timer_timeout() -> void:
 func take_damage(dmg):
 	heal += dmg
 	if heal <= 0:
-		#drop_xp()
-		Globals.score += 1
+		drop_xp()
+		drop_xp()
+		drop_xp()
 		death()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
@@ -67,3 +68,10 @@ func death():
 	death_particles.emitting = true
 	await death_particles.finished
 	queue_free()
+	
+func drop_xp():
+	var xp = EXPERIENCE_POINTS.instantiate()
+	xp.position = position
+	var random_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+	xp.velocity = random_direction * 100
+	get_parent().add_child(xp)
