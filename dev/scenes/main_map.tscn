@@ -1,13 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://ovry3hn8e6yi"]
+[gd_scene load_steps=15 format=3 uid="uid://ovry3hn8e6yi"]
 
-[ext_resource type="Texture2D" uid="uid://8f2bbieaapfe" path="res://assets/Square.png" id="1_2ff8o"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="1_4c562"]
 [ext_resource type="PackedScene" uid="uid://dtdn8ecpgcw77" path="res://scenes/joystick.tscn" id="1_gi35i"]
 [ext_resource type="Script" path="res://scripts/background.gd" id="1_h6scl"]
 [ext_resource type="PackedScene" uid="uid://v4mdg6rccrv1" path="res://nodes/player.tscn" id="2_47m23"]
 [ext_resource type="Texture2D" uid="uid://brwdb5lf10aq7" path="res://assets/sky1.jpg" id="2_seoqv"]
+[ext_resource type="Texture2D" uid="uid://cxyn7surfyjwj" path="res://assets/crosshair_b.png" id="3_0uvgx"]
+[ext_resource type="Texture2D" uid="uid://s1b7k4xkhp2h" path="res://assets/sky2.png" id="3_v4x7q"]
+[ext_resource type="Texture2D" uid="uid://dktlar6md431w" path="res://assets/move_crosshair.png" id="4_3bsql"]
 [ext_resource type="PackedScene" uid="uid://d0rrf0q4cntmi" path="res://nodes/spawner.tscn" id="4_c5jwc"]
+[ext_resource type="Texture2D" uid="uid://c486pmklvhjqr" path="res://assets/kenney_pixel-shmup/Ships/ship_0022.png" id="7_arcf2"]
+[ext_resource type="Texture2D" uid="uid://bwv4arl26cje7" path="res://assets/kenney_pixel-shmup/Ships/ship_0013.png" id="8_08yic"]
 [ext_resource type="PackedScene" uid="uid://cce7t3ytlwer8" path="res://scenes/health_ui.tscn" id="8_tsgwn"]
+[ext_resource type="Texture2D" uid="uid://c5kiudto4icl0" path="res://assets/kenney_pixel-shmup/Ships/ship_0017.png" id="9_mvtib"]
+[ext_resource type="Texture2D" uid="uid://cs5ehkyiuk1qp" path="res://assets/kenney_pixel-shmup/Tiles/tile_0012.png" id="10_jwjtf"]
 
 [node name="MainMap" type="Node2D"]
 
@@ -29,6 +35,12 @@ position = Vector2(-237, 959)
 scale = Vector2(2, 2)
 texture = ExtResource("2_seoqv")
 
+[node name="Sky2" type="Sprite2D" parent="Background/ColorRect"]
+modulate = Color(0.91664, 0.91664, 0.91664, 1)
+position = Vector2(543, 965)
+scale = Vector2(1.01, 1.01)
+texture = ExtResource("3_v4x7q")
+
 [node name="Score" type="Label" parent="Background/ColorRect"]
 layout_mode = 1
 anchors_preset = 8
@@ -47,17 +59,25 @@ theme_override_font_sizes/font_size = 500
 text = "20"
 horizontal_alignment = 1
 
-[node name="Square" type="Sprite2D" parent="."]
+[node name="AimIndicator" type="Sprite2D" parent="."]
 visible = false
-modulate = Color(1, 1, 1, 0.215686)
+modulate = Color(1, 1, 1, 0.792157)
 position = Vector2(540, 960.5)
-scale = Vector2(2.10938, 3.74805)
-texture = ExtResource("1_2ff8o")
+scale = Vector2(2, 2)
+texture = ExtResource("3_0uvgx")
+
+[node name="MoveIndicator" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.242057, 0.555439, 1.92523e-07, 0.72549)
+position = Vector2(540, 960.5)
+scale = Vector2(2, 2)
+texture = ExtResource("4_3bsql")
 
 [node name="Player" parent="." instance=ExtResource("2_47m23")]
 position = Vector2(87.0001, 92.0001)
 
 [node name="Spawner" parent="." instance=ExtResource("4_c5jwc")]
+sprite_array = Array[CompressedTexture2D]([ExtResource("7_arcf2"), ExtResource("8_08yic"), ExtResource("9_mvtib"), ExtResource("10_jwjtf")])
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(536, 959)

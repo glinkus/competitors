@@ -12,9 +12,9 @@
 [ext_resource type="Resource" uid="uid://c46j51pjxdiku" path="res://recoureses/upgrades/fire_rate_upgrade_common.tres" id="7_38b11"]
 [ext_resource type="Resource" uid="uid://bed7gmygedosn" path="res://recoureses/upgrades/damage_upgrade_common.tres" id="8_udvuo"]
 [ext_resource type="Resource" uid="uid://cbp6hhhc5q6q8" path="res://recoureses/upgrades/damage_upgrade_rare.tres" id="9_gkihw"]
-[ext_resource type="AudioStream" uid="uid://ce6w7bsr4aom1" path="res://Sounds/death-metal-kick.wav" id="10_elsq0"]
 [ext_resource type="Resource" uid="uid://0bxmos3su250" path="res://recoureses/upgrades/bullet_count_upgrade_common.tres" id="10_ithcb"]
 [ext_resource type="Resource" uid="uid://t3hlpxfgfoy8" path="res://recoureses/upgrades/bullet_count_upgrade_rare.tres" id="11_hjmhg"]
+[ext_resource type="AudioStream" uid="uid://bwbqkqjc4vo7t" path="res://Sounds/gun_shot.ogg" id="15_5bw15"]
 [ext_resource type="Resource" uid="uid://c0t8rlxxom46k" path="res://recoureses/shoot_logic/DefaultShot.tres" id="15_6rk14"]
 [ext_resource type="AudioStream" uid="uid://dkx8wsqmlnaqo" path="res://Sounds/engine.ogg" id="18_w48st"]
 
@@ -48,14 +48,15 @@ shoot_spot_array = [NodePath("ShootSpot")]
 position = Vector2(0, -9.13174)
 
 [node name="ShootSound" type="AudioStreamPlayer" parent="ShootManager"]
-stream = ExtResource("10_elsq0")
+stream = ExtResource("15_5bw15")
+volume_db = -25.0
 
 [node name="DeathParticles" parent="." instance=ExtResource("4_kt82x")]
 
 [node name="EngineSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("18_w48st")
 volume_db = -10.0
-pitch_scale = 0.7
+pitch_scale = 0.8
 autoplay = true
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
