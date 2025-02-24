@@ -3,17 +3,19 @@ extends Node2D
 Creator: Darius Rupsys
 '''
 
+var danger_sprite = preload("res://nodes/danger_sprite.tscn")
+
 @export var mob_scene: PackedScene
 @onready var timer: Timer = $Timer
-var danger_sprite = preload("res://nodes/danger_sprite.tscn")
+@onready var sprite_2d: Sprite2D = $Sprite2D
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var time: float = 0.0
 
-var slow_probability = 0.7
+var very_fast_probability = 0.3
 var fast_probability = 0.2
-var very_fast_probability = 0.1
-
+var slow_probability = 0.3
+var rocket_probability = 0.2
 
 func _ready() -> void:
 	pass # Replace with function body.
@@ -67,9 +69,10 @@ func _on_timer_timeout() -> void:
 
 func update_enemy_probabilities():
 	var time_factor = time/60
-	slow_probability = max(0.1, 0.7 - time_factor * 0.1)
-	fast_probability = min(0.2, 0.2 + time_factor * 0.1)
-	very_fast_probability = min(0.4, 0.1 + time_factor * 0.1)
+	#slow_probability = max(0.1, 0.7 - time_factor * 0.1)
+	#fast_probability = min(0.2, 0.2 + time_factor * 0.1)
+	#very_fast_probability = min(0.4, 0.1 + time_factor * 0.1)
+	#rocket_probability = min(0.4, 0.1 + time_factor * 0.1)
 
 func get_enemy_type_based_on_probabilities():
 	update_enemy_probabilities()
@@ -78,5 +81,7 @@ func get_enemy_type_based_on_probabilities():
 		return 1
 	elif rand_val < slow_probability + fast_probability:
 		return 2
-	else:
+	elif rand_val < slow_probability + fast_probability + very_fast_probability:
 		return 3
+	else:
+		return 4

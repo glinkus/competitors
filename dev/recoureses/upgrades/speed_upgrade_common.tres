@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="SpeedUpgradeResource" load_steps=2 format=3 uid="uid://ch2eyievgf8rm"]
+[gd_resource type="Resource" script_class="SpeedUpgradeResource" load_steps=3 format=3 uid="uid://ch2eyievgf8rm"]
 
 [ext_resource type="Script" path="res://recoureses/upgrades/speed_upgrade_resource.gd" id="1_6v2cm"]
+[ext_resource type="Texture2D" uid="uid://dh16i6sotmfry" path="res://assets/speed.png" id="2_eej67"]
 
 [resource]
 script = ExtResource("1_6v2cm")
 speed_increase_amout = 200
 upgrade_id = 0
+upgrade_icon = ExtResource("2_eej67")
 upgrade_name = "Variklis"
 upgrade_decription = "padidina greiti"
