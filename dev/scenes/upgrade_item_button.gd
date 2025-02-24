@@ -2,15 +2,13 @@ extends Node
 class_name UpgradeTextInitializer
 
 var upgrade_id : int
-@onready var icon : TextureRect = $VBoxContainer/Icon
-@onready var name_label : Label = $VBoxContainer/Name
-@onready var description_label : Label = $VBoxContainer/Descryption
+@onready var name_label : Label = $MarginContainer/VBoxContainer/Name
+@onready var description_label : Label = $MarginContainer/VBoxContainer/Descryption
 
-func initialize_button(id: int, new_icon : CompressedTexture2D, name_text : String, description_text: String):
+func initialize_button(id: int, name_text : String, description_text: String):
 	upgrade_id = id
 	name_label.text = name_text
 	description_label.text = description_text
-	icon.texture = new_icon
 
 
 func _on_pressed() -> void:

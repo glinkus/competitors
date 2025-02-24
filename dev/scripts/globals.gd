@@ -18,8 +18,6 @@ class LeaderboardData:
 		time = Time.get_time_dict_from_system()
 
 func _ready() -> void:
-	#process_mode = PROCESS_MODE_ALWAYS
-	is_first_upgrade = true
 	is_first_upgrade = true
 	main_menu()
 

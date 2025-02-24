@@ -8,5 +8,5 @@ script = ExtResource("1_850ra")
 damage_increase_amout = 0.1
 upgrade_id = 0
 upgrade_icon = ExtResource("2_ha0qi")
-upgrade_name = "Patrankos"
+upgrade_name = "Patrankos +1"
 upgrade_decription = "Padidina sukeliama žalą"

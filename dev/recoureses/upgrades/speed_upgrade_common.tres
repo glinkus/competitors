@@ -8,5 +8,5 @@ script = ExtResource("1_6v2cm")
 bullet_speed_increase_amout = 50
 upgrade_id = 0
 upgrade_icon = ExtResource("2_eej67")
-upgrade_name = "Variklis"
+upgrade_name = "Variklis +1"
 upgrade_decription = "Padidina lėktuvos greitį"

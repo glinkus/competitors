@@ -6,10 +6,10 @@
 script = ExtResource("1_j0p87")
 health = 20
 max_speed = 500
-acceleration = 800
+acceleration = 1000
 deceleration = 800
-rotation_speed = 8
+rotation_speed = 10
 fire_rate = 0.8
 bullet_speed = 700.0
-bullet_count = 3
+bullet_count = 8
 damage = -4.0

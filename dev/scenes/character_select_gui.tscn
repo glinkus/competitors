@@ -21,6 +21,14 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_e13bu")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = -593.0
+offset_top = -1964.0
+offset_right = 576.0
+offset_bottom = 40.0
+color = Color(0.141176, 0.141176, 0.141176, 0.454902)
+
 [node name="Header" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
@@ -135,7 +143,7 @@ Statistikos:
     Greitis: Labai aukštas
     Atsparumas: Žemas
     Šaudymo sparta: Labai aukšta
-    Žala: Žema"
+    Žala: Aukšta"
 
 [node name="Icon" type="TextureRect" parent="VBoxContainer/CharItemButton2"]
 layout_mode = 0
@@ -174,7 +182,7 @@ Statistikos:
     Greitis: Vidutinis
     Atsparumas: Vidutinis
     Šaudymo sparta: Vidutinė
-    Žala: Aukšta"
+    Žala: Vidutinė"
 
 [node name="Icon" type="TextureRect" parent="VBoxContainer/CharItemButton3"]
 layout_mode = 0

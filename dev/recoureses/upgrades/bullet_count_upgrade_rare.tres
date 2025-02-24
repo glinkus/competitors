@@ -7,5 +7,5 @@ script = ExtResource("1_xf3gc")
 bullet_increase_amout = 2
 damage_decrease_amout = 0.1
 upgrade_id = 0
-upgrade_name = "Papildomas vamzdis 2"
+upgrade_name = "Papildomas vamzdis +2"
 upgrade_decription = "Padidina išaunamų kulkų kiekį"

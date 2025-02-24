@@ -1,9 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://ovry3hn8e6yi"]
+[gd_scene load_steps=14 format=3 uid="uid://ovry3hn8e6yi"]
 
 [ext_resource type="Script" path="res://scripts/camera.gd" id="1_4c562"]
-[ext_resource type="PackedScene" uid="uid://dtdn8ecpgcw77" path="res://scenes/joystick.tscn" id="1_gi35i"]
 [ext_resource type="Script" path="res://scripts/background.gd" id="1_h6scl"]
-[ext_resource type="PackedScene" uid="uid://v4mdg6rccrv1" path="res://nodes/player.tscn" id="2_47m23"]
 [ext_resource type="Texture2D" uid="uid://brwdb5lf10aq7" path="res://assets/sky1.jpg" id="2_seoqv"]
 [ext_resource type="Texture2D" uid="uid://cxyn7surfyjwj" path="res://assets/crosshair_b.png" id="3_0uvgx"]
 [ext_resource type="Texture2D" uid="uid://s1b7k4xkhp2h" path="res://assets/sky2.png" id="3_v4x7q"]
@@ -14,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cce7t3ytlwer8" path="res://scenes/health_ui.tscn" id="8_tsgwn"]
 [ext_resource type="Texture2D" uid="uid://c5kiudto4icl0" path="res://assets/kenney_pixel-shmup/Ships/ship_0017.png" id="9_mvtib"]
 [ext_resource type="Texture2D" uid="uid://cs5ehkyiuk1qp" path="res://assets/kenney_pixel-shmup/Tiles/tile_0012.png" id="10_jwjtf"]
+[ext_resource type="PackedScene" uid="uid://cduyhi23tqsjn" path="res://nodes/scout_player.tscn" id="13_hou58"]
 
 [node name="MainMap" type="Node2D"]
 
@@ -73,9 +72,6 @@ position = Vector2(540, 960.5)
 scale = Vector2(2, 2)
 texture = ExtResource("4_3bsql")
 
-[node name="Player" parent="." instance=ExtResource("2_47m23")]
-position = Vector2(87.0001, 92.0001)
-
 [node name="Spawner" parent="." instance=ExtResource("4_c5jwc")]
 sprite_array = Array[CompressedTexture2D]([ExtResource("7_arcf2"), ExtResource("8_08yic"), ExtResource("9_mvtib"), ExtResource("10_jwjtf")])
 
@@ -83,10 +79,11 @@ sprite_array = Array[CompressedTexture2D]([ExtResource("7_arcf2"), ExtResource("
 position = Vector2(536, 959)
 script = ExtResource("1_4c562")
 
-[node name="Joystick" parent="Camera2D" instance=ExtResource("1_gi35i")]
-
 [node name="HealthUI" parent="." instance=ExtResource("8_tsgwn")]
 offset_left = 841.0
 offset_top = 45.0
 offset_right = 841.0
 offset_bottom = 45.0
+
+[node name="Player" parent="." instance=ExtResource("13_hou58")]
+position = Vector2(538, 1356)

@@ -5,6 +5,7 @@ class_name PlayerManager
 @onready var death_particles: GPUParticles2D = $DeathParticles
 @onready var engine_sound : AudioStreamPlayer  = $EngineSound
 
+var stats_original : Stats
 @export var stats : Stats
 
 @export var upgrade_array : Array[BaseUpgradeResource]
@@ -18,20 +19,22 @@ var target_look_position: Vector2 = Vector2.ZERO
 var moving = false
 var aiming = false
 var last_tap_time = 0.0
-const DOUBLE_TAP_TIME = 0.3  # Time interval for double tap detection
+const DOUBLE_TAP_TIME = 0.3 
 
 @export var acceleration: float = 800.0
 @export var deceleration: float = 1000.0
 @export var max_speed: float = 200.0
-@export var start_delay: float = 0.2  # Delay before reaching max speed
+@export var start_delay: float = 0.2 
 
 var move_start_time = 0.0
-var speed_factor = 0.0  # Controls gradual acceleration/deceleration
+var speed_factor = 0.0  
 
-@onready var aim_indicator = $"../AimIndicator"  # Node for aim marker
-@onready var move_indicator = $"../MoveIndicator"  # Node for move marker
+@onready var aim_indicator = $"../AimIndicator"  
+@onready var move_indicator = $"../MoveIndicator" 
 
 func _ready():
+	stats_original = stats.duplicate()
+	stats.reset(stats_original)
 	set_upgrade_ids()
 	aim_indicator.hide()
 	move_indicator.hide()
@@ -60,25 +63,22 @@ func _physics_process(delta: float) -> void:
 		var direction = (target_move_position - global_position).normalized()
 		var distance = global_position.distance_to(target_move_position)
 
-		# Gradual acceleration
 		if current_time - move_start_time < start_delay:
 			speed_factor = (current_time - move_start_time) / start_delay
 		else:
-			speed_factor = 1.0  # Full speed after delay
+			speed_factor = 1.0  
 
-		# Slow down as the player approaches the target
 		var slow_down_factor = clamp(distance / 300.0, 0.0, 1.0)
 		var effective_speed = stats.max_speed * speed_factor * slow_down_factor
 		velocity = velocity.move_toward(direction * effective_speed, stats.acceleration * delta)
 
 		if distance < 10:
-			moving = false  # Stop when close enough
+			moving = false 
 			velocity = Vector2.ZERO
 			move_indicator.hide()
 
 	move_and_slide()
 	
-	# Rotate to face the aim target only
 	if aiming and target_look_position != Vector2.ZERO:
 		var direction_vector = (target_look_position - global_position).normalized()
 		var target_angle = direction_vector.angle()
@@ -88,7 +88,6 @@ func _physics_process(delta: float) -> void:
 	wrap_around_screen()
 
 func wrap_around_screen():
-	# Get the player's global position
 	var position = global_position
 
 	# Wrap horizontally
@@ -103,7 +102,6 @@ func wrap_around_screen():
 	elif position.y < -screen_offset:
 		position.y = screen_height + screen_offset
 
-	# Update the player's global position
 	global_position = position
 	
 func apply_upgrade(upgrade_id: int):
@@ -125,7 +123,6 @@ func get_upgrade_array() -> Array[BaseUpgradeResource]:
 
 func take_damage(damage):
 	stats.health += damage
-	print(stats.health)
 	if stats.health  <= 0:
 		DeathSoundPlayer.play()
 		await get_tree().create_timer(0.1).timeout

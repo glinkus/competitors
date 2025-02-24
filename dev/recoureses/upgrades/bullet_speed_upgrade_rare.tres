@@ -6,5 +6,5 @@
 script = ExtResource("1_sjmd2")
 bullet_speed_increase_amout = 100
 upgrade_id = 0
-upgrade_name = "Kalibras 2"
+upgrade_name = "Kalibras +2"
 upgrade_decription = "Padideja kulkos greitis"

@@ -18,7 +18,6 @@ func _ready() -> void:
 	for button in button_array:
 		var index = randi_range(0,  upgrade_array.size()-1)
 		button.initialize_button(upgrade_array[index].upgrade_id,
-								upgrade_array[index].upgrade_icon,
 								upgrade_array[index].upgrade_name, 
 								upgrade_array[index].upgrade_decription)
 
