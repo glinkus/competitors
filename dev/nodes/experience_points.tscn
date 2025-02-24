@@ -25,6 +25,7 @@ animations = [{
 }]
 
 [node name="ExperiencePoints" type="Area2D"]
+scale = Vector2(2, 2)
 script = ExtResource("1_bre78")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -6,6 +6,14 @@ const POWER_UP_SCENE = preload("res://scenes/level_up_gui.tscn")
 var high_score = 0
 var score = 0
 var is_game_over = false
+var leaderboard : Array[LeaderboardData]
+
+class LeaderboardData:
+	var total_score : int
+	var time : Dictionary
+	func _init(_total_score : int) -> void:
+		total_score = _total_score
+		time = Time.get_time_dict_from_system()
 
 func _ready() -> void:
 	#process_mode = PROCESS_MODE_ALWAYS
@@ -33,6 +41,11 @@ func game_over():
 	is_game_over = true
 	if high_score < score:
 		high_score = score
+	var _data = LeaderboardData.new(
+		score
+	)
+	leaderboard.append(_data)
+	leaderboard.sort_custom(func(a, b): return a.total_score > b.total_score)
 	get_tree().change_scene_to_file("res://scenes/the_end.tscn")
 
 func take_xp():

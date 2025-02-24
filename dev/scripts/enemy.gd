@@ -5,10 +5,10 @@ Creator: Darius Rupsys
 const EXPERIENCE_POINTS = preload("res://nodes/experience_points.tscn")
 @onready var target: CharacterBody2D = $"../../Player"
 @onready var death_particles: GPUParticles2D = $DeathParticles
+@onready var damage_particles: GPUParticles2D = $DamageParticles
 @onready var camera_2d: Camera2D = $"../../Camera2D"
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var spawner: Node2D = $".."
-
 @export var type: float = 0
 @export var heal: float = 1.0
 @export var damage: float = -1.0
@@ -112,7 +112,13 @@ func death():
 	var childs = get_children()
 	for child in childs:
 		if child != death_particles:
-			child.queue_free()
+			if child != damage_particles:
+				child.queue_free()
+	var image = Image.load_from_file("res://assets/bolt.png")
+	image.resize(128, 128)
+	var texture = ImageTexture.create_from_image(image)
+	death_particles.texture = texture
+	damage_particles.emitting = true
 	death_particles.emitting = true
 	await death_particles.finished
 	queue_free()
