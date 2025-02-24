@@ -1,5 +1,4 @@
 extends CharacterBody2D
-class_name PlayerControler
 
 @onready var joystick = $"../Camera2D/Joystick"
 @onready var camera_2d: Camera2D = $"../Camera2D"

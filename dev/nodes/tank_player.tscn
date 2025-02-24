@@ -1,15 +1,30 @@
-[gd_scene load_steps=6 format=3 uid="uid://c18atwv2ygvn8"]
+[gd_scene load_steps=19 format=3 uid="uid://c18atwv2ygvn8"]
 
-[ext_resource type="Script" path="res://scripts/player_controler.gd" id="1_jm1y6"]
+[ext_resource type="Script" path="res://scripts/player/player_touch_controler.gd" id="1_j2lfd"]
+[ext_resource type="Resource" uid="uid://bjnka6uiiue44" path="res://recoureses/stats/tank_stats.tres" id="2_2ar50"]
 [ext_resource type="Texture2D" uid="uid://trnlexovobsp" path="res://assets/kenney_pixel-shmup/Ships/ship_0002.png" id="2_uumbi"]
 [ext_resource type="Script" path="res://scripts/shoot_manager.gd" id="3_1qu6k"]
+[ext_resource type="Script" path="res://recoureses/upgrades/scripts/base_upgrade_resource.gd" id="3_ki51v"]
+[ext_resource type="Resource" uid="uid://0bxmos3su250" path="res://recoureses/upgrades/bullet_count_upgrade_common.tres" id="4_vnn2v"]
 [ext_resource type="PackedScene" uid="uid://clgyg2d057pdf" path="res://nodes/death_particles.tscn" id="5_75756"]
+[ext_resource type="Resource" uid="uid://t3hlpxfgfoy8" path="res://recoureses/upgrades/bullet_count_upgrade_rare.tres" id="5_whthf"]
+[ext_resource type="Resource" uid="uid://bed7gmygedosn" path="res://recoureses/upgrades/damage_upgrade_common.tres" id="6_hvg2m"]
+[ext_resource type="Resource" uid="uid://cbp6hhhc5q6q8" path="res://recoureses/upgrades/damage_upgrade_rare.tres" id="7_ye7a4"]
+[ext_resource type="Resource" uid="uid://c46j51pjxdiku" path="res://recoureses/upgrades/fire_rate_upgrade_common.tres" id="8_iqs3d"]
+[ext_resource type="Resource" uid="uid://7jw6tjvdey7w" path="res://recoureses/upgrades/fire_rate_upgrade_rare.tres" id="9_lsmj0"]
+[ext_resource type="Resource" uid="uid://ch2eyievgf8rm" path="res://recoureses/upgrades/speed_upgrade_common.tres" id="10_5muuw"]
+[ext_resource type="Resource" uid="uid://c4okuncejnq44" path="res://recoureses/upgrades/speed_upgrade_rare.tres" id="11_kp372"]
+[ext_resource type="Resource" uid="uid://ck48sq465jnfm" path="res://recoureses/shoot_logic/TankShot.tres" id="14_2qysx"]
+[ext_resource type="AudioStream" uid="uid://ce6w7bsr4aom1" path="res://Sounds/death-metal-kick.wav" id="14_7c7um"]
+[ext_resource type="AudioStream" uid="uid://dkx8wsqmlnaqo" path="res://Sounds/engine.ogg" id="17_yabj7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ittmq"]
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 scale = Vector2(6.68, 6.68)
-script = ExtResource("1_jm1y6")
+script = ExtResource("1_j2lfd")
+stats = ExtResource("2_2ar50")
+upgrade_array = Array[ExtResource("3_ki51v")]([ExtResource("4_vnn2v"), ExtResource("5_whthf"), ExtResource("6_hvg2m"), ExtResource("7_ye7a4"), ExtResource("8_iqs3d"), ExtResource("9_lsmj0"), ExtResource("10_5muuw"), ExtResource("11_kp372")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ittmq")
@@ -23,15 +38,24 @@ shape = SubResource("RectangleShape2D_ittmq")
 scale = Vector2(0.673653, 0.636228)
 texture = ExtResource("2_uumbi")
 
-[node name="ShootManager" type="Node2D" parent="."]
+[node name="ShootManager" type="Node2D" parent="." node_paths=PackedStringArray("player", "shoot_spot_array")]
 script = ExtResource("3_1qu6k")
+player = NodePath("..")
+shoot_logic = ExtResource("14_2qysx")
+shoot_spot_array = [NodePath("ShootSpot")]
 
 [node name="ShootSpot" type="Node2D" parent="ShootManager"]
-position = Vector2(2.24551, -5.98802)
+position = Vector2(2.38419e-07, -0.299401)
 
-[node name="ShootSpot2" type="Node2D" parent="ShootManager"]
-position = Vector2(-2.09581, -5.98802)
+[node name="ShootSound" type="AudioStreamPlayer" parent="ShootManager"]
+stream = ExtResource("14_7c7um")
 
 [node name="DeathParticles" parent="." instance=ExtResource("5_75756")]
+
+[node name="EngineSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_yabj7")
+volume_db = -10.0
+pitch_scale = 0.7
+autoplay = true
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

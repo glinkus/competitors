@@ -11,8 +11,5 @@ class_name Stats
 
 @export var fire_rate : float
 @export var bullet_speed: float
+@export var bullet_count: int
 @export var damage : float
-
-
-func increese_damage(amount : float):
-	damage += amount 

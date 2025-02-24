@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DamageUpgradeResource" load_steps=3 format=3 uid="uid://cbp6hhhc5q6q8"]
+
+[ext_resource type="Script" path="res://recoureses/upgrades/scripts/damange_upgrade_resource.gd" id="1_rq66l"]
+[ext_resource type="Texture2D" uid="uid://bmqqa2p2gsl1u" path="res://assets/powerups/bolt_gold.png" id="2_d34b3"]
+
+[resource]
+script = ExtResource("1_rq66l")
+damage_increase_amout = 0.4
+upgrade_id = 1
+upgrade_icon = ExtResource("2_d34b3")
+upgrade_name = "Patrankos 2"
+upgrade_decription = "Padidina sukeliama žalą"

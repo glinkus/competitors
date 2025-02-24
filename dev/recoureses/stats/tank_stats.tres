@@ -1,14 +1,15 @@
 [gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://bjnka6uiiue44"]
 
-[ext_resource type="Script" path="res://recoureses/stats/stat_resource.gd" id="1_j0p87"]
+[ext_resource type="Script" path="res://recoureses/stats/scripts/stat_resource.gd" id="1_j0p87"]
 
 [resource]
 script = ExtResource("1_j0p87")
-health = 15
-max_speed = 50
+health = 20
+max_speed = 500
 acceleration = 800
 deceleration = 800
 rotation_speed = 8
 fire_rate = 0.8
 bullet_speed = 700.0
-damage = -0.5
+bullet_count = 3
+damage = -4.0

@@ -3,7 +3,7 @@ extends CharacterBody2D
 Creator: Darius Rupsys
 '''
 const EXPERIENCE_POINTS = preload("res://nodes/experience_points.tscn")
-@onready var target: CharacterBody2D = $"../../Player"
+var target: CharacterBody2D
 @onready var death_particles: GPUParticles2D = $DeathParticles
 @onready var damage_particles: GPUParticles2D = $DamageParticles
 @onready var camera_2d: Camera2D = $"../../Camera2D"
@@ -17,6 +17,7 @@ const EXPERIENCE_POINTS = preload("res://nodes/experience_points.tscn")
 @export var sin1: float = 1.0
 @export var sin2: float = 1.0
 var ready_to_go = false
+var texture
 
 func _ready() -> void:
 	visible = false
@@ -27,9 +28,9 @@ func _ready() -> void:
 			speed = 400.0
 			max_speed = 400.0
 			scale = Vector2(1, 1)
-			var image = Image.load_from_file("res://assets/kenney_pixel-shmup/Ships/ship_0022.png")
-			var texture = ImageTexture.create_from_image(image)
-			sprite_2d.texture = texture
+			#var image = Image.load_from_file("res://assets/kenney_pixel-shmup/Ships/ship_0022.png")
+			#var texture = ImageTexture.create_from_image(image)
+			#sprite_2d.texture = texture
 			sin1 = 8
 			sin2 = 200
 		2.0:
@@ -38,8 +39,8 @@ func _ready() -> void:
 			speed = 250.0
 			max_speed = 250.0
 			scale = Vector2(1.5, 1.5)
-			var image = Image.load_from_file("res://assets/kenney_pixel-shmup/Ships/ship_0013.png")
-			var texture = ImageTexture.create_from_image(image)
+			#var image = Image.load_from_file("res://assets/kenney_pixel-shmup/Ships/ship_0013.png")
+			#var texture = ImageTexture.create_from_image(image)
 			sprite_2d.texture = texture
 			sin1 = 1
 			sin2 = 100
@@ -49,8 +50,8 @@ func _ready() -> void:
 			speed = 150.0
 			max_speed = 150.0
 			scale = Vector2(2, 2)
-			var image = Image.load_from_file("res://assets/kenney_pixel-shmup/Ships/ship_0012.png")
-			var texture = ImageTexture.create_from_image(image)
+			#var image = Image.load_from_file("res://assets/kenney_pixel-shmup/Ships/ship_0012.png")
+			#var texture = ImageTexture.create_from_image(image)
 			sprite_2d.texture = texture
 			sin1 = 0.5
 			sin2 = 50
@@ -60,14 +61,29 @@ func _ready() -> void:
 			speed = 300.0
 			max_speed = 300.0
 			scale = Vector2(1, 1)
-			var image = Image.load_from_file("res://assets/kenney_pixel-shmup/Tiles/tile_0012.png")
-			var texture = ImageTexture.create_from_image(image)
+			#var image = Image.load_from_file("res://assets/kenney_pixel-shmup/Tiles/tile_0012.png")
+			#var texture = ImageTexture.create_from_image(image)
 			sprite_2d.texture = texture
 			sprite_2d.scale = Vector2(4,4)
 			sin1 = 0.1
 			sin2 = 600
+			
+func set_texture(compressed_texture : CompressedTexture2D):
+	print(compressed_texture.resource_name)
+	var image = compressed_texture.get_image()
+	texture = ImageTexture.create_from_image(image)
+	#sprite_2d.texture = texture
 
 func _process(delta: float) -> void:
+	if not is_instance_valid(target):
+		var current_player = get_tree().get_nodes_in_group("Player")
+		
+		if current_player.size() == 0:
+			print("Error: No player with the 'Player' tag found!")
+			return
+			
+		target = current_player[0]
+	
 	if ready_to_go and target:
 		var target_direction = (target.position - position).normalized()
 		velocity = target_direction * speed

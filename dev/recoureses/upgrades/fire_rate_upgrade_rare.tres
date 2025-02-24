@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FireRateUpgradeResource" load_steps=2 format=3 uid="uid://7jw6tjvdey7w"]
+
+[ext_resource type="Script" path="res://recoureses/upgrades/scripts/fire_rate_upgrade_resource.gd" id="1_7c6sf"]
+
+[resource]
+script = ExtResource("1_7c6sf")
+fire_rate_increase_amout = 0.05
+upgrade_id = 2
+upgrade_name = "Uzsitaisymas 2"
+upgrade_decription = "Padidina šaudymo greitį"

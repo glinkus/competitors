@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TankShootLogicResource" load_steps=2 format=3 uid="uid://ck48sq465jnfm"]
+
+[ext_resource type="Script" path="res://recoureses/shoot_logic/scripts/tank_shoot_logic_resource.gd" id="1_8l8u8"]
+
+[resource]
+script = ExtResource("1_8l8u8")
+bullet_count = 10

@@ -1,15 +1,31 @@
-[gd_scene load_steps=6 format=3 uid="uid://cduyhi23tqsjn"]
+[gd_scene load_steps=19 format=3 uid="uid://cduyhi23tqsjn"]
 
-[ext_resource type="Script" path="res://scripts/player_controler.gd" id="1_i1ylr"]
+[ext_resource type="Script" path="res://scripts/player/player_touch_controler.gd" id="1_gx4gd"]
+[ext_resource type="Resource" uid="uid://by1qi60o6j14p" path="res://recoureses/stats/scout_stats.tres" id="2_e5f1g"]
 [ext_resource type="Texture2D" uid="uid://be3tmckjlq86k" path="res://assets/kenney_pixel-shmup/Ships/ship_0000.png" id="2_h3yxc"]
+[ext_resource type="Script" path="res://recoureses/upgrades/scripts/base_upgrade_resource.gd" id="3_171mi"]
 [ext_resource type="Script" path="res://scripts/shoot_manager.gd" id="3_qygbj"]
+[ext_resource type="Resource" uid="uid://c4okuncejnq44" path="res://recoureses/upgrades/speed_upgrade_rare.tres" id="4_qdn0w"]
 [ext_resource type="PackedScene" uid="uid://clgyg2d057pdf" path="res://nodes/death_particles.tscn" id="5_ednix"]
+[ext_resource type="Resource" uid="uid://ch2eyievgf8rm" path="res://recoureses/upgrades/speed_upgrade_common.tres" id="5_t8n57"]
+[ext_resource type="Resource" uid="uid://7jw6tjvdey7w" path="res://recoureses/upgrades/fire_rate_upgrade_rare.tres" id="6_fgk0n"]
+[ext_resource type="Resource" uid="uid://c46j51pjxdiku" path="res://recoureses/upgrades/fire_rate_upgrade_common.tres" id="7_ufvtc"]
+[ext_resource type="Resource" uid="uid://cbp6hhhc5q6q8" path="res://recoureses/upgrades/damage_upgrade_rare.tres" id="8_tfu1k"]
+[ext_resource type="Resource" uid="uid://bed7gmygedosn" path="res://recoureses/upgrades/damage_upgrade_common.tres" id="9_3usd0"]
+[ext_resource type="Resource" uid="uid://cvwvs5jukyb16" path="res://recoureses/upgrades/bullet_speed_upgrade_rare.tres" id="10_tyxx2"]
+[ext_resource type="Resource" uid="uid://d0we1j75d432x" path="res://recoureses/upgrades/bullet_speed_upgrade_common.tres" id="11_2vgor"]
+[ext_resource type="Resource" uid="uid://d6o6lxgfv32f" path="res://recoureses/shoot_logic/ScoutShot.tres" id="14_bilyo"]
+[ext_resource type="AudioStream" uid="uid://bwbqkqjc4vo7t" path="res://Sounds/gun_shot.ogg" id="15_rbapu"]
+[ext_resource type="AudioStream" uid="uid://dkx8wsqmlnaqo" path="res://Sounds/engine.ogg" id="17_nu15h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ittmq"]
+size = Vector2(16.1677, 15.2695)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 scale = Vector2(6.68, 6.68)
-script = ExtResource("1_i1ylr")
+script = ExtResource("1_gx4gd")
+stats = ExtResource("2_e5f1g")
+upgrade_array = Array[ExtResource("3_171mi")]([ExtResource("4_qdn0w"), ExtResource("5_t8n57"), ExtResource("6_fgk0n"), ExtResource("7_ufvtc"), ExtResource("8_tfu1k"), ExtResource("9_3usd0"), ExtResource("10_tyxx2"), ExtResource("11_2vgor")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ittmq")
@@ -20,17 +36,31 @@ shape = SubResource("RectangleShape2D_ittmq")
 shape = SubResource("RectangleShape2D_ittmq")
 
 [node name="Body" type="Sprite2D" parent="."]
-scale = Vector2(0.32747, 0.32747)
+scale = Vector2(0.495066, 0.495066)
 texture = ExtResource("2_h3yxc")
 
-[node name="ShootManager" type="Node2D" parent="."]
+[node name="ShootManager" type="Node2D" parent="." node_paths=PackedStringArray("player", "shoot_spot_array")]
 script = ExtResource("3_qygbj")
+player = NodePath("..")
+shoot_logic = ExtResource("14_bilyo")
 rate_of_fire = 0.2
 bullet_speed = 1000
+shoot_spot_array = [NodePath("ShootSpot")]
 
 [node name="ShootSpot" type="Node2D" parent="ShootManager"]
 position = Vector2(0, -3.89222)
 
+[node name="ShootSound" type="AudioStreamPlayer" parent="ShootManager"]
+stream = ExtResource("15_rbapu")
+volume_db = -25.0
+pitch_scale = 0.7
+
 [node name="DeathParticles" parent="." instance=ExtResource("5_ednix")]
+
+[node name="EngineSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_nu15h")
+volume_db = -10.0
+pitch_scale = 0.7
+autoplay = true
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

@@ -9,6 +9,8 @@ var danger_sprite = preload("res://nodes/danger_sprite.tscn")
 @onready var timer: Timer = $Timer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
+@export var sprite_array: Array[CompressedTexture2D]
+
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var time: float = 0.0
 
@@ -65,6 +67,7 @@ func _on_timer_timeout() -> void:
 	var mob = mob_scene.instantiate()
 	mob.type = type
 	mob.position = mob_spawn_location
+	mob.set_texture(sprite_array[type-1])
 	add_child(mob)
 
 func update_enemy_probabilities():

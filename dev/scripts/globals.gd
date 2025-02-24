@@ -2,10 +2,13 @@ extends Node
 
 #const POWER_UP_SCENE = preload("res://scenes/power_up_scene.tscn")
 const POWER_UP_SCENE = preload("res://scenes/level_up_gui.tscn")
+const CHAR_SELECT_SCENE = preload("res://scenes/character_select_gui.tscn")
+const CHAR_SELECT_SCENE = preload("res://scenes/character_select_gui.tscn")
 
 var high_score = 0
 var score = 0
 var is_game_over = false
+var is_first_upgrade : bool
 var leaderboard : Array[LeaderboardData]
 
 class LeaderboardData:
@@ -17,22 +20,42 @@ class LeaderboardData:
 
 func _ready() -> void:
 	#process_mode = PROCESS_MODE_ALWAYS
+	is_first_upgrade = true
+	is_first_upgrade = true
 	main_menu()
 
 func main_menu():
 	score = 0
 	is_game_over = false
+	is_first_upgrade = true
+	is_first_upgrade = true
 	get_tree().change_scene_to_file("res://scenes/start_menu.tscn")
 
 func start_game():
 	score = 0
 	is_game_over = false
+	is_first_upgrade = true
+	is_first_upgrade = true
 	get_tree().change_scene_to_file("res://scenes/main_map.tscn")
 
 func pause_game():
 	get_tree().paused = true
-	var power_up_scene = POWER_UP_SCENE.instantiate()
-	get_tree().root.add_child(power_up_scene)
+	
+	if(is_first_upgrade):
+		var char_select = CHAR_SELECT_SCENE.instantiate()
+		get_tree().root.add_child(char_select)
+		is_first_upgrade = false
+	else:
+		var power_up_scene = POWER_UP_SCENE.instantiate()
+		get_tree().root.add_child(power_up_scene)
+	
+	if(is_first_upgrade):
+		var char_select = CHAR_SELECT_SCENE.instantiate()
+		get_tree().root.add_child(char_select)
+		is_first_upgrade = false
+	else:
+		var power_up_scene = POWER_UP_SCENE.instantiate()
+		get_tree().root.add_child(power_up_scene)
 	
 func resume_game():
 	get_tree().paused = false
@@ -49,7 +72,8 @@ func game_over():
 	get_tree().change_scene_to_file("res://scenes/the_end.tscn")
 
 func take_xp():
-	score += 10
+	score += 2
+	score += 2
 	if score % 20 == 0:
 		pause_game()
 

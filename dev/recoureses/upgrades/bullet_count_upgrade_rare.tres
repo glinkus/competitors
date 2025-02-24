@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BulletCountUpgradeResource" load_steps=2 format=3 uid="uid://t3hlpxfgfoy8"]
+
+[ext_resource type="Script" path="res://recoureses/upgrades/scripts/bullet_increase_upgrade_resource.gd" id="1_xf3gc"]
+
+[resource]
+script = ExtResource("1_xf3gc")
+bullet_increase_amout = 2
+damage_decrease_amout = 0.1
+upgrade_id = 0
+upgrade_name = "Papildomas vamzdis 2"
+upgrade_decription = "Padidina išaunamų kulkų kiekį"

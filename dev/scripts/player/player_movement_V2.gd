@@ -1,5 +1,4 @@
 extends CharacterBody2D
-
 #@onready var joystick = $"../Camera2D/Joystick"
 
 # Movement variables

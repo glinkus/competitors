@@ -1,27 +1,26 @@
 [gd_scene load_steps=5 format=3 uid="uid://bubsr3aloat8j"]
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_1ixdp"]
-[ext_resource type="Texture2D" uid="uid://8f2bbieaapfe" path="res://assets/Square.png" id="2_lfclr"]
+[ext_resource type="Texture2D" uid="uid://d3nuc7t7btsrf" path="res://assets/shot.png" id="2_aregl"]
 [ext_resource type="PackedScene" uid="uid://clgyg2d057pdf" path="res://nodes/death_particles.tscn" id="3_p4md3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ip7lk"]
-size = Vector2(6, 42)
+size = Vector2(15.6928, 42)
 
 [node name="Bullet" type="Area2D"]
 script = ExtResource("1_1ixdp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 0, 0, 1)
 position = Vector2(-0.153614, -21.3051)
-scale = Vector2(-0.0179082, 0.084094)
-texture = ExtResource("2_lfclr")
+scale = Vector2(3, 3.5)
+texture = ExtResource("2_aregl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.153614, -21.3051)
 shape = SubResource("RectangleShape2D_ip7lk")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(-0.153614, 6.69492)
+position = Vector2(-1.05879e-22, 11)
 scale = Vector2(0.484639, 0.109627)
 
 [node name="DeathParticles" parent="." instance=ExtResource("3_p4md3")]
