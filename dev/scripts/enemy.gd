@@ -53,6 +53,8 @@ func take_damage(dmg):
 		drop_xp()
 		drop_xp()
 		death()
+	else:
+		Punch.play()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -61,6 +63,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 func death():
 	camera_2d.shake_camera(10.0 * type)
+	EnemyDeath.play()
 	var childs = get_children()
 	for child in childs:
 		if child != death_particles:
@@ -68,6 +71,7 @@ func death():
 	death_particles.emitting = true
 	await death_particles.finished
 	queue_free()
+	
 	
 func drop_xp():
 	var xp = EXPERIENCE_POINTS.instantiate()

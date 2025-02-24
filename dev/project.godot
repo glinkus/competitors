@@ -20,6 +20,8 @@ config/icon="res://assets/icon.svg"
 Globals="*res://scripts/globals.gd"
 DeathSoundPlayer="*res://Sounds/death_sound_player.tscn"
 Click="*res://Sounds/click.tscn"
+Punch="*res://Sounds/punch.tscn"
+EnemyDeath="*res://Sounds/enemy_death.tscn"
 
 [display]
 

@@ -9,8 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://clgyg2d057pdf" path="res://nodes/death_particles.tscn" id="4_kt82x"]
 [ext_resource type="Resource" uid="uid://bed7gmygedosn" path="res://recoureses/upgrades/damage_upgrade_common.tres" id="4_onb8e"]
 [ext_resource type="Resource" uid="uid://c46j51pjxdiku" path="res://recoureses/upgrades/fire_rate_upgrade_common.tres" id="5_3nu10"]
-[ext_resource type="AudioStream" uid="uid://cioj8e65yfmbg" path="res://Sounds/sound-fx-button-press_F_minor.wav" id="5_uy8ba"]
 [ext_resource type="Resource" uid="uid://ch2eyievgf8rm" path="res://recoureses/upgrades/speed_upgrade_common.tres" id="6_7wkl3"]
+[ext_resource type="AudioStream" uid="uid://ce6w7bsr4aom1" path="res://Sounds/death-metal-kick.wav" id="10_elsq0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ittmq"]
 
@@ -51,13 +51,8 @@ shoot_spot_array = [NodePath("ShootSpot")]
 position = Vector2(0, -9.13174)
 
 [node name="ShootSound" type="AudioStreamPlayer" parent="ShootManager"]
-stream = ExtResource("5_uy8ba")
-volume_db = 10.0
+stream = ExtResource("10_elsq0")
 
 [node name="DeathParticles" parent="." instance=ExtResource("4_kt82x")]
-
-[node name="DeathSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_uy8ba")
-volume_db = 10.0
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2licru38min2"]
+
+[ext_resource type="AudioStream" uid="uid://dk6pr2vhoppuu" path="res://Sounds/cartoon-sound-fx-punch.wav" id="1_v4irg"]
+
+[node name="Punch" type="AudioStreamPlayer"]
+stream = ExtResource("1_v4irg")
