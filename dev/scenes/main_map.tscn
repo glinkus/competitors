@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ovry3hn8e6yi"]
+[gd_scene load_steps=15 format=3 uid="uid://ovry3hn8e6yi"]
 
 [ext_resource type="Script" path="res://scripts/camera.gd" id="1_4c562"]
 [ext_resource type="Script" path="res://scripts/background.gd" id="1_h6scl"]
@@ -6,10 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://cxyn7surfyjwj" path="res://assets/crosshair_b.png" id="3_0uvgx"]
 [ext_resource type="Texture2D" uid="uid://s1b7k4xkhp2h" path="res://assets/sky2.png" id="3_v4x7q"]
 [ext_resource type="Texture2D" uid="uid://dktlar6md431w" path="res://assets/move_crosshair.png" id="4_3bsql"]
+[ext_resource type="Script" path="res://scripts/textfade.gd" id="4_3l7jp"]
 [ext_resource type="PackedScene" uid="uid://d0rrf0q4cntmi" path="res://nodes/spawner.tscn" id="4_c5jwc"]
 [ext_resource type="Texture2D" uid="uid://c486pmklvhjqr" path="res://assets/kenney_pixel-shmup/Ships/ship_0022.png" id="7_arcf2"]
 [ext_resource type="Texture2D" uid="uid://bwv4arl26cje7" path="res://assets/kenney_pixel-shmup/Ships/ship_0013.png" id="8_08yic"]
-[ext_resource type="PackedScene" uid="uid://cce7t3ytlwer8" path="res://scenes/health_ui.tscn" id="8_tsgwn"]
+[ext_resource type="PackedScene" path="res://scenes/health_ui.tscn" id="8_tsgwn"]
 [ext_resource type="Texture2D" uid="uid://c5kiudto4icl0" path="res://assets/kenney_pixel-shmup/Ships/ship_0017.png" id="9_mvtib"]
 [ext_resource type="Texture2D" uid="uid://cs5ehkyiuk1qp" path="res://assets/kenney_pixel-shmup/Tiles/tile_0012.png" id="10_jwjtf"]
 [ext_resource type="PackedScene" uid="uid://cduyhi23tqsjn" path="res://nodes/scout_player.tscn" id="13_hou58"]
@@ -58,6 +59,28 @@ theme_override_font_sizes/font_size = 500
 text = "20"
 horizontal_alignment = 1
 
+[node name="Label" type="Label" parent="Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 245.0
+offset_top = 685.0
+offset_right = 778.0
+offset_bottom = 842.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.431373)
+theme_override_font_sizes/font_size = 56
+text = "Tap to aim
+Double tap to move"
+horizontal_alignment = 1
+script = ExtResource("4_3l7jp")
+
+[node name="Timer" type="Timer" parent="Background/Label"]
+
 [node name="AimIndicator" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0.792157)
@@ -87,3 +110,5 @@ offset_bottom = 45.0
 
 [node name="Player" parent="." instance=ExtResource("13_hou58")]
 position = Vector2(538, 1356)
+
+[connection signal="timeout" from="Background/Label/Timer" to="Background/Label" method="_on_timer_timeout"]

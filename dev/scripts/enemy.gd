@@ -2,6 +2,7 @@ extends CharacterBody2D
 '''
 Creator: Darius Rupsys
 '''
+const bolt = preload("res://assets/bolt.png")
 const EXPERIENCE_POINTS = preload("res://nodes/experience_points.tscn")
 var target: CharacterBody2D
 @onready var death_particles: GPUParticles2D = $DeathParticles
@@ -130,7 +131,7 @@ func death():
 		if child != death_particles:
 			if child != damage_particles:
 				child.queue_free()
-	var image = Image.load_from_file("res://assets/bolt.png")
+	var image = bolt.get_image()
 	image.resize(128, 128)
 	var texture = ImageTexture.create_from_image(image)
 	death_particles.texture = texture
