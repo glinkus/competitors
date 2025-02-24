@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://yrwnvbkto0op"]
+[gd_scene load_steps=4 format=3 uid="uid://yrwnvbkto0op"]
 
 [ext_resource type="PackedScene" uid="uid://dptvmddpjdtt8" path="res://scenes/start_button.tscn" id="1_1r4fr"]
 [ext_resource type="FontFile" uid="uid://compj47jyyuo6" path="res://Kanit/Kanit-ExtraBoldItalic.ttf" id="1_sr0g4"]
+[ext_resource type="Texture2D" uid="uid://brwdb5lf10aq7" path="res://assets/sky1.jpg" id="3_u5kb2"]
 
 [node name="StartMenu" type="Control"]
 layout_mode = 3
@@ -11,18 +12,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
+[node name="Sky1" type="Sprite2D" parent="."]
+position = Vector2(-237, 959)
+scale = Vector2(2, 2)
+texture = ExtResource("3_u5kb2")
+
+[node name="ColorRect" type="ColorRect" parent="Sky1"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 1.0
-offset_bottom = 1.0
+offset_left = 119.0
+offset_top = -479.0
+offset_right = 119.0
+offset_bottom = -479.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.439216, 0.839216, 1, 1)
+color = Color(0.945098, 0.756863, 0, 0)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -38,7 +43,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.839216, 0.439216, 1)
 theme_override_fonts/font = ExtResource("1_sr0g4")
 theme_override_font_sizes/font_size = 100
-text = "Sveiki atvykę į laiko žudiką!"
+text = "IndeGod"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

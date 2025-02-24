@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://0j8gg2c2pjh2"]
+[gd_scene load_steps=10 format=3 uid="uid://0j8gg2c2pjh2"]
 
 [ext_resource type="Script" path="res://scripts/power_up.gd" id="1_grefw"]
 [ext_resource type="FontFile" uid="uid://compj47jyyuo6" path="res://Kanit/Kanit-ExtraBoldItalic.ttf" id="2_fo1sd"]
@@ -7,12 +7,18 @@
 [ext_resource type="Resource" uid="uid://bed7gmygedosn" path="res://recoureses/upgrades/damage_upgrade_common.tres" id="3_srihl"]
 [ext_resource type="Resource" uid="uid://ch2eyievgf8rm" path="res://recoureses/upgrades/speed_upgrade_common.tres" id="4_30brb"]
 [ext_resource type="Resource" uid="uid://c46j51pjxdiku" path="res://recoureses/upgrades/fire_rate_upgrade_common.tres" id="5_bhv6a"]
+[ext_resource type="FontFile" uid="uid://bgo2jycsgh4bm" path="res://Kanit/Kanit-BoldItalic.ttf" id="8_h4nrd"]
+[ext_resource type="Texture2D" uid="uid://be3tmckjlq86k" path="res://assets/kenney_pixel-shmup/Ships/ship_0000.png" id="9_56a8s"]
 
 [node name="LevelUp" type="Panel" node_paths=PackedStringArray("button_array")]
 process_mode = 2
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_right = 1.014
+anchor_bottom = 0.998
+offset_left = -11.0
+offset_top = -11.0
+offset_right = 29.8799
+offset_bottom = 7.83997
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_grefw")
@@ -63,6 +69,16 @@ alignment = 1
 
 [node name="UpgradeItemButton" parent="VBoxContainer" instance=ExtResource("3_38b7x")]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("8_h4nrd")
+theme_override_font_sizes/font_size = 100
 
 [node name="UpgradeItemButton2" parent="VBoxContainer" instance=ExtResource("3_38b7x")]
 layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 73.0
+offset_top = 1143.0
+offset_right = 194.0
+offset_bottom = 1264.0
+texture = ExtResource("9_56a8s")
