@@ -4,7 +4,7 @@ class_name PlayerControler
 @onready var joystick = $"../Camera2D/Joystick"
 @onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var death_particles: GPUParticles2D = $DeathParticles
-
+@onready var health_ui = $"../HealthUI" 
 @export var stats : Stats
 
 @export var upgrade_array : Array[BaseUpgradeResource]
@@ -45,7 +45,6 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.move_toward(Vector2.ZERO, stats.deceleration * delta)
 
 	move_and_slide()
-
 	rotate_to_movement_direction(delta)
 
 	rotate_to_tapped_position(delta)
@@ -94,8 +93,11 @@ func apply_upgrade(upgrade_id: int):
 			print("firerate %s" % stats.fire_rate)
 
 func take_damage(damage):
+	health_ui.set_max(stats.health)
 	stats.health += damage
 	print(stats.health)
+	health_ui.current_health = stats.health
+	health_ui.update_health_bar()
 	if stats.health  <= 0:
 		DeathSoundPlayer.play()
 		await get_tree().create_timer(0.1).timeout
