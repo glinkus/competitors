@@ -6,5 +6,5 @@
 script = ExtResource("1_7c6sf")
 fire_rate_increase_amout = 0.05
 upgrade_id = 2
-upgrade_name = "Uzsitaisymas +2"
+upgrade_name = "Užsitaisymas +2"
 upgrade_decription = "Padidina šaudymo greitį"

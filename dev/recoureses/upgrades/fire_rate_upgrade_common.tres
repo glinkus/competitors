@@ -8,5 +8,5 @@ script = ExtResource("1_npa75")
 fire_rate_increase_amout = 0.08
 upgrade_id = 2
 upgrade_icon = ExtResource("2_nnix3")
-upgrade_name = "Uzsitaisymas +1"
+upgrade_name = "Užsitaisymas +1"
 upgrade_decription = "Padidina šaudymo greitį"

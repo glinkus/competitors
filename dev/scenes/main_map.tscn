@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://d0rrf0q4cntmi" path="res://nodes/spawner.tscn" id="4_c5jwc"]
 [ext_resource type="Texture2D" uid="uid://c486pmklvhjqr" path="res://assets/kenney_pixel-shmup/Ships/ship_0022.png" id="7_arcf2"]
 [ext_resource type="Texture2D" uid="uid://bwv4arl26cje7" path="res://assets/kenney_pixel-shmup/Ships/ship_0013.png" id="8_08yic"]
-[ext_resource type="PackedScene" path="res://scenes/health_ui.tscn" id="8_tsgwn"]
+[ext_resource type="PackedScene" uid="uid://cce7t3ytlwer8" path="res://scenes/health_ui.tscn" id="8_tsgwn"]
 [ext_resource type="Texture2D" uid="uid://c5kiudto4icl0" path="res://assets/kenney_pixel-shmup/Ships/ship_0017.png" id="9_mvtib"]
 [ext_resource type="Texture2D" uid="uid://cs5ehkyiuk1qp" path="res://assets/kenney_pixel-shmup/Tiles/tile_0012.png" id="10_jwjtf"]
 [ext_resource type="PackedScene" uid="uid://cduyhi23tqsjn" path="res://nodes/scout_player.tscn" id="13_hou58"]
@@ -74,8 +74,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.431373)
 theme_override_font_sizes/font_size = 56
-text = "Tap to aim
-Double tap to move"
+text = "Spustelėkite nusitaikyti
+Dukart palieskite, kad judėtumėte"
 horizontal_alignment = 1
 script = ExtResource("4_3l7jp")
 

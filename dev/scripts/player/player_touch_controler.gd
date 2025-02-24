@@ -4,6 +4,7 @@ class_name PlayerManager
 @onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var death_particles: GPUParticles2D = $DeathParticles
 @onready var engine_sound : AudioStreamPlayer  = $EngineSound
+@onready var health_ui = $"../HealthUI" 
 
 var stats_original : Stats
 @export var stats : Stats
@@ -122,7 +123,10 @@ func get_upgrade_array() -> Array[BaseUpgradeResource]:
 	return upgrade_array
 
 func take_damage(damage):
+	health_ui.set_max(stats.health)
 	stats.health += damage
+	health_ui.current_health = stats.health
+	health_ui.update_health_bar()
 	if stats.health  <= 0:
 		DeathSoundPlayer.play()
 		await get_tree().create_timer(0.1).timeout

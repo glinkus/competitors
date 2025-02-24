@@ -115,7 +115,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_r2syn")
 theme_override_font_sizes/font_size = 29
-text = "Didžiausi pasiekti rezultatai:"
+text = "Geriausi rezultatai:"
 horizontal_alignment = 1
 
 [node name="Leaderboard" type="Control" parent="."]
@@ -172,5 +172,17 @@ offset_right = 337.0
 offset_bottom = 305.93
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="RankLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="TimeLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
 
 [connection signal="pressed" from="ButtonToMainMenu" to="." method="_on_button_to_main_menu_pressed"]
