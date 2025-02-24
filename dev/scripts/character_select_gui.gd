@@ -22,7 +22,7 @@ func _on_char_item_button_3_pressed() -> void:
 
 func _on_char_item_button_2_pressed() -> void:
 		# Scout char swap
-	swap_player(SOlDIER_PLAYER)
+	swap_player(SCOUT_PLAYER)
 	Globals.resume_game()
 	Click.play()
 	queue_free()

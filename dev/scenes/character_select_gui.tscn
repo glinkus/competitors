@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://drm33hrl76bh8"]
+[gd_scene load_steps=8 format=3 uid="uid://d18yvqvuewmij"]
 
 [ext_resource type="Script" path="res://scripts/character_select_gui.gd" id="1_e13bu"]
 [ext_resource type="FontFile" uid="uid://compj47jyyuo6" path="res://Kanit/Kanit-ExtraBoldItalic.ttf" id="6_1tuqf"]
