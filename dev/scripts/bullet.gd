@@ -2,7 +2,7 @@ extends Area2D
 
 @export var speed = 100
 @export var damage = -1
-@onready var death_particles: GPUParticles2D = $DeathParticles
+@onready var damage_particles: GPUParticles2D = $DamageParticles
 var direction = Vector2.RIGHT  # Default direction (right)
 
 # Method to set the bullet's rotation and direction
@@ -30,9 +30,9 @@ func _on_body_entered(body: Node2D) -> void:
 		body.take_damage(damage)
 		var childs = get_children()
 		for child in childs:
-			if child != death_particles:
+			if child != damage_particles:
 				child.queue_free()
-		death_particles.emitting = true
-		death_particles.scale = Vector2(0.2, 0.2)
-		await death_particles.finished
+		damage_particles.emitting = true
+		damage_particles.scale = Vector2(0.2, 0.2)
+		await damage_particles.finished
 		queue_free()
