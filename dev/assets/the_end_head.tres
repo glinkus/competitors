@@ -1,7 +1,0 @@
-[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://b8k370bngmwhp"]
-
-[ext_resource type="FontFile" uid="uid://dsytjh8qlk6so" path="res://Kanit/Kanit-LightItalic.ttf" id="1_c2g8e"]
-
-[resource]
-font = ExtResource("1_c2g8e")
-font_size = 40

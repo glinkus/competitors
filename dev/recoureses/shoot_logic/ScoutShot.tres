@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="ScoutShootLogicResource" load_steps=2 format=3 uid="uid://d6o6lxgfv32f"]
-
-[ext_resource type="Script" path="res://recoureses/shoot_logic/scripts/scout_shoot_logic_resource.gd" id="1_4os1u"]
-
-[resource]
-script = ExtResource("1_4os1u")
-bullet_speed = 800.0
-rate_of_fire = 0.5

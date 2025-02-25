@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://6jwtvt4ntfjd"]
-
-[ext_resource type="AudioStream" uid="uid://c4cqc770q56s3" path="res://Sounds/short-dirt-impact_140bpm_A.wav" id="1_2tjih"]
-
-[node name="EnemyDeath" type="AudioStreamPlayer"]
-stream = ExtResource("1_2tjih")
