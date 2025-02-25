@@ -17,7 +17,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "modules.analysis",
-    "modules.demo",
     "core.uauth",
     "parea",
     "rarea",
