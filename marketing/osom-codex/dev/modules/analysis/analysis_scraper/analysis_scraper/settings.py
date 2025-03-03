@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = "analysis_scraper.spiders"
 #USER_AGENT = "analysis_scraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -62,9 +62,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "analysis_scraper.pipelines.AnalysisScraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "analysis_scraper.pipelines.SaveLinksPipeline": 300,
+}
 # ITEM_PIPELINES = {
 #     'analysis_scraper.analysis_scraper.pipelines.DjangoPipeline': 300,
 # }

@@ -1,8 +1,22 @@
 
 --- Scraped Data ---
 Title: Indeform - Interactive technologies for eCommerce, Cloud software solutions, Artificial intelligence for Business & Digital graphics
-URL: https://indeform.com
+URL: https://www.indeform.com/
 Headings: No headings found
 Text: Cloud solutions, AI, Computer Vision Software development and R&D Interactive Technologies for E-Commerce Virtual and Augmented Reality Animated 3D Visualizations Explainer Videos, 360 and VFX
+
+--- Extracted Categories ---
+Category: TECHNOLOGIES
+Link: http://www.indeformtechnologies.com
+Description: Cloud solutions, AI, Computer Vision
+------------
+Category: INTERACTIVE
+Link: http://www.indeforminteractive.com
+Description: Interactive Technologies for E-Commerce
+------------
+Category: DIGITAL
+Link: http://www.indeformdigital.com
+Description: Animated 3D Visualizations
+------------
 --- End of Scraped Data ---
 
