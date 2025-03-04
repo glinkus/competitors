@@ -13,6 +13,16 @@ SPIDER_MODULES = ["analysis_scraper.spiders"]
 NEWSPIDER_MODULE = "analysis_scraper.spiders"
 
 
+import sys
+import os
+import django
+
+DJANGO_PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../"))
+sys.path.append(DJANGO_PROJECT_PATH)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings")
+django.setup()
+
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "analysis_scraper (+http://www.yourdomain.com)"
 

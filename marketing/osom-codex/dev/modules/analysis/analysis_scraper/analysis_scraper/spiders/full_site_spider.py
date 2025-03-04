@@ -4,6 +4,7 @@ import scrapy
 import sys
 import os
 import django
+import asyncio
 from asgiref.sync import sync_to_async
 from twisted.internet.defer import inlineCallbacks, returnValue
 from twisted.internet import defer
@@ -39,9 +40,42 @@ class FullSiteSpider(scrapy.Spider):
     
     async def call_Fetch_unvisited_links(self):
         return await self.get_unvisited_links()
-
+    
     async def get_unvisited_links(self):
-        return [obj.url for obj in ScrapedURL.objects.all()]
+        return ScrapedURL.objects.all().values("url")
+
+
+    def start_requests(self):
+        self.unvisited_links = yield self.call_Fetch_unvisited_links()
+        print("Start Requests-------------------------------------------------------------")
+        print(self.unvisited_links)
+        self.logger.info(f"Unvisited: {self.unvisited_links}")
+
+        if self.unvisited_links:
+            for url in self.unvisited_links:
+                yield scrapy.Request(
+                    url,
+                    meta={
+                    "playwright": True,
+                    "playwright_include_page": True,
+                    "handle_httpstatus_all": True,
+                    },
+                    callback=self.parse,
+                    dont_filter=True,
+                    )
+        else:
+            yield scrapy.Request(
+                url=self.start_urls[0],
+                meta={
+                    "playwright": True,
+                    "playwright_include_page": True,
+                    "handle_httpstatus_all": True,
+                },
+                callback=self.parse,
+                dont_filter=True,
+            )
+
+        return None
 
     # def start_requests(self):
     #     seed_url = self.start_urls[0]
@@ -56,8 +90,6 @@ class FullSiteSpider(scrapy.Spider):
     #         callback=self.parse,
     #         dont_filter=True,
     #     )
-
-
 
     # @inlineCallbacks
     # def start_requests(self):
@@ -103,6 +135,6 @@ class FullSiteSpider(scrapy.Spider):
             absolute_link = urljoin(url, link)
 
             if absolute_link.startswith(self.start_urls[0]) and absolute_link not in self.visited_links:
-                self.unvisited_links.add(absolute_link)
+                self.unvisited_links.append(absolute_link)
                 print(f"Added new page to local storage: {absolute_link}")
                 yield {"url": absolute_link}
