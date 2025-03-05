@@ -1,12 +1,10 @@
 from urllib.parse import urljoin
-
 import scrapy
-import asyncio
+from twisted.internet import threads
+from scrapy import signals
 from modules.analysis.models import ScrapedURL
 from competitors_scraper.items import ScrapedUrlItem
 from django.conf import settings
-from asgiref.sync import sync_to_async
-from asgiref.sync import async_to_sync
 
 class FullSiteSpider(scrapy.Spider):
     name = "full_site_spider"
@@ -21,61 +19,73 @@ class FullSiteSpider(scrapy.Spider):
         },
         "TWISTED_REACTOR": "twisted.internet.asyncioreactor.AsyncioSelectorReactor",
         "EXTENSIONS": {
-            'scrapy.extensions.telnet.TelnetConsole': None,
+            "scrapy.extensions.telnet.TelnetConsole": None,
         },
         "DUPEFILTER_CLASS": "scrapy.dupefilters.BaseDupeFilter",
     }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.unvisited_links = set()
         self.visited_links = set()
         self.urls = set()
 
-    @sync_to_async
-    def fetch_urls(self):
-        return ScrapedURL.objects.all().values("url")
-    
-    
-    async def call_fetch_urls(self):
-        # This is the synchronous function that calls the asynchronous function
-        self.urls = await self.fetch_urls()
-    @async_to_sync
-    async def call_url(self):
-        return await self.call_fetch_urls
-    
+    @classmethod
+    def from_crawler(cls, crawler, *args, **kwargs):
+        spider = super().from_crawler(crawler, *args, **kwargs)
+        crawler.signals.connect(spider.spider_opened, signal=signals.spider_opened)
+        return spider
+
+    def spider_opened(self):
+        # Run the Django ORM call in a separate thread.
+        def fetch_urls():
+            urls = list(ScrapedURL.objects.all().values_list("url", flat=True))
+            self.urls = urls
+            self.logger.info("Urls from database: %s", len(urls))
+            print(self.urls)
+            print("Scrapy is using database:", settings.DATABASES['default']['NAME'])
+        threads.deferToThread(fetch_urls).addCallback(lambda _: self.schedule_initial_request())
+
+    def schedule_initial_request(self):
+        for url in self.urls:         
+            req = scrapy.Request(
+                url,
+                meta={
+                    "playwright": True,
+                    "playwright_include_page": True,
+                    "handle_httpstatus_all": True,
+                },
+                callback=self.parse,
+                dont_filter=True,
+            )
+            # Enqueue the request directly via the scheduler
+            self.crawler.engine.slot.scheduler.enqueue_request(req)
+        # req = scrapy.Request(
+        #     self.start_urls[0],
+        #     meta={
+        #         "playwright": True,
+        #         "playwright_include_page": True,
+        #         "handle_httpstatus_all": True,
+        #     },
+        #     callback=self.parse,
+        #     dont_filter=True,
+        # )
+        # # Enqueue the request directly via the scheduler
+        # self.crawler.engine.slot.scheduler.enqueue_request(req)
+
     def start_requests(self):
-        #self.call_fetch_urls()
-        #print(f"Urls from database: {urls}")
-        #self.logger.info(f"Using seed URL: {seed_url}")
-        #urls = ScrapedURL.objects.all().values("url")
-        self.call_url()
-        print(f"Urls from database: {len(self.urls)}")
-        print("Scrapy is using database:", settings.DATABASES['default']['NAME'])
-        yield scrapy.Request(
-            self.start_urls[0],
-            meta={
-                "playwright": True,
-                "playwright_include_page": True,
-                "handle_httpstatus_all": True,
-            },
-            callback=self.parse,
-            dont_filter=True,
-       )
+        # Return an empty iterable since we schedule the initial request in spider_opened.
+        return iter([])
 
     def parse(self, response):
-        print("Parse-------------------------------------------------------------")
+        self.logger.info("Parse ----------------------------------------------------")
         url = response.url
-        print(f"\n--- Crawled URL ---\n{url}\n")
-
-        #self.visited_links.add(url)
+        self.logger.info(f"--- Crawled URL --- {url}")
 
         links = response.css("a::attr(href)").getall()
         for link in links:
             absolute_link = urljoin(url, link)
-            print(f"Absolute link: {absolute_link}")
+            self.logger.debug(f"Absolute link: {absolute_link}")
             if absolute_link.startswith(self.start_urls[0]) and absolute_link not in self.visited_links:
-                #self.unvisited_links.append(absolute_link)
                 print(f"Added new page to local storage: {absolute_link}")
                 item = ScrapedUrlItem()
                 item["url"] = absolute_link

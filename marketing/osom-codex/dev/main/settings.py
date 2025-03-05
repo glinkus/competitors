@@ -55,7 +55,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "main.wsgi.application"
 ASGI_APPLICATION = "main.asgi.application"
 
-os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+#os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 # Database.
 
 BASE_DIRECT = os.path.dirname(os.path.abspath(__file__))
