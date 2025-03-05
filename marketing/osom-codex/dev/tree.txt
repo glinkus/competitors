@@ -53,6 +53,20 @@
 │   │   │   ├── analysis_scraper
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── items.py
+├── modules
+│   ├── analysis
+│   │   ├── admin.py
+│   │   ├── results.txt
+│   │   ├── scraper.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+├── |── analysis_scraper
+│   │   │   ├── analysis_scraper
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── items.py
+│   │   │   │   ├── ir t.t
+
 │   │   │   │   ├── middlewares.py
 │   │   │   │   ├── pipelines.py
 │   │   │   │   ├── __pycache__

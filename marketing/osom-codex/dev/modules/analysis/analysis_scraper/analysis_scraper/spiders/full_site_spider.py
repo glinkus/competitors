@@ -10,9 +10,9 @@ from twisted.internet.defer import inlineCallbacks, returnValue
 from twisted.internet import defer
 
 DJANGO_PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../"))
-sys.path.append(DJANGO_PROJECT_PATH)
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings")
-django.setup()
+    sys.path.append(DJANGO_PROJECT_PATH)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings")
+    django.setup()
 from modules.analysis.models import ScrapedURL
 
 class FullSiteSpider(scrapy.Spider):

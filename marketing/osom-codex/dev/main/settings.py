@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "modules.analysis",
+    "modules.competitors_scraper",
     "core.uauth",
     "parea",
     "rarea",
@@ -54,13 +55,17 @@ TEMPLATES = [
 WSGI_APPLICATION = "main.wsgi.application"
 ASGI_APPLICATION = "main.asgi.application"
 
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 # Database.
+
+BASE_DIRECT = os.path.dirname(os.path.abspath(__file__))
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "osomcodex.db",
+        "NAME": os.path.join(BASE_DIR, "osomcodex.db"),
     }
 }
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 

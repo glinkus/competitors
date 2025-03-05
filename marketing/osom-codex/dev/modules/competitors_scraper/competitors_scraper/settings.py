@@ -12,12 +12,20 @@ BOT_NAME = "competitors_scraper"
 SPIDER_MODULES = ["competitors_scraper.spiders"]
 NEWSPIDER_MODULE = "competitors_scraper.spiders"
 
+import sys
+import os
+import django
+
+DJANGO_PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
+sys.path.append(DJANGO_PROJECT_PATH)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings")
+django.setup()
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "competitors_scraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -65,6 +73,11 @@ ROBOTSTXT_OBEY = True
 #ITEM_PIPELINES = {
 #    "competitors_scraper.pipelines.CompetitorsScraperPipeline": 300,
 #}
+
+ITEM_PIPELINES = {
+   "competitors_scraper.pipelines.ScrapedUrlPipeline": 300,
+}
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
