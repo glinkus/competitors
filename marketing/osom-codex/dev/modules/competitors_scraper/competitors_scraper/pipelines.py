@@ -6,7 +6,7 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-from modules.analysis.models import ScrapedURL
+from modules.analysis.models import Page
 import logging
 from asgiref.sync import sync_to_async
 # class SaveLinksPipeline:
@@ -23,7 +23,7 @@ from asgiref.sync import sync_to_async
 
 #         return item
 
-class ScrapedUrlPipeline:
+class PagePipeline:
     @sync_to_async
     def process_item(self, item, spider):
         try:

@@ -4,11 +4,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from uauth.models import *
+from core.uauth.models import *
 
 # Define a view function for the home page
-def home(request):
-    return render(request, 'home.html')
+
 
 # Define a view function for the login page
 def login_page(request):
@@ -33,10 +32,11 @@ def login_page(request):
         else:
             # Log in the user and redirect to the home page upon successful login
             login(request, user)
-            return redirect('/home/')
+            # Redirect to “parea:home” which renders parea/index.html
+            return redirect('rarea:index')
     
     # Render the login page template (GET request)
-    return render(request, 'login.html')
+    return render(request, 'core/uauth/login.html')
 
 # Define a view function for the registration page
 def register_page(request):
@@ -71,4 +71,7 @@ def register_page(request):
         return redirect('/register/')
     
     # Render the registration page template (GET request)
-    return render(request, 'register.html')
+    return render(request, 'core/uauth/register.html')
+
+def rarea_index(request):
+    return redirect('rarea:index')

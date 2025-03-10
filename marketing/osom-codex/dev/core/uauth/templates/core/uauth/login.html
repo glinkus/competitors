@@ -1,22 +1,61 @@
-<form class="col1" method="post" name="login_form">
-    {% csrf_token %}
-    <h2> Login </h2>
-    <p>
-        <label for="{{ form.email.id_for_label }}">{{ form.username.label }}</label>
-        {{ form.username }}
-        {% if form.username.errors %}<span class="error">{{ form.username.errors }}</span>{% endif %}
-    </p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Login Form</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <form class="col-6 mx-auto card p-3 shadow-lg" method="post" name="login_form">
+            {% csrf_token %}
+            <h3 class="text-center">Login</h3>
+            <hr>
 
-    <p>
-        <label for="{{ form.pwd.id_for_label }}">{{ form.password.label }}</label>
-        {{ form.password }}
-        {% if form.password.errors %}<span class="error">{{ form.password.errors }}</span>{% endif %}
-    </p>
+            {% if messages %}
+            <div class="alert alert-primary" role="alert">
+                {% for message in messages %}
+                  {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
 
-    {{ form.non_field_errors }}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  class="form-control"
+                  placeholder="Enter username"
+                  required
+                />
+            </div>
 
-    <p class="tright">
-        <input type="submit" name="login" value="Login"/>
-    </p>
-    <a href="{% url 'core.uauth:register' %}">Register</a>
-</form>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  class="form-control"
+                  placeholder="Enter password"
+                  required
+                />
+            </div>
+
+            <p>
+              <input type="submit" class="btn btn-primary" name="login" value="Login"/>
+            </p>
+            <p>
+              Don't have an account?
+              <a href="{% url 'core.uauth:register' %}">Register</a>
+            </p>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+.
+├── admin.py
+├── apps.py
+├── __init__.py
+├── js
+│   └── main.js
+├── migrations
+│   ├── 0001_initial.py
+│   ├── __init__.py
+│   └── __pycache__
+│       ├── 0001_initial.cpython-311.pyc
+│       ├── 0001_initial.cpython-312.pyc
+│       ├── 0001_initial.cpython-313.pyc
+│       ├── __init__.cpython-311.pyc
+│       ├── __init__.cpython-312.pyc
+│       └── __init__.cpython-313.pyc
+├── models.py
+├── __pycache__
+│   ├── admin.cpython-311.pyc
+│   ├── admin.cpython-312.pyc
+│   ├── admin.cpython-313.pyc
+│   ├── apps.cpython-311.pyc
+│   ├── apps.cpython-312.pyc
+│   ├── apps.cpython-313.pyc
+│   ├── __init__.cpython-311.pyc
+│   ├── __init__.cpython-312.pyc
+│   ├── __init__.cpython-313.pyc
+│   ├── models.cpython-311.pyc
+│   ├── models.cpython-312.pyc
+│   ├── models.cpython-313.pyc
+│   ├── urls.cpython-311.pyc
+│   ├── urls.cpython-312.pyc
+│   └── urls.cpython-313.pyc
+├── struct.txt
+├── templates
+│   └── modules
+│       └── demo
+│           ├── cad.html
+│           ├── data.html
+│           └── menu.html
+├── tests.py
+├── urls.py
+└── views
+    ├── demo_cad_view.py
+    ├── demo_data_view.py
+    ├── __init__.py
+    └── __pycache__
+        ├── demo_cad_view.cpython-311.pyc
+        ├── demo_cad_view.cpython-312.pyc
+        ├── demo_cad_view.cpython-313.pyc
+        ├── demo_data_view.cpython-311.pyc
+        ├── demo_data_view.cpython-312.pyc
+        ├── demo_data_view.cpython-313.pyc
+        ├── __init__.cpython-311.pyc
+        ├── __init__.cpython-312.pyc
+        └── __init__.cpython-313.pyc
+
+10 directories, 46 files

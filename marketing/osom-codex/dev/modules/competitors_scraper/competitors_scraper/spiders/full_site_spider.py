@@ -81,7 +81,8 @@ class FullSiteSpider(scrapy.Spider):
         url = response.url
         self.logger.info(f"--- Crawled URL --- {url}")
 
-        links = response.css("a::attr(href)").getall()
+        links = response.cs
+        "TWISTED_REACTOR": "twisted.internet.asyncioreactor.AsyncioSelectorReactor",s("a::attr(href)").getall()
         for link in links:
             absolute_link = urljoin(url, link)
             self.logger.debug(f"Absolute link: {absolute_link}")

@@ -1,0 +1,9 @@
+{% extends 'rarea/layout.html' %}
+{% load i18n %} 
+{% block content %}
+    <form action="/analyse" method="post">
+        <label for="url">Enter URL:</label>
+        <input type="text" id="url" name="url" required>
+        <button type="submit">Analyse</button>
+    </form>
+{% endblock %}

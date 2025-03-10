@@ -4,7 +4,8 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from modules.analysis.models import ScrapedURL
+from modules.analysis.models import Website
+from modules.analysis.models import Page
 from scrapy_djangoitem import DjangoItem
 
 class CompetitorsScraperItem(scrapy.Item):
@@ -12,5 +13,8 @@ class CompetitorsScraperItem(scrapy.Item):
     # name = scrapy.Field()
     pass
 
-class ScrapedUrlItem(DjangoItem):
-    django_model = ScrapedURL
+class WebsiteItem(DjangoItem):
+    django_model = Website
+
+class PageItem(DjangoItem):
+    django_model = Page

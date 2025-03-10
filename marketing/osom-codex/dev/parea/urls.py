@@ -4,13 +4,10 @@ from core.uauth.views import views as uauth_views
 
 app_name = "parea"
 
-# urlpatterns = [
-#     path(
-#         "",
-#         auth_views.LoginView.as_view(redirect_authenticated_user=True, template_name="parea/index.html"),
-#         name="index",
-#     ),
-# ]
 urlpatterns = [
     path("", uauth_views.login_page, name="index"),
+    
+    path("home/", uauth_views.rarea_index, name="home"),
+    
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 ]

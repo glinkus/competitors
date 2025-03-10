@@ -11,7 +11,7 @@ urlpatterns = [
     path("", include("parea.urls", namespace="parea")),
     path("rarea/", include("rarea.urls", namespace="rarea")),
     # Core.
-    path("auth/", include("core.uauth.urls", namespace="core/uauth")),
+    path("", include("core.uauth.urls", namespace="core/uauth")),
     # Modules.
     path("demo/", include("modules.demo.urls", namespace="modules/demo")),
     path("analysis/", include("modules.analysis.urls", namespace="modules/analysis")),
