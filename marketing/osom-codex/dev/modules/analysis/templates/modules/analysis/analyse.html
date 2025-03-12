@@ -1,9 +1,10 @@
 {% extends 'rarea/layout.html' %}
 {% load i18n %} 
 {% block content %}
-    <form action="/analyse" method="post">
+    <form action="/analysis/analyse" method="post">
+        {% csrf_token %}
         <label for="url">Enter URL:</label>
-        <input type="text" id="url" name="url" required>
-        <button type="submit">Analyse</button>
+        <input type="url" id="url" name="url" placeholder="https://example.com" required>
+        <button type="submit">Submit</button>
     </form>
 {% endblock %}

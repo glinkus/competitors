@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -135,3 +136,8 @@ LOGGING = {
         },
     },
 }
+
+#Scraper settings
+SCRAPY_PROJECT_PATH = os.path.join(BASE_DIR, 'modules', 'competitors_scraper')
+sys.path.append(SCRAPY_PROJECT_PATH)
+os.environ.setdefault('SCRAPY_SETTINGS_MODULE', 'competitors_scraper.settings')

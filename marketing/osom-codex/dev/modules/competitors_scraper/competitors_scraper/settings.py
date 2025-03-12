@@ -16,10 +16,13 @@ import sys
 import os
 import django
 
+os.environ["SCRAPY_IGNORE_SIGNALS"] = "True"
 DJANGO_PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
 sys.path.append(DJANGO_PROJECT_PATH)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings")
 django.setup()
+
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "competitors_scraper (+http://www.yourdomain.com)"
@@ -75,7 +78,7 @@ ROBOTSTXT_OBEY = False
 #}
 
 ITEM_PIPELINES = {
-   "competitors_scraper.pipelines.ScrapedUrlPipeline": 300,
+   "competitors_scraper.pipelines.PagePipeline": 300,
 }
 
 

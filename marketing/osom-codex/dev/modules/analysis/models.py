@@ -11,7 +11,7 @@ class Website(models.Model):
 
 class Page(models.Model):
     website = models.ForeignKey(Website, on_delete=models.CASCADE, related_name='pages')
-    url = models.URLField(max_length=500)
+    url = models.URLField(max_length=500, unique=True)
     visited = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)
     page_title = models.CharField(max_length=255)

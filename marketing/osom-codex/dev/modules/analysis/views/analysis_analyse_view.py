@@ -7,6 +7,8 @@ from django.utils.decorators import method_decorator
 from modules.analysis.models import Website, Page
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
+from urllib.parse import urlparse
+from django.core.validators import URLValidator
 
 class AnalyseView(TemplateView):
     template_name = "modules/analysis/analyse.html"
@@ -16,34 +18,35 @@ class AnalyseView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        url = request.POST.get('url')
-        if not url:
-            return redirect('/analyse')  # or wherever you want to redirect
+        url = request.POST.get("url")
+        print("Entered URL: ", url)
 
-        # 1. Retrieve or create a Website entry
+        validate = URLValidator()
+        try:
+            validate(url)
+        except:
+            # Redirect or show an error message if invalid URL
+            return redirect("/analysis/analyse?error=invalid_url")
+        
         website, created = Website.objects.get_or_create(start_url=url)
-        # 2. Update last_visited if Website already exists
         website.last_visited = timezone.now().date()
         website.save()
 
-        # 3. Mark all existing Page entries for this Website as unvisited
         Page.objects.filter(website=website).update(visited=False)
 
-        # 4. Create a new Page entry
         page = Page.objects.create(
             website=website,
             url=url,
             visited=False,
-            page_title="",  # or something relevant, if known
+            page_title="",
         )
 
         # 5. Start the Scrapy crawler
         process = CrawlerProcess(get_project_settings())
-        process.crawl("full_site_spider")  # spider name in full_site_spider.py
+        process.crawl("full_site_spider", website_id=website.id, website_name=website.start_url)
         process.start(stop_after_crawl=False)
 
-        return redirect('/analyse')  # redirect after triggering the crawl
+        return redirect("/analysis/analyse")  # redirect after triggering the crawl
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-
