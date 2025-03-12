@@ -55,7 +55,8 @@ class FullSiteSpider(scrapy.Spider):
         threads.deferToThread(fetch_urls).addCallback(lambda _: self.schedule_initial_request())
 
     def schedule_initial_request(self):
-        for url in self.urls:         
+        for url in self.urls:
+            print(f"Initial request: {url}")         
             if(url not in self.visited_links):
                 req = scrapy.Request(
                     url,
@@ -67,23 +68,10 @@ class FullSiteSpider(scrapy.Spider):
                     callback=self.parse,
                     dont_filter=True,
                 )
-                self.visited_links.add(url)
                 # Enqueue the request directly via the scheduler
                 self.crawler.engine.slot.scheduler.enqueue_request(req)
             else:
                 self.urls.remove(url)
-        # req = scrapy.Request(
-        #     self.start_urls[0],
-        #     meta={
-        #         "playwright": True,
-        #         "playwright_include_page": True,
-        #         "handle_httpstatus_all": True,
-        #     },
-        #     callback=self.parse,
-        #     dont_filter=True,
-        # )
-        # # Enqueue the request directly via the scheduler
-        # self.crawler.engine.slot.scheduler.enqueue_request(req)
 
     def start_requests(self):
         # Return an empty iterable since we schedule the initial request in spider_opened.
@@ -100,9 +88,14 @@ class FullSiteSpider(scrapy.Spider):
 
     def parse(self, response):
         url = response.url
+        with open("/home/gustas/indeform_praktika/marketing/osom-codex/dev/modules/competitors_scraper/competitors_scraper/spiders/log.txt", "a") as log_file:
+            log_file.write(f"--- Crawling URL --- {url}\n")
+        print(f"--- Crawling URL --- {url}")
         if url in self.visited_links:
             return
         self.logger.info(f"--- Crawled URL --- {url}")
+        with open("/home/gustas/indeform_praktika/marketing/osom-codex/dev/modules/competitors_scraper/competitors_scraper/spiders/log.txt", "a") as log_file:
+            log_file.write(f"--- Crawled URL --- {url}\n")
         print(f"--- Crawled URL --- {url}")
         self.visited_links.add(url)
         d = threads.deferToThread(self.get_page_sync, self.website_id, url)
