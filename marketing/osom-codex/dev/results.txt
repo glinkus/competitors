@@ -1,0 +1,105 @@
+808|https://www.indeform.com|0|2025-03-18|||3
+809|https://www.indeform.com/news|1|2025-03-18|Indeform - Interactive technologies for eCommerce, Cloud software solutions, Artificial intelligence for Business & Digital graphics|2025-03-17|3
+810|https://www.indeform.com/company|1|2025-03-18|Indeform - Interactive technologies for eCommerce, Cloud software solutions, Artificial intelligence for Business & Digital graphics|2025-03-17|3
+811|https://www.indeform.com/contact-us|1|2025-03-18|Indeform - Interactive technologies for eCommerce, Cloud software solutions, Artificial intelligence for Business & Digital graphics|2025-03-17|3
+812|https://www.indeformtechnologies.com/|1|2025-03-18|Advanced Custom Software Development Services - Cloud computing, SaaS systems, Data analytics and visualization, Artificial Intelligence and Cognitive Computing for Business, Computer Vision and R&amp;D - Indeform Technologies|2025-03-17|3
+813|https://www.indeforminteractive.com/|1|2025-03-18|Interactive Solutions for E-Commerce, Product customizers, 3D Web Visualizations, Virtual Reality (VR), Augmented Reality (AR), Interactive 360 expositions - Indeform Interactive|2025-03-17|3
+814|https://www.indeformdigital.com/|1|2025-03-18|Animated 3D, 360, Augmented and Virtual Reality Product Visualizations and Video Explainers, Post-production and VFX - Indeform Digital|2025-03-17|3
+815|https://www.indeformdigital.com/case-studies|1|2025-03-18|Animated 3D/2D product visualizations, Augmented Reality ready videos, Virtual Reality ready videos, Video explainers, Post-production, VFX - Indeform Digital|2025-03-17|3
+816|https://www.indeformdigital.com/insights|1|2025-03-18|SITE_SEO_title|2025-03-17|3
+817|https://www.indeformdigital.com/company|1|2025-03-18|Experts in Animated 3D product visualizations, video explainers, 360 / AR / VR ready videos and VFX - Indeform Digital|2025-03-17|3
+818|https://www.indeformdigital.com/contact-us|1|2025-03-18||2025-03-17|3
+819|https://www.indeformdigital.com/article/system-installation-explainer-video|1|2025-03-18|SYSTEMAIR 3D PRODUCT EXPLAINER VIDEO|2025-03-17|3
+820|https://www.indeformdigital.com/article/rainwater-system-installation-video|1|2025-03-18|Animated Rainwater System Installation Video | Indeform|2025-03-17|3
+821|https://www.indeformdigital.com/article/medical-visualizations-of-kidneys|1|2025-03-18|Medical Visualizations | Indeform|2025-03-17|3
+822|https://www.indeformdigital.com/article/medical-teeth-image-visualization|1|2025-03-18|Medical Teeth Image Visualization|2025-03-17|3
+823|https://www.indeformdigital.com/privacy-policy|1|2025-03-18||2025-03-17|3
+824|https://www.indeform.com/privacy-policy|1|2025-03-18|Indeform - Interactive technologies for eCommerce, Cloud software solutions, Artificial intelligence for Business & Digital graphics|2025-03-17|3
+825|https://www.indeformtechnologies.com/case-studies|1|2025-03-18|Cloud computing projects, SaaS systems, Energy Data analytics and visualization projects, Computer Vision, Artificial Intelligence and Cognitive Computing solutions for Business, Health care and Industries  - Indeform Technologies|2025-03-17|3
+826|https://www.indeformtechnologies.com/eu-projects|1|2025-03-18||2025-03-17|3
+827|https://www.indeformtechnologies.com/insights|1|2025-03-18|SITE_SEO_title|2025-03-17|3
+828|https://www.indeformtechnologies.com/company|1|2025-03-18|SaaS systems and Cloud computing developers, Data analytics and visualization developers, Computer Vision, Artificial Intelligence and Cognitive Computing Research and Development for Energetics, Business, Health care and Industries - Indeform Technologies|2025-03-17|3
+829|https://www.indeformtechnologies.com/contact-us|1|2025-03-18||2025-03-17|3
+830|https://www.indeformtechnologies.com/article/energy-grid-data-visualization-monitoring-and-control|1|2025-03-18|Energy Grid Data Visualization, Monitoring and Control|2025-03-17|3
+831|https://www.indeformtechnologies.com/article/saas-platorm-medical-implants-designer|1|2025-03-18|3D visual SaaS platform for medical implants | Indeform|2025-03-17|3
+832|https://www.indeformtechnologies.com/article/3d-heart-surgery-simulator|1|2025-03-18|Interactive 3D heart surgery simulator case study | Indeform|2025-03-17|3
+833|https://www.indeformtechnologies.com/privacy-policy|1|2025-03-18||2025-03-17|3
+834|https://www.indeforminteractive.com/article/XR-technology-advantages-and-future-perspectives-in-museums|1|2025-03-18|XR technology definition,advantages and future perspectives in museums|2025-03-17|3
+835|https://www.indeforminteractive.com/article/VR-AR-and-MR-technologies-in-museums|1|2025-03-18|VR, AR, and MR technologies in museums|2025-03-17|3
+836|https://www.indeforminteractive.com/article/Innovative-teaching-methods-in-the-field-of-education|1|2025-03-18|Explore the influence of innovative teaching methods on education|2025-03-17|3
+837|https://www.indeforminteractive.com/article/the-power-of-mentoring-indeform-interactive-project-manager-insights|1|2025-03-18|Women Go Tech mentoring helps increase women's inclusion in IT|2025-03-17|3
+838|https://www.indeformtechnologies.com/article/enhancing-team-building-tools-and-solutions-whilst-benefiting-your-business-efficiency|1|2025-03-18|Make your business efficient with team-building tools and solutions|2025-03-17|3
+839|https://www.indeformtechnologies.com/article/how-is-your-workplace-automation-BPA-benefitting-your-business|1|2025-03-18|Business process automation software benefits|2025-03-17|3
+840|https://www.indeformtechnologies.com/article/product-customization|1|2025-03-18|Product customization|2025-03-17|3
+841|https://www.indeforminteractive.com/article/interactive-educational-game|1|2025-03-18|An Interactive game “Ethnographic Treasury” for Raseiniai Museum|2025-03-17|3
+842|https://www.indeforminteractive.com/article/interactive-castle-ghost|1|2025-03-18|An Interactive Animated Castle Ghost | Indeform|2025-03-17|3
+843|https://www.indeforminteractive.com/article/an-interactive-santa-claus-show|1|2025-03-18|An Interactive Santa Claus Show | Indeform|2025-03-17|3
+844|https://www.indeformtechnologies.com/article/easycad-3d-cad-display-designer|1|2025-03-18|EASYCAD - a 3D CAD display designer | Indeform|2025-03-17|3
+845|https://www.indeforminteractive.com/case-studies|1|2025-03-18|E-Commerce products customizers, Interactive 3D Web Visualizations, Augmented Reality projects, Virtual Reality projects, 360 experiences, Interactive Media shows - Indeform Interactive|2025-03-17|3
+846|https://www.indeforminteractive.com/eu-projects|1|2025-03-18||2025-03-17|3
+847|https://www.indeforminteractive.com/insights|1|2025-03-18|SITE_SEO_title|2025-03-17|3
+848|https://www.indeforminteractive.com/company|1|2025-03-18|Experts in E-Commerce 3D Web Visualizations, Augmented and Virtual Reality, Interactive 360 projects - Indeform Interactive|2025-03-17|3
+849|https://www.indeforminteractive.com/contact-us|1|2025-03-18||2025-03-17|3
+850|https://www.indeforminteractive.com/article/ezerunas-an-interactive-touch-screen-game|1|2025-03-18|Ezerunas - an Interactive Touch-Screen Game | Indeform|2025-03-17|3
+851|https://www.indeforminteractive.com/article/paezeriu-manor-museum-interactive-tour-app|1|2025-03-18|Paezeriu Manor Museum Interactive Tour app | Indeform|2025-03-17|3
+852|https://www.indeforminteractive.com/privacy-policy|1|2025-03-18||2025-03-17|3
+853|https://www.indeformdigital.com/article/vilnius-castle-vfx|1|2025-03-18|Vilnius Castle VFX | Indeform|2025-03-17|3
+854|https://www.indeformdigital.com/article/3d-house-visualization|1|2025-03-18|3D House Visualization | Indeform|2025-03-17|3
+855|https://www.indeformdigital.com/article/new-holland-t5070-in-3d-visual-presentation|1|2025-03-18|New Holland T5070 in 3D Visual Presentation | Indeform|2025-03-17|3
+856|https://www.indeformdigital.com/article/3D-product-visualizations-for-more-efficient-marketing-and-sales|1|2025-03-18|Professional 3D product visualizations for packaging company Bigso Box|2025-03-17|3
+857|https://www.indeformdigital.com/article/3D-product-visualizations-for-SALDA|1|2025-03-18|3D product visualizations for ventilation system company SALDA|2025-03-17|3
+858|https://www.indeformdigital.com/article/automated-explanatory-user-interface-device-management-menu|1|2025-03-18|Automated device control menu with explanatory animations|2025-03-17|3
+859|https://www.indeformdigital.com/article/high-quality-explanatory-animations-video-instructions-and-3d-product-visualizations|1|2025-03-18|High quality explanatory animations and 3D visualizations|2025-03-17|3
+860|https://www.indeformdigital.com/article/crow-and-cheese|1|2025-03-18|Animated fairy tale "The Crow and Cheese"|2025-03-17|3
+861|https://www.indeformdigital.com/article/here-came-the-timid-deer|1|2025-03-18|"Here Came the Timid Deer" Fairy Tale | Indeform|2025-03-17|3
+862|https://www.indeformdigital.com/article/the-sun-and-the-moon|1|2025-03-18|Animated Fairy Tale "The Sun and The Moon"|2025-03-17|3
+863|https://www.indeformdigital.com/article/the-sky-is-falling|1|2025-03-18|Animated fairy tale "The sky is falling" | Indeform|2025-03-17|3
+864|https://www.indeformdigital.com/article/tindi-rindi-riuska|1|2025-03-18|Animated fairy tale "Tindi Rindi Riuska" | Indeform|2025-03-17|3
+865|https://www.indeformdigital.com/article/hey-little-crow|1|2025-03-18|Nursery rhyme "Hey, Little Crow" | Indeform|2025-03-17|3
+866|https://www.indeformdigital.com/article/gosling-swam-across-the-pond|1|2025-03-18|"Gosling Swam Across the Pond" Nursery Rhme | Indeform|2025-03-17|3
+867|https://www.indeformdigital.com/article/i-had-a-rooster|1|2025-03-18|"I had a Rooster" Nursery Rhyme | Indeforn|2025-03-17|3
+868|https://www.indeformdigital.com/article/the-sparrow-banquet|1|2025-03-18|"The Sparrow Banquet" Nursery Rhyme | Indeform|2025-03-17|3
+869|https://www.indeformdigital.com/article/tili-tili-duda|1|2025-03-18|"Tili Tili Duda" Fairy Tale | Indeform|2025-03-17|3
+870|https://www.indeformdigital.com/article/two-roosters|1|2025-03-18|"Two Roosters" Nursery Rhyme | Indeform|2025-03-17|3
+871|https://www.indeformdigital.com/article/what-a-horse|1|2025-03-18|"What a Horse" Nursery Rhyme | Indeform|2025-03-17|3
+872|https://www.indeformdigital.com/article/sparrow-sparrow|1|2025-03-18|"Sparrow! Sparrow!" Nursery Rhyme | Indeform|2025-03-17|3
+873|https://www.indeformdigital.com/article/3D-visualizations-explainer-animation-animated-video-commercial|1|2025-03-18|3D visualizations, explainer animations and animated video commercials|2025-03-17|3
+874|https://www.indeformtechnologies.com/article/3D-computer-aided-design-software-and-e-commerce-system|1|2025-03-18|3D CAD, order management and e-commerce system|2025-03-17|3
+875|https://www.indeformtechnologies.com/article/mobile-app-development-for-innovative-water-ionization-tap|1|2025-03-18|Mobile app development|2025-03-17|3
+876|https://www.indeformtechnologies.com/article/cloud-based-brain-computer-interface-platform-innobrain|1|2025-03-18|Saas Brain-computer interface platform InnoBrain|2025-03-17|3
+877|https://www.indeformtechnologies.com/article/fashion-ecommerce-platform|1|2025-03-18|Virtual Outfits - Fashion E-commerce Platform|2025-03-17|3
+878|https://www.indeformtechnologies.com/article/3d-jewelry-designer|1|2025-03-18|An Interactive 3D Jewelry Designer | Indeform|2025-03-17|3
+879|https://www.indeformtechnologies.com/article/cloud-based-telehealth-platform-for-rehabilitation|1|2025-03-18|A Cloud-based Telehealth Platform for Rehabilitation | Indeform|2025-03-17|3
+880|https://www.indeformtechnologies.com/insights/healthcare|1|2025-03-18||2025-03-17|3
+881|https://www.indeformtechnologies.com/insights/energy-oil|1|2025-03-18||2025-03-17|3
+882|https://www.indeformtechnologies.com/insights/insights|1|2025-03-18||2025-03-17|3
+883|https://www.indeformtechnologies.com/article/bring-your-products-to-e-commerce-effectively|1|2025-03-18|Make your e-commerce attractive, interactive and pleasable|2025-03-17|3
+884|https://www.indeformtechnologies.com/article/how-visualizations-enhance-data-strategy-more-effectively|1|2025-03-18|Data visualizations enhance data science innovation|2025-03-17|3
+885|https://www.indeformdigital.com/insights/healthcare-medicine-visualisations|1|2025-03-18||2025-03-17|3
+886|https://www.indeformdigital.com/insights/products-visualisations|1|2025-03-18||2025-03-17|3
+887|https://www.indeformdigital.com/insights/architecture-visualisations|1|2025-03-18||2025-03-17|3
+888|https://www.indeformdigital.com/insights/vfx|1|2025-03-18||2025-03-17|3
+889|https://www.indeformdigital.com/insights/animation|1|2025-03-18||2025-03-17|3
+890|https://www.indeformdigital.com/insights/game-art|1|2025-03-18||2025-03-17|3
+891|https://www.indeformdigital.com/insights/video-movies-production|1|2025-03-18||2025-03-17|3
+892|https://www.indeforminteractive.com/article/unique-interactive-museum-exposition-museum-on-wheels|1|2025-03-18|Unique interactive museum exposition –Museum on Wheels|2025-03-17|3
+893|https://www.indeforminteractive.com/article/interactive-educational-game-for-the-gabriele-petkevicaite-bite-public-library|1|2025-03-18|Interactive educational game for Gabrielė Petkevičaitė-Bitė library|2025-03-17|3
+894|https://www.indeforminteractive.com/article/interactive-wheel-fortune-service-sinsay|1|2025-03-18|Interactive Wheel of Fortune for clothing-retail company Sinsay|2025-03-17|3
+895|https://www.indeforminteractive.com/article/interactive-typewriter-and-interactive-radio-receiver-for-the-museum|1|2025-03-18|Interactive typewriter and interactive radio for the museum|2025-03-17|3
+896|https://www.indeforminteractive.com/article/interactive-mobile-app-with-augmented-reality|1|2025-03-18|Mobile app with integrated augmented reality for Kaunas Biennial Festi|2025-03-17|3
+897|https://www.indeforminteractive.com/article/innovative-virtual-museum-tour-solution-knygnesiu-keliu|1|2025-03-18|Virtual museum tour, as an interactive mobile application|2025-03-17|3
+898|https://www.indeforminteractive.com/article/interactive-virtual-host|1|2025-03-18|Interactive Virtual Host | Indeform|2025-03-17|3
+899|https://www.indeforminteractive.com/article/educational-game-taurage-museum|1|2025-03-18|Educational game for Taurage  museum | Indeform|2025-03-17|3
+900|https://www.indeforminteractive.com/article/muscle-beach-venice|1|2025-03-18|Muscle Beach Venice Renovation | Indeform|2025-03-17|3
+901|https://www.indeforminteractive.com/article/kaunas-castle-siege|1|2025-03-18|An Interactive Kaunas Castle Siege Case Study | Indeform|2025-03-17|3
+902|https://www.indeforminteractive.com/article/rukki-product-installation-explainer-video|1|2025-03-18|3D Product Installation Explainer Video | Indeform|2025-03-17|3
+903|https://www.indeformtechnologies.com/projects/38/saas-platorm-medical-implants-designer|1|2025-03-18||2025-03-17|3
+904|https://www.indeforminteractive.com/projects/4/interactive-3d-web-virtual-clothing-customizer-e-commerce-virtual-clothing-customizer|1|2025-03-18||2025-03-17|3
+905|https://www.indeformtechnologies.com/projects/3/cloud-powered-3d-cad-designer-integrated-with-e-commerce-product-catalogues-checkout-and-shipping|1|2025-03-18||2025-03-17|3
+906|https://www.indeforminteractive.com/projects/5/interactive-3d-webgl-jewelry-customizer|1|2025-03-18||2025-03-17|3
+907|https://www.indeforminteractive.com/insights/interactive-museums-exibitions|1|2025-03-18||2025-03-17|3
+908|https://www.indeforminteractive.com/insights/interactive-events|1|2025-03-18||2025-03-17|3
+909|https://www.indeforminteractive.com/article/Attract-more-customers-using-interactive-3D-visualizations|1|2025-03-18|Elevate Ads with interactive 3D visualizations|2025-03-17|3
+910|https://www.indeforminteractive.com/article/Innovative-methods-to-engage-museum-visitors|1|2025-03-18|Innovative methods for captivating museum visitors' interest|2025-03-17|3
+911|https://www.indeforminteractive.com/article/VR-AR-and-360-interactive-solutions-reshapes-tourism-landscape|1|2025-03-18|3 ways to use innovative technology solutions in tourism|2025-03-17|3
+912|https://www.indeforminteractive.com/article/11-ideas-to-make-exhibitions-interactive-for-museums|1|2025-03-18|Elevate exhibitions with interactive ideas|2025-03-17|3

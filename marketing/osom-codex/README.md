@@ -62,6 +62,10 @@ DJANGO_SUPERUSER_PASSWORD="admin" python dev/manage.py createsuperuser --no-inpu
         ]
     }
     ```
+3. Start Celery:
+    ```sh
+    cd dev && celery -A main worker -l info
+    ```
 
 ## Creating modules
 ### 1. Generate a new module

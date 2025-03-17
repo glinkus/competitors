@@ -9,6 +9,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from urllib.parse import urlparse
 from django.core.validators import URLValidator
+from modules.analysis.tasks import run_spider
 
 class AnalyseView(TemplateView):
     template_name = "modules/analysis/analyse.html"
@@ -28,25 +29,30 @@ class AnalyseView(TemplateView):
             # Redirect or show an error message if invalid URL
             return redirect("/analysis/analyse?error=invalid_url")
         
-        website, created = Website.objects.get_or_create(start_url=url)
-        website.last_visited = timezone.now().date()
-        website.save()
-
-        Page.objects.filter(website=website).update(visited=False)
-
-        page = Page.objects.create(
+        website_qs = Website.objects.filter(start_url=url)
+        if website_qs.exists():
+            website = website_qs.first()
+            website.last_visited = timezone.now().date()
+            website.save()
+            Page.objects.filter(website=website).delete()
+            Page.objects.create(
             website=website,
             url=url,
             visited=False,
             page_title="",
-        )
+            )
+        else:
+            website = Website.objects.create(start_url=url, last_visited=timezone.now().date())
+            Page.objects.create(
+            website=website,
+            url=url,
+            visited=False,
+            page_title="",
+            )
 
-        # 5. Start the Scrapy crawler
-        process = CrawlerProcess(get_project_settings())
-        process.crawl("full_site_spider", website_id=website.id, website_name=website.start_url)
-        process.start(stop_after_crawl=False)
+        run_spider.delay(website_id=website.id, website_name=website.start_url)
 
-        return redirect("/analysis/analyse")  # redirect after triggering the crawl
+        return redirect("/analysis/analyse")
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)

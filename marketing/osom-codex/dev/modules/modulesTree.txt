@@ -1,0 +1,108 @@
+.
+├── analysis
+│   ├── admin.py
+│   ├── analysis_scraper
+│   │   └── analysis_scraper
+│   │       ├── __pycache__
+│   │       │   ├── __init__.cpython-311.pyc
+│   │       │   ├── pipelines.cpython-311.pyc
+│   │       │   └── settings.cpython-311.pyc
+│   │       └── spiders
+│   │           └── __pycache__
+│   │               ├── full_site_spider.cpython-311.pyc
+│   │               ├── __init__.cpython-311.pyc
+│   │               └── simple_spider.cpython-311.pyc
+│   ├── apps.py
+│   ├── __init__.py
+│   ├── js
+│   │   └── main.js
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-311.pyc
+│   │       └── __init__.cpython-311.pyc
+│   ├── models.py
+│   ├── __pycache__
+│   │   ├── admin.cpython-311.pyc
+│   │   ├── apps.cpython-311.pyc
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── models.cpython-311.pyc
+│   │   ├── tasks.cpython-311.pyc
+│   │   └── urls.cpython-311.pyc
+│   ├── results.txt
+│   ├── scraper.py
+│   ├── tasks.py
+│   ├── templates
+│   │   └── modules
+│   │       └── analysis
+│   │           ├── analyse.html
+│   │           └── menu.html
+│   ├── tests.py
+│   ├── urls.py
+│   └── views
+│       ├── analysis_analyse_view.py
+│       ├── __init__.py
+│       └── __pycache__
+│           ├── analysis_analyse_view.cpython-311.pyc
+│           └── __init__.cpython-311.pyc
+├── competitors_scraper
+│   ├── competitors_scraper
+│   │   ├── __init__.py
+│   │   ├── items.py
+│   │   ├── middlewares.py
+│   │   ├── pipelines.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-311.pyc
+│   │   │   ├── items.cpython-311.pyc
+│   │   │   ├── pipelines.cpython-311.pyc
+│   │   │   └── settings.cpython-311.pyc
+│   │   ├── settings.py
+│   │   └── spiders
+│   │       ├── full_site_spider.py
+│   │       ├── __init__.py
+│   │       ├── log.txt
+│   │       └── __pycache__
+│   │           ├── full_site_spider.cpython-311.pyc
+│   │           └── __init__.cpython-311.pyc
+│   ├── results.txt
+│   └── scrapy.cfg
+├── demo
+│   ├── admin.py
+│   ├── apps.py
+│   ├── __init__.py
+│   ├── js
+│   │   └── main.js
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-311.pyc
+│   │       └── __init__.cpython-311.pyc
+│   ├── models.py
+│   ├── __pycache__
+│   │   ├── admin.cpython-311.pyc
+│   │   ├── apps.cpython-311.pyc
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── models.cpython-311.pyc
+│   │   └── urls.cpython-311.pyc
+│   ├── struct.txt
+│   ├── templates
+│   │   └── modules
+│   │       └── demo
+│   │           ├── cad.html
+│   │           ├── data.html
+│   │           └── menu.html
+│   ├── tests.py
+│   ├── urls.py
+│   └── views
+│       ├── demo_cad_view.py
+│       ├── demo_data_view.py
+│       ├── __init__.py
+│       └── __pycache__
+│           ├── demo_cad_view.cpython-311.pyc
+│           ├── demo_data_view.cpython-311.pyc
+│           └── __init__.cpython-311.pyc
+└── modulesTree.txt
+
+31 directories, 75 files
