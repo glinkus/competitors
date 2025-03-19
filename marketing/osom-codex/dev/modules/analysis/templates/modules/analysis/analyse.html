@@ -1,10 +1,87 @@
 {% extends 'rarea/layout.html' %}
-{% load i18n %} 
+{% load i18n %}
+
 {% block content %}
-    <form action="/analysis/analyse" method="post">
-        {% csrf_token %}
-        <label for="url">Enter URL:</label>
-        <input type="url" id="url" name="url" placeholder="https://example.com" required>
-        <button type="submit">Submit</button>
-    </form>
+<form action="/analysis/analyse" method="post">
+    {% csrf_token %}
+    <label for="url">Enter URL:</label>
+    <input type="url" id="url" name="url" placeholder="https://example.com" required>
+    <button type="submit">Submit</button>
+</form>
+
+<h2>Scraped Websites:</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Website URL</th>
+            <th>Last Visited</th>
+            <th>Visited Pages</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="websites-table">
+        {% for website in websites %}
+            <tr id="website-row-{{ website.id }}">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ website.start_url }}</td>
+                <td>{{ website.last_visited }}</td>
+                <td class="visited-count">{{ website.visited_count }}</td>
+                <td class="status">
+                    {% if website.crawling_finished %}
+                        🟢 Finished
+                    {% elif website.crawling_in_progress %}
+                        🟡 In Progress
+                    {% else %}
+                        🔴 Not Started
+                    {% endif %}
+                </td>
+                <td class="action">
+                        <a href="{% url 'modules.analysis:saved_urls' website.id %}">
+                            <button>View Scraped URLs</button>
+                        </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6">No scraped websites yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+function checkScrapingStatus(websiteId) {
+    fetch(`/analysis/analyse?website_id=${websiteId}`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const row = document.querySelector(`#website-row-${websiteId}`);
+        row.querySelector('.visited-count').innerText = data.visited_count;
+
+        if (data.crawling_finished) {
+            row.querySelector('.status').innerHTML = '🟢 Finished';
+            row.querySelector('.action').innerHTML = `<a href="/analysis/analyse/saved-urls/${websiteId}/"><button>View Scraped URLs</button></a>`;
+        } else if (data.crawling_in_progress) {
+            row.querySelector('.status').innerHTML = '🟡 In Progress';
+            setTimeout(() => checkScrapingStatus(websiteId), 5000);
+        }
+    });
+}
+
+// Initially check and update all websites in progress
+document.addEventListener('DOMContentLoaded', () => {
+    const rows = document.querySelectorAll('tbody#websites-table tr');
+    rows.forEach(row => {
+        const status = row.querySelector('.status').innerText;
+        if (status.includes('In Progress')) {
+            const websiteId = row.id.replace('website-row-', '');
+            checkScrapingStatus(websiteId);
+        }
+    });
+});
+</script>
+
 {% endblock %}

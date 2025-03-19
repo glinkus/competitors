@@ -1,0 +1,25 @@
+{% extends 'rarea/layout.html' %}
+
+{% block content %}
+  <h2>Scraped Pages for {{ website.start_url }}</h2>
+  <table border="1" cellpadding="5">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>URL</th>
+        <th>Title</th>
+        <th>Visited</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for page in pages %}
+        <tr>
+          <td>{{ page.id }}</td>
+          <td>{{ page.url }}</td>
+          <td>{{ page.page_title }}</td>
+          <td>{{ page.visited }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

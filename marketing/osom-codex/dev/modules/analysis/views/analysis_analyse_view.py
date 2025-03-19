@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.shortcuts import render
+from django.http import JsonResponse
 
 from modules.analysis.models import Website, Page
 from scrapy.crawler import CrawlerProcess
@@ -33,7 +35,11 @@ class AnalyseView(TemplateView):
         if website_qs.exists():
             website = website_qs.first()
             website.last_visited = timezone.now().date()
+            website.crawling_in_progress = True
+            website.crawling_finished = False
+            website.visited_count = 0
             website.save()
+
             Page.objects.filter(website=website).delete()
             Page.objects.create(
             website=website,
@@ -42,7 +48,7 @@ class AnalyseView(TemplateView):
             page_title="",
             )
         else:
-            website = Website.objects.create(start_url=url, last_visited=timezone.now().date())
+            website = Website.objects.create(start_url=url, last_visited=timezone.now().date(), crawling_in_progress=True)
             Page.objects.create(
             website=website,
             url=url,
@@ -52,7 +58,36 @@ class AnalyseView(TemplateView):
 
         run_spider.delay(website_id=website.id, website_name=website.start_url)
 
-        return redirect("/analysis/analyse")
+        return redirect(f"/analysis/analyse?website_id={website.id}")
 
+    # def get(self, request, *args, **kwargs):
+    #     websites = Website.objects.all().order_by('-last_visited')
+    #     context = {
+    #         'websites': websites,
+    #     }
+    #     return render(request, self.template_name, context)
+    
+    
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            website_id = request.GET.get('website_id')
+            if website_id:
+                try:
+                    website = Website.objects.get(id=website_id)
+                    data = {
+                        'crawling_in_progress': website.crawling_in_progress,
+                        'crawling_finished': website.crawling_finished,
+                        'visited_count': website.visited_count,
+                    }
+                except Website.DoesNotExist:
+                    data = {'error': 'Website not found'}
+                return JsonResponse(data)
+            return JsonResponse({'error': 'No website_id provided'})
+        else:
+            websites = Website.objects.all().order_by('-last_visited')
+            context = {
+                'websites': websites,
+            }
+            return render(request, self.template_name, context)
+
+

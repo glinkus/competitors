@@ -4,9 +4,13 @@ from django.db import models
 class Website(models.Model):
     start_url = models.URLField(max_length=500, unique=True)
     last_visited = models.DateField(auto_now_add=True)
+    crawling_in_progress = models.BooleanField(default=False)
+    crawling_finished = models.BooleanField(default=False)
+    visited_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.start_url
+
 
 
 class Page(models.Model):
