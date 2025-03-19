@@ -20,39 +20,42 @@ def domain_matches(url, base_keyword):
     extracted = tldextract.extract(url)
     return base_keyword in extracted.domain
 
-class FullSiteSpider(scrapy.Spider):
-    name = "full_site_spider"
+class OnePageSpider(scrapy.Spider):
+    name = "one_page_spider"
 
     custom_settings = {
         "PLAYWRIGHT_BROWSER_TYPE": "chromium",
         "PLAYWRIGHT_LAUNCH_OPTIONS": {"headless": True},
-        # Even though CONCURRENT_REQUESTS is set, we only schedule one URL at a time.
-        "CONCURRENT_REQUESTS": 1000,
-        "DOWNLOAD_DELAY": 1, 
+        # Global downloader concurrency can be higher so that subresources load concurrently,
+        # but we only schedule one main URL.
+        "DOWNLOAD_DELAY": 1,
         "DOWNLOAD_HANDLERS": {
             "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
             "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler"
         },
-        "PLAYWRIGHT_CONTEXTS": {
+        "PLAYWRIGHT_CONTEXTsp": {
             "default": {"viewport": {"width": 1280, "height": 720}},
         },
         "TWISTED_REACTOR": "twisted.internet.asyncioreactor.AsyncioSelectorReactor",
     }
 
-    def __init__(self, website_id=None, website_name=None, *args, **kwargs):
+    # Expect a single page URL to be passed as "page_url" and website_id to indicate the target website.
+    def __init__(self, page_url=None, website_id=None, website_name=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if page_url is None:
+            raise ValueError("A page URL must be provided as the 'page_url' argument")
+        self.page_url = normalize_url(page_url)
         self.website_id = website_id
+        # Optionally, if a website_name is passed, we can use that; otherwise, it may be looked up.
         self.website_name = normalize_url(website_name) if website_name else ""
-        self.visited_links = set()
-        self.urls = set()  # All discovered URLs.
+
         self.website_instance = None
-        # Use a list for pending URLs (FIFO)
-        self.pending_urls = []
-        self.current_url = None
+        self.urls = set()  # All discovered URLs.
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super().from_crawler(crawler, *args, **kwargs)
+        # You can connect to spider_opened if you need to do additional initialization.
         crawler.signals.connect(spider.spider_opened, signal=signals.spider_opened)
         return spider
 
@@ -63,49 +66,33 @@ class FullSiteSpider(scrapy.Spider):
                 website=self.website_id
             )
             self.website_instance = Website.objects.get(id=self.website_id)
-            # Normalize URLs from DB.
             u = [normalize_url(u) for u in unvisited_pages.values_list("url", flat=True)]
             self.urls = set(u)
+            self.logger.info(f"Initial URLs from DB: {self.urls}")
             extracted = tldextract.extract(self.website_name)
             self.base_keyword = extracted.domain
             self.logger.info(f"Extracted domain: {self.base_keyword}")
-            self.logger.info(f"Initial URLs from DB: {self.urls}")
 
-        # Once initial URLs are fetched, initialize our queue and schedule the first URL.
-        threads.deferToThread(fetch_urls).addCallback(lambda _: self.initialize_queue())
+        threads.deferToThread(fetch_urls).addCallback(lambda _: self.start_requests())
+        
 
-    def initialize_queue(self):
-        # Use a list for FIFO ordering.
-        self.pending_urls = list(self.urls)
-        self.current_url = None
-        self.schedule_next_url()
-
-    def schedule_next_url(self):
-        if self.pending_urls:
-            # Pop the next URL (FIFO)
-            next_url = self.pending_urls.pop(0)
-            self.current_url = next_url
-            req = scrapy.Request(
-                next_url,
-                meta={
-                    "playwright": True,
-                    "playwright_include_page": True,
-                    "handle_httpstatus_all": True,
-                    "playwright_page_coroutines": [
-                        lambda page: page.wait_for_load_state("networkidle"),
-                        lambda page: page.route("**/*.{png,jpg,jpeg,webm,woff,woff2,ttf,css,mp4}", lambda route: route.abort())
-                    ]
-                },
-                callback=self.parse,
-                dont_filter=True,
-            )
-            self.crawler.engine.slot.scheduler.enqueue_request(req)
-            self.logger.info(f"Scheduled next URL: {next_url}")
-        else:
-            self.finish_crawl()
 
     def start_requests(self):
-        return iter([])
+        # Start with the one page provided
+        yield scrapy.Request(
+            self.page_url,
+            meta={
+                "playwright": True,
+                "playwright_include_page": True,
+                "handle_httpstatus_all": True,
+                "playwright_page_coroutines": [
+                    lambda page: page.wait_for_load_state("networkidle"),
+                    lambda page: page.route("**/*.{png,jpg,jpeg,webm,woff,woff2,ttf,css,mp4}", lambda route: route.abort())
+                ]
+            },
+            callback=self.parse,
+            dont_filter=True,
+        )
 
     def update_page_sync(self, page, response):
         close_old_connections()
@@ -113,11 +100,13 @@ class FullSiteSpider(scrapy.Spider):
         page.page_title = response.css("title::text").get() or ""
         page.last_visit = timezone.now().date()
         page.save()
-
+        # update visited_count on the website instance
         website = page.website
         website.visited_count += 1
         website.save()
 
+    
+    
     def get_page_sync(self, website_id, url):
         norm_url = normalize_url(url)
         return Page.objects.filter(website_id=website_id, url=norm_url).first()
@@ -126,53 +115,30 @@ class FullSiteSpider(scrapy.Spider):
         url = normalize_url(response.url)
         self.logger.info(f"--- Crawling URL --- {url}")
 
-        if url in self.visited_links:
-            # In case of duplicates, schedule the next URL
-            if self.current_url == url:
-                self.current_url = None
-                self.schedule_next_url()
-            return
-
-        self.visited_links.add(url)
-        self.logger.info(f"--- Crawled URL --- {url}")
-
-        # Update page info asynchronously
         d = threads.deferToThread(self.get_page_sync, self.website_id, url)
         def update_if_exists(page):
             if page is not None:
                 threads.deferToThread(self.update_page_sync, page, response)
+            else:
+                self.logger.info(f"No Page record found for URL: {url}")
         d.addCallback(update_if_exists)
         d.addErrback(lambda failure: failure.trap(Page.DoesNotExist))
-        
-        # Process links on the page
+
+        # Optionally, process links on the page and yield PageItem objects.
+        # Since we want to crawl only one page, you may choose to yield items and let a separate process handle these.
         links = response.css("a::attr(href)").getall()
+        self.logger.info(f"Found {len(links)} links on the page.")
         for link in links:
             absolute_link = normalize_url(urljoin(url, link))
-            if domain_matches(absolute_link, self.base_keyword) and absolute_link not in self.visited_links:
-                if absolute_link not in self.urls:
-                    self.urls.add(absolute_link)
+            self.logger.info(f"Checking link: {absolute_link}")
+            self.logger.info(f"Domain matches: {absolute_link} {self.base_keyword}")
+            if domain_matches(absolute_link, self.base_keyword) and absolute_link not in self.urls:
+                    self.logger.info(f"Found internal link: {absolute_link}")
                     item = PageItem()
                     item["url"] = absolute_link
                     item["website"] = self.website_instance
                     item["page_title"] = ""
                     yield item
-                # If not already in pending, add it to the queue
-                if absolute_link not in self.pending_urls:
-                    self.pending_urls.append(absolute_link)
-                    self.logger.info(f"Discovered and queued new URL: {absolute_link}")
 
-        # Mark the current URL as finished and schedule the next one
-        if self.current_url == url:
-            self.current_url = None
-            self.schedule_next_url()
-
-    def finish_crawl(self):
-        def finish():
-            website = Website.objects.get(id=self.website_id)
-            website.crawling_in_progress = False
-            website.crawling_finished = True
-            website.visited_count = len(self.visited_links)
-            website.save()
-        threads.deferToThread(finish)
-        self.logger.info("No new links pending. All links have been visited. Closing spider.")
+        self.logger.info("Finished processing single page. Closing spider.")
         self.crawler.engine.close_spider(self, reason="finished")

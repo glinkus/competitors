@@ -1,0 +1,382 @@
+[32mINFO    [0m [34mScrapy 2.12.0 started (bot: competitors_scraper)[0m
+2025-03-19 16:33:59 [scrapy.utils.log] INFO: Scrapy 2.12.0 started (bot: competitors_scraper)
+[32mINFO    [0m [34mVersions: lxml 5.3.1.0, libxml2 2.12.9, cssselect 1.2.0, parsel 1.10.0, w3lib 2.3.1, Twisted 24.11.0, Python 3.11.2 (main, Nov 30 2024, 21:22:50) [GCC 12.2.0], pyOpenSSL 25.0.0 (OpenSSL 3.4.1 11 Feb 2025), cryptography 44.0.1, Platform Linux-4.9.0-8-amd64-x86_64-with-glibc2.36[0m
+2025-03-19 16:33:59 [scrapy.utils.log] INFO: Versions: lxml 5.3.1.0, libxml2 2.12.9, cssselect 1.2.0, parsel 1.10.0, w3lib 2.3.1, Twisted 24.11.0, Python 3.11.2 (main, Nov 30 2024, 21:22:50) [GCC 12.2.0], pyOpenSSL 25.0.0 (OpenSSL 3.4.1 11 Feb 2025), cryptography 44.0.1, Platform Linux-4.9.0-8-amd64-x86_64-with-glibc2.36
+[32mINFO    [0m [34mEnabled addons:
+[][0m
+2025-03-19 16:33:59 [scrapy.addons] INFO: Enabled addons:
+[]
+[37mDEBUG   [0m [34mUsing selector: EpollSelector[0m
+2025-03-19 16:33:59 [asyncio] DEBUG: Using selector: EpollSelector
+[37mDEBUG   [0m [34mUsing reactor: twisted.internet.asyncioreactor.AsyncioSelectorReactor[0m
+2025-03-19 16:33:59 [scrapy.utils.log] DEBUG: Using reactor: twisted.internet.asyncioreactor.AsyncioSelectorReactor
+[37mDEBUG   [0m [34mUsing asyncio event loop: asyncio.unix_events._UnixSelectorEventLoop[0m
+2025-03-19 16:33:59 [scrapy.utils.log] DEBUG: Using asyncio event loop: asyncio.unix_events._UnixSelectorEventLoop
+[37mDEBUG   [0m [34mUsing reactor: twisted.internet.asyncioreactor.AsyncioSelectorReactor[0m
+2025-03-19 16:33:59 [scrapy.utils.log] DEBUG: Using reactor: twisted.internet.asyncioreactor.AsyncioSelectorReactor
+[37mDEBUG   [0m [34mUsing asyncio event loop: asyncio.unix_events._UnixSelectorEventLoop[0m
+2025-03-19 16:33:59 [scrapy.utils.log] DEBUG: Using asyncio event loop: asyncio.unix_events._UnixSelectorEventLoop
+[32mINFO    [0m [34mTelnet Password: eab23e9036414675[0m
+2025-03-19 16:33:59 [scrapy.extensions.telnet] INFO: Telnet Password: eab23e9036414675
+[32mINFO    [0m [34mEnabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats'][0m
+2025-03-19 16:33:59 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+[32mINFO    [0m [34mOverridden settings:
+{'BOT_NAME': 'competitors_scraper',
+ 'DOWNLOAD_DELAY': 1,
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'NEWSPIDER_MODULE': 'competitors_scraper.spiders',
+ 'SPIDER_MODULES': ['competitors_scraper.spiders'],
+ 'TWISTED_REACTOR': 'twisted.internet.asyncioreactor.AsyncioSelectorReactor'}[0m
+2025-03-19 16:33:59 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'competitors_scraper',
+ 'DOWNLOAD_DELAY': 1,
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'NEWSPIDER_MODULE': 'competitors_scraper.spiders',
+ 'SPIDER_MODULES': ['competitors_scraper.spiders'],
+ 'TWISTED_REACTOR': 'twisted.internet.asyncioreactor.AsyncioSelectorReactor'}
+[32mINFO    [0m [34mEnabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats'][0m
+2025-03-19 16:33:59 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+[32mINFO    [0m [34mEnabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware'][0m
+2025-03-19 16:33:59 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+[32mINFO    [0m [34mEnabled item pipelines:
+['competitors_scraper.pipelines.PagePipeline'][0m
+2025-03-19 16:33:59 [scrapy.middleware] INFO: Enabled item pipelines:
+['competitors_scraper.pipelines.PagePipeline']
+[32mINFO    [0m [34mSpider opened[0m
+2025-03-19 16:33:59 [scrapy.core.engine] INFO: Spider opened
+[32mINFO    [0m [34mCrawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)[0m
+2025-03-19 16:33:59 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+[32mINFO    [0m [34mTelnet console listening on 127.0.0.1:6023[0m
+2025-03-19 16:33:59 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+[32mINFO    [0m [34mStarting download handler[0m
+2025-03-19 16:33:59 [scrapy-playwright] INFO: Starting download handler
+[32mINFO    [0m [34mStarting download handler[0m
+2025-03-19 16:33:59 [scrapy-playwright] INFO: Starting download handler
+[32mINFO    [0m [34mInitial URLs from DB: {'https://www.indeform.com/'}[0m
+2025-03-19 16:33:59 [one_page_spider] INFO: Initial URLs from DB: {'https://www.indeform.com/'}
+[32mINFO    [0m [34mExtracted domain: indeform[0m
+2025-03-19 16:34:00 [one_page_spider] INFO: Extracted domain: indeform
+[32mINFO    [0m [34mLaunching browser chromium[0m
+2025-03-19 16:34:04 [scrapy-playwright] INFO: Launching browser chromium
+[32mINFO    [0m [34mBrowser chromium launched[0m
+2025-03-19 16:34:05 [scrapy-playwright] INFO: Browser chromium launched
+[37mDEBUG   [0m [34mBrowser context started: 'default' (persistent=False, remote=False)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: Browser context started: 'default' (persistent=False, remote=False)
+[37mDEBUG   [0m [34m[Context=default] New page created, page count is 1 (1 for all contexts)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] New page created, page count is 1 (1 for all contexts)
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.indeform.com/> (resource type: document)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.indeform.com/> (resource type: document)
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.indeform.com/>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.indeform.com/>
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.indeform.com/pub/main/css/main.css?v=1.1> (resource type: stylesheet, referrer: https://www.indeform.com/)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.indeform.com/pub/main/css/main.css?v=1.1> (resource type: stylesheet, referrer: https://www.indeform.com/)
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.indeform.com/pub/main/css/logo.png> (resource type: image, referrer: https://www.indeform.com/)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.indeform.com/pub/main/css/logo.png> (resource type: image, referrer: https://www.indeform.com/)
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.indeform.com/pub/main/css/main.css?v=1.1>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.indeform.com/pub/main/css/main.css?v=1.1>
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://sc.lfeeder.com/lftracker_v1_JMvZ8gzvKyEa2pOd.js> (resource type: script)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://sc.lfeeder.com/lftracker_v1_JMvZ8gzvKyEa2pOd.js> (resource type: script)
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.indeform.com/pub/main/css/logo.png>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.indeform.com/pub/main/css/logo.png>
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.googletagmanager.com/gtm.js?id=GTM-N3ZS7RD9> (resource type: script)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.googletagmanager.com/gtm.js?id=GTM-N3ZS7RD9> (resource type: script)
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.indeform.com/pub/main/css/technologies.jpg> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.indeform.com/pub/main/css/technologies.jpg> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.indeform.com/pub/main/css/rmnu-decoration.png> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.indeform.com/pub/main/css/rmnu-decoration.png> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.indeform.com/pub/main/css/overlay.png> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.indeform.com/pub/main/css/overlay.png> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.indeform.com/pub/main/css/interactive.jpg> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.indeform.com/pub/main/css/interactive.jpg> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.indeform.com/pub/main/css/digital.jpg> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.indeform.com/pub/main/css/digital.jpg> (resource type: image, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.indeform.com/pub/main/css/fonts/uniform-medium-webfont.woff> (resource type: font, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.indeform.com/pub/main/css/fonts/uniform-medium-webfont.woff> (resource type: font, referrer: https://www.indeform.com/pub/main/css/main.css?v=1.1)
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://sc.lfeeder.com/lftracker_v1_JMvZ8gzvKyEa2pOd.js>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://sc.lfeeder.com/lftracker_v1_JMvZ8gzvKyEa2pOd.js>
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.indeform.com/pub/main/css/technologies.jpg>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.indeform.com/pub/main/css/technologies.jpg>
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.googletagmanager.com/gtm.js?id=GTM-N3ZS7RD9>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.googletagmanager.com/gtm.js?id=GTM-N3ZS7RD9>
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.googletagmanager.com/gtag/js?id=G-KZ1WY972VV&l=dataLayer&cx=c&gtm=45He53h1v9177254274za200&tag_exp=102482433~102587591~102717422~102788824~102813109~102814060~102879719> (resource type: script)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.googletagmanager.com/gtag/js?id=G-KZ1WY972VV&l=dataLayer&cx=c&gtm=45He53h1v9177254274za200&tag_exp=102482433~102587591~102717422~102788824~102813109~102814060~102879719> (resource type: script)
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://tr-rc.lfeeder.com/?sid=JMvZ8gzvKyEa2pOd&data=eyJnYVRyYWNraW5nSWRzIjpbXSwiZ2FNZWFzdXJlbWVudElkcyI6W10sImdhQ2xpZW50SWRzIjpbXSwiY29udGV4dCI6eyJsaWJyYXJ5Ijp7Im5hbWUiOiJsZnRyYWNrZXIiLCJ2ZXJzaW9uIjoiMi42OS4wIn0sInBhZ2VVcmwiOiJodHRwczovL3d3dy5pbmRlZm9ybS5jb20vIiwicGFnZVRpdGxlIjoiSW5kZWZvcm0gLSBJbnRlcmFjdGl2ZSB0ZWNobm9sb2dpZXMgZm9yIGVDb21tZXJjZSwgQ2xvdWQgc29mdHdhcmUgc29sdXRpb25zLCBBcnRpZmljaWFsIGludGVsbGlnZW5jZSBmb3IgQnVzaW5lc3MgJiBEaWdpdGFsIGdyYXBoaWNzIiwicmVmZXJyZXIiOiIifSwiZXZlbnQiOiJ0cmFja2luZy1ldmVudCIsImNsaWVudEV2ZW50SWQiOiI2ZmUzNmE3MWY5MGM3OTQxIiwic2NyaXB0SWQiOiJKTXZaOGd6dkt5RWEycE9kIiwiY29va2llc0VuYWJsZWQiOnRydWUsImNvbnNlbnRMZXZlbCI6Im5vbmUiLCJhbm9ueW1pemVJcCI6ZmFsc2UsImxmQ2xpZW50SWQiOiJMRjEuMS43N2U1YmM5OTA5MDcwNGMyLjE3NDIzOTQ4NDU3OTgiLCJmb3JlaWduQ29va2llcyI6W10sInByb3BlcnRpZXMiOnt9LCJhdXRvVHJhY2tpbmdFbmFibGVkIjp0cnVlLCJhdXRvVHJhY2tpbmdNb2RlIjoic3BhIn0=> (resource type: image)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://tr-rc.lfeeder.com/?sid=JMvZ8gzvKyEa2pOd&data=eyJnYVRyYWNraW5nSWRzIjpbXSwiZ2FNZWFzdXJlbWVudElkcyI6W10sImdhQ2xpZW50SWRzIjpbXSwiY29udGV4dCI6eyJsaWJyYXJ5Ijp7Im5hbWUiOiJsZnRyYWNrZXIiLCJ2ZXJzaW9uIjoiMi42OS4wIn0sInBhZ2VVcmwiOiJodHRwczovL3d3dy5pbmRlZm9ybS5jb20vIiwicGFnZVRpdGxlIjoiSW5kZWZvcm0gLSBJbnRlcmFjdGl2ZSB0ZWNobm9sb2dpZXMgZm9yIGVDb21tZXJjZSwgQ2xvdWQgc29mdHdhcmUgc29sdXRpb25zLCBBcnRpZmljaWFsIGludGVsbGlnZW5jZSBmb3IgQnVzaW5lc3MgJiBEaWdpdGFsIGdyYXBoaWNzIiwicmVmZXJyZXIiOiIifSwiZXZlbnQiOiJ0cmFja2luZy1ldmVudCIsImNsaWVudEV2ZW50SWQiOiI2ZmUzNmE3MWY5MGM3OTQxIiwic2NyaXB0SWQiOiJKTXZaOGd6dkt5RWEycE9kIiwiY29va2llc0VuYWJsZWQiOnRydWUsImNvbnNlbnRMZXZlbCI6Im5vbmUiLCJhbm9ueW1pemVJcCI6ZmFsc2UsImxmQ2xpZW50SWQiOiJMRjEuMS43N2U1YmM5OTA5MDcwNGMyLjE3NDIzOTQ4NDU3OTgiLCJmb3JlaWduQ29va2llcyI6W10sInByb3BlcnRpZXMiOnt9LCJhdXRvVHJhY2tpbmdFbmFibGVkIjp0cnVlLCJhdXRvVHJhY2tpbmdNb2RlIjoic3BhIn0=> (resource type: image)
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.googletagmanager.com/gtag/js?id=G-KZ1WY972VV&l=dataLayer&cx=c&gtm=45He53h1v9177254274za200&tag_exp=102482433~102587591~102717422~102788824~102813109~102814060~102879719>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.googletagmanager.com/gtag/js?id=G-KZ1WY972VV&l=dataLayer&cx=c&gtm=45He53h1v9177254274za200&tag_exp=102482433~102587591~102717422~102788824~102813109~102814060~102879719>
+[37mDEBUG   [0m [34m[Context=default] Request: <GET https://www.googletagmanager.com/td?id=G-KZ1WY972VV&v=3&t=t&pid=1940189968&exp=102482433~102587591~102717422~102788824~102813109~102814060~102825837~102879719&dl=www.indeform.com%2F&tdp=G-KZ1WY972VV;123343108;1;6;0&frm=0&rtg=177254274&slo=1&hlo=3&lst=1&pcid=177254274&bt=0&ct=3&z=0> (resource type: image)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <GET https://www.googletagmanager.com/td?id=G-KZ1WY972VV&v=3&t=t&pid=1940189968&exp=102482433~102587591~102717422~102788824~102813109~102814060~102825837~102879719&dl=www.indeform.com%2F&tdp=G-KZ1WY972VV;123343108;1;6;0&frm=0&rtg=177254274&slo=1&hlo=3&lst=1&pcid=177254274&bt=0&ct=3&z=0> (resource type: image)
+[37mDEBUG   [0m [34m[Context=default] Request: <POST https://region1.google-analytics.com/g/collect?v=2&tid=G-KZ1WY972VV&gtm=45je53h1v9123343108z89177254274za200zb9177254274&_p=1742394845596&gcd=13l3l3l2l1l1&npa=1&dma_cps=syphamo&dma=1&tag_exp=102482433~102587591~102717422~102788824~102813109~102814060~102825837~102879719&cid=622022183.1742394846&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=Not(A%253ABrand%3B99.0.0.0%7CHeadlessChrome%3B133.0.6943.16%7CChromium%3B133.0.6943.16&uamb=0&uam=&uap=Linux&uapv=4.9.0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&sid=1742394845&sct=1&seg=0&dl=https%3A%2F%2Fwww.indeform.com%2F&dt=Indeform%20-%20Interactive%20technologies%20for%20eCommerce%2C%20Cloud%20software%20solutions%2C%20Artificial%20intelligence%20for%20Business%20%26%20Digital%20graphics&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=843> (resource type: fetch)[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Request: <POST https://region1.google-analytics.com/g/collect?v=2&tid=G-KZ1WY972VV&gtm=45je53h1v9123343108z89177254274za200zb9177254274&_p=1742394845596&gcd=13l3l3l2l1l1&npa=1&dma_cps=syphamo&dma=1&tag_exp=102482433~102587591~102717422~102788824~102813109~102814060~102825837~102879719&cid=622022183.1742394846&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=Not(A%253ABrand%3B99.0.0.0%7CHeadlessChrome%3B133.0.6943.16%7CChromium%3B133.0.6943.16&uamb=0&uam=&uap=Linux&uapv=4.9.0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&sid=1742394845&sct=1&seg=0&dl=https%3A%2F%2Fwww.indeform.com%2F&dt=Indeform%20-%20Interactive%20technologies%20for%20eCommerce%2C%20Cloud%20software%20solutions%2C%20Artificial%20intelligence%20for%20Business%20%26%20Digital%20graphics&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=843> (resource type: fetch)
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://tr-rc.lfeeder.com/?sid=JMvZ8gzvKyEa2pOd&data=eyJnYVRyYWNraW5nSWRzIjpbXSwiZ2FNZWFzdXJlbWVudElkcyI6W10sImdhQ2xpZW50SWRzIjpbXSwiY29udGV4dCI6eyJsaWJyYXJ5Ijp7Im5hbWUiOiJsZnRyYWNrZXIiLCJ2ZXJzaW9uIjoiMi42OS4wIn0sInBhZ2VVcmwiOiJodHRwczovL3d3dy5pbmRlZm9ybS5jb20vIiwicGFnZVRpdGxlIjoiSW5kZWZvcm0gLSBJbnRlcmFjdGl2ZSB0ZWNobm9sb2dpZXMgZm9yIGVDb21tZXJjZSwgQ2xvdWQgc29mdHdhcmUgc29sdXRpb25zLCBBcnRpZmljaWFsIGludGVsbGlnZW5jZSBmb3IgQnVzaW5lc3MgJiBEaWdpdGFsIGdyYXBoaWNzIiwicmVmZXJyZXIiOiIifSwiZXZlbnQiOiJ0cmFja2luZy1ldmVudCIsImNsaWVudEV2ZW50SWQiOiI2ZmUzNmE3MWY5MGM3OTQxIiwic2NyaXB0SWQiOiJKTXZaOGd6dkt5RWEycE9kIiwiY29va2llc0VuYWJsZWQiOnRydWUsImNvbnNlbnRMZXZlbCI6Im5vbmUiLCJhbm9ueW1pemVJcCI6ZmFsc2UsImxmQ2xpZW50SWQiOiJMRjEuMS43N2U1YmM5OTA5MDcwNGMyLjE3NDIzOTQ4NDU3OTgiLCJmb3JlaWduQ29va2llcyI6W10sInByb3BlcnRpZXMiOnt9LCJhdXRvVHJhY2tpbmdFbmFibGVkIjp0cnVlLCJhdXRvVHJhY2tpbmdNb2RlIjoic3BhIn0=>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://tr-rc.lfeeder.com/?sid=JMvZ8gzvKyEa2pOd&data=eyJnYVRyYWNraW5nSWRzIjpbXSwiZ2FNZWFzdXJlbWVudElkcyI6W10sImdhQ2xpZW50SWRzIjpbXSwiY29udGV4dCI6eyJsaWJyYXJ5Ijp7Im5hbWUiOiJsZnRyYWNrZXIiLCJ2ZXJzaW9uIjoiMi42OS4wIn0sInBhZ2VVcmwiOiJodHRwczovL3d3dy5pbmRlZm9ybS5jb20vIiwicGFnZVRpdGxlIjoiSW5kZWZvcm0gLSBJbnRlcmFjdGl2ZSB0ZWNobm9sb2dpZXMgZm9yIGVDb21tZXJjZSwgQ2xvdWQgc29mdHdhcmUgc29sdXRpb25zLCBBcnRpZmljaWFsIGludGVsbGlnZW5jZSBmb3IgQnVzaW5lc3MgJiBEaWdpdGFsIGdyYXBoaWNzIiwicmVmZXJyZXIiOiIifSwiZXZlbnQiOiJ0cmFja2luZy1ldmVudCIsImNsaWVudEV2ZW50SWQiOiI2ZmUzNmE3MWY5MGM3OTQxIiwic2NyaXB0SWQiOiJKTXZaOGd6dkt5RWEycE9kIiwiY29va2llc0VuYWJsZWQiOnRydWUsImNvbnNlbnRMZXZlbCI6Im5vbmUiLCJhbm9ueW1pemVJcCI6ZmFsc2UsImxmQ2xpZW50SWQiOiJMRjEuMS43N2U1YmM5OTA5MDcwNGMyLjE3NDIzOTQ4NDU3OTgiLCJmb3JlaWduQ29va2llcyI6W10sInByb3BlcnRpZXMiOnt9LCJhdXRvVHJhY2tpbmdFbmFibGVkIjp0cnVlLCJhdXRvVHJhY2tpbmdNb2RlIjoic3BhIn0=>
+[37mDEBUG   [0m [34m[Context=default] Response: <204 https://www.googletagmanager.com/td?id=G-KZ1WY972VV&v=3&t=t&pid=1940189968&exp=102482433~102587591~102717422~102788824~102813109~102814060~102825837~102879719&dl=www.indeform.com%2F&tdp=G-KZ1WY972VV;123343108;1;6;0&frm=0&rtg=177254274&slo=1&hlo=3&lst=1&pcid=177254274&bt=0&ct=3&z=0>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <204 https://www.googletagmanager.com/td?id=G-KZ1WY972VV&v=3&t=t&pid=1940189968&exp=102482433~102587591~102717422~102788824~102813109~102814060~102825837~102879719&dl=www.indeform.com%2F&tdp=G-KZ1WY972VV;123343108;1;6;0&frm=0&rtg=177254274&slo=1&hlo=3&lst=1&pcid=177254274&bt=0&ct=3&z=0>
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.indeform.com/pub/main/css/rmnu-decoration.png>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.indeform.com/pub/main/css/rmnu-decoration.png>
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.indeform.com/pub/main/css/overlay.png>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.indeform.com/pub/main/css/overlay.png>
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.indeform.com/pub/main/css/interactive.jpg>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.indeform.com/pub/main/css/interactive.jpg>
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.indeform.com/pub/main/css/digital.jpg>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.indeform.com/pub/main/css/digital.jpg>
+[37mDEBUG   [0m [34m[Context=default] Response: <200 https://www.indeform.com/pub/main/css/fonts/uniform-medium-webfont.woff>[0m
+2025-03-19 16:34:05 [scrapy-playwright] DEBUG: [Context=default] Response: <200 https://www.indeform.com/pub/main/css/fonts/uniform-medium-webfont.woff>
+[37mDEBUG   [0m [34m[Context=default] Response: <204 https://region1.google-analytics.com/g/collect?v=2&tid=G-KZ1WY972VV&gtm=45je53h1v9123343108z89177254274za200zb9177254274&_p=1742394845596&gcd=13l3l3l2l1l1&npa=1&dma_cps=syphamo&dma=1&tag_exp=102482433~102587591~102717422~102788824~102813109~102814060~102825837~102879719&cid=622022183.1742394846&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=Not(A%253ABrand%3B99.0.0.0%7CHeadlessChrome%3B133.0.6943.16%7CChromium%3B133.0.6943.16&uamb=0&uam=&uap=Linux&uapv=4.9.0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&sid=1742394845&sct=1&seg=0&dl=https%3A%2F%2Fwww.indeform.com%2F&dt=Indeform%20-%20Interactive%20technologies%20for%20eCommerce%2C%20Cloud%20software%20solutions%2C%20Artificial%20intelligence%20for%20Business%20%26%20Digital%20graphics&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=843>[0m
+2025-03-19 16:34:06 [scrapy-playwright] DEBUG: [Context=default] Response: <204 https://region1.google-analytics.com/g/collect?v=2&tid=G-KZ1WY972VV&gtm=45je53h1v9123343108z89177254274za200zb9177254274&_p=1742394845596&gcd=13l3l3l2l1l1&npa=1&dma_cps=syphamo&dma=1&tag_exp=102482433~102587591~102717422~102788824~102813109~102814060~102825837~102879719&cid=622022183.1742394846&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=Not(A%253ABrand%3B99.0.0.0%7CHeadlessChrome%3B133.0.6943.16%7CChromium%3B133.0.6943.16&uamb=0&uam=&uap=Linux&uapv=4.9.0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&sid=1742394845&sct=1&seg=0&dl=https%3A%2F%2Fwww.indeform.com%2F&dt=Indeform%20-%20Interactive%20technologies%20for%20eCommerce%2C%20Cloud%20software%20solutions%2C%20Artificial%20intelligence%20for%20Business%20%26%20Digital%20graphics&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=843>
+[37mDEBUG   [0m [34mCrawled (200) <GET https://www.indeform.com/> (referer: None) ['playwright'][0m
+2025-03-19 16:34:06 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://www.indeform.com/> (referer: None) ['playwright']
+[32mINFO    [0m [34m--- Crawling URL --- https://www.indeform.com/[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: --- Crawling URL --- https://www.indeform.com/
+[32mINFO    [0m [34mFound 8 links on the page.[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Found 8 links on the page.
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Checking link: https://www.indeform.com/
+[32mINFO    [0m [34mDomain matches: https://www.indeform.com/ indeform[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Domain matches: https://www.indeform.com/ indeform
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Checking link: https://www.indeform.com/
+[32mINFO    [0m [34mDomain matches: https://www.indeform.com/ indeform[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Domain matches: https://www.indeform.com/ indeform
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/news[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Checking link: https://www.indeform.com/news
+[32mINFO    [0m [34mDomain matches: https://www.indeform.com/news indeform[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Domain matches: https://www.indeform.com/news indeform
+[32mINFO    [0m [34mFound internal link: https://www.indeform.com/news[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Found internal link: https://www.indeform.com/news
+[37mDEBUG   [0m [34mScraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeform.com/news',
+ 'website': <Website: https://www.indeform.com/>}[0m
+2025-03-19 16:34:06 [scrapy.core.scraper] DEBUG: Scraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeform.com/news',
+ 'website': <Website: https://www.indeform.com/>}
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/company[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Checking link: https://www.indeform.com/company
+[32mINFO    [0m [34mDomain matches: https://www.indeform.com/company indeform[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Domain matches: https://www.indeform.com/company indeform
+[32mINFO    [0m [34mFound internal link: https://www.indeform.com/company[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Found internal link: https://www.indeform.com/company
+[37mDEBUG   [0m [34mScraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeform.com/company',
+ 'website': <Website: https://www.indeform.com/>}[0m
+2025-03-19 16:34:06 [scrapy.core.scraper] DEBUG: Scraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeform.com/company',
+ 'website': <Website: https://www.indeform.com/>}
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/contact-us[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Checking link: https://www.indeform.com/contact-us
+[32mINFO    [0m [34mDomain matches: https://www.indeform.com/contact-us indeform[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Domain matches: https://www.indeform.com/contact-us indeform
+[32mINFO    [0m [34mFound internal link: https://www.indeform.com/contact-us[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Found internal link: https://www.indeform.com/contact-us
+[37mDEBUG   [0m [34mScraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeform.com/contact-us',
+ 'website': <Website: https://www.indeform.com/>}[0m
+2025-03-19 16:34:06 [scrapy.core.scraper] DEBUG: Scraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeform.com/contact-us',
+ 'website': <Website: https://www.indeform.com/>}
+[32mINFO    [0m [34mChecking link: https://www.indeformtechnologies.com/[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Checking link: https://www.indeformtechnologies.com/
+[32mINFO    [0m [34mDomain matches: https://www.indeformtechnologies.com/ indeform[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Domain matches: https://www.indeformtechnologies.com/ indeform
+[32mINFO    [0m [34mFound internal link: https://www.indeformtechnologies.com/[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Found internal link: https://www.indeformtechnologies.com/
+[37mDEBUG   [0m [34mScraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeformtechnologies.com/',
+ 'website': <Website: https://www.indeform.com/>}[0m
+2025-03-19 16:34:06 [scrapy.core.scraper] DEBUG: Scraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeformtechnologies.com/',
+ 'website': <Website: https://www.indeform.com/>}
+[32mINFO    [0m [34mChecking link: https://www.indeforminteractive.com/[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Checking link: https://www.indeforminteractive.com/
+[32mINFO    [0m [34mDomain matches: https://www.indeforminteractive.com/ indeform[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Domain matches: https://www.indeforminteractive.com/ indeform
+[32mINFO    [0m [34mFound internal link: https://www.indeforminteractive.com/[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Found internal link: https://www.indeforminteractive.com/
+[37mDEBUG   [0m [34mScraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeforminteractive.com/',
+ 'website': <Website: https://www.indeform.com/>}[0m
+2025-03-19 16:34:06 [scrapy.core.scraper] DEBUG: Scraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeforminteractive.com/',
+ 'website': <Website: https://www.indeform.com/>}
+[32mINFO    [0m [34mChecking link: https://www.indeformdigital.com/[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Checking link: https://www.indeformdigital.com/
+[32mINFO    [0m [34mDomain matches: https://www.indeformdigital.com/ indeform[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Domain matches: https://www.indeformdigital.com/ indeform
+[32mINFO    [0m [34mFound internal link: https://www.indeformdigital.com/[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Found internal link: https://www.indeformdigital.com/
+[37mDEBUG   [0m [34mScraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeformdigital.com/',
+ 'website': <Website: https://www.indeform.com/>}[0m
+2025-03-19 16:34:06 [scrapy.core.scraper] DEBUG: Scraped from <200 https://www.indeform.com/>
+{'page_title': '',
+ 'url': 'https://www.indeformdigital.com/',
+ 'website': <Website: https://www.indeform.com/>}
+[32mINFO    [0m [34mFinished processing single page. Closing spider.[0m
+2025-03-19 16:34:06 [one_page_spider] INFO: Finished processing single page. Closing spider.
+[32mINFO    [0m [34mClosing spider (finished)[0m
+2025-03-19 16:34:06 [scrapy.core.engine] INFO: Closing spider (finished)
+[32mINFO    [0m [34mDumping Scrapy stats:
+{'downloader/request_bytes': 217,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 6071,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'elapsed_time_seconds': 6.635388,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2025, 3, 19, 14, 34, 6, 602905, tzinfo=datetime.timezone.utc),
+ 'item_scraped_count': 6,
+ 'items_per_minute': None,
+ 'log_count/DEBUG': 44,
+ 'log_count/INFO': 41,
+ 'memusage/max': 92401664,
+ 'memusage/startup': 92401664,
+ 'playwright/browser_count': 1,
+ 'playwright/context_count': 1,
+ 'playwright/context_count/max_concurrent': 1,
+ 'playwright/context_count/persistent/False': 1,
+ 'playwright/context_count/remote/False': 1,
+ 'playwright/page_count': 1,
+ 'playwright/page_count/max_concurrent': 1,
+ 'playwright/request_count': 15,
+ 'playwright/request_count/method/GET': 14,
+ 'playwright/request_count/method/POST': 1,
+ 'playwright/request_count/navigation': 1,
+ 'playwright/request_count/resource_type/document': 1,
+ 'playwright/request_count/resource_type/fetch': 1,
+ 'playwright/request_count/resource_type/font': 1,
+ 'playwright/request_count/resource_type/image': 8,
+ 'playwright/request_count/resource_type/script': 3,
+ 'playwright/request_count/resource_type/stylesheet': 1,
+ 'playwright/response_count': 15,
+ 'playwright/response_count/method/GET': 14,
+ 'playwright/response_count/method/POST': 1,
+ 'playwright/response_count/resource_type/document': 1,
+ 'playwright/response_count/resource_type/fetch': 1,
+ 'playwright/response_count/resource_type/font': 1,
+ 'playwright/response_count/resource_type/image': 8,
+ 'playwright/response_count/resource_type/script': 3,
+ 'playwright/response_count/resource_type/stylesheet': 1,
+ 'response_received_count': 1,
+ 'responses_per_minute': None,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2025, 3, 19, 14, 33, 59, 967517, tzinfo=datetime.timezone.utc)}[0m
+2025-03-19 16:34:06 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 217,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 6071,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'elapsed_time_seconds': 6.635388,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2025, 3, 19, 14, 34, 6, 602905, tzinfo=datetime.timezone.utc),
+ 'item_scraped_count': 6,
+ 'items_per_minute': None,
+ 'log_count/DEBUG': 44,
+ 'log_count/INFO': 41,
+ 'memusage/max': 92401664,
+ 'memusage/startup': 92401664,
+ 'playwright/browser_count': 1,
+ 'playwright/context_count': 1,
+ 'playwright/context_count/max_concurrent': 1,
+ 'playwright/context_count/persistent/False': 1,
+ 'playwright/context_count/remote/False': 1,
+ 'playwright/page_count': 1,
+ 'playwright/page_count/max_concurrent': 1,
+ 'playwright/request_count': 15,
+ 'playwright/request_count/method/GET': 14,
+ 'playwright/request_count/method/POST': 1,
+ 'playwright/request_count/navigation': 1,
+ 'playwright/request_count/resource_type/document': 1,
+ 'playwright/request_count/resource_type/fetch': 1,
+ 'playwright/request_count/resource_type/font': 1,
+ 'playwright/request_count/resource_type/image': 8,
+ 'playwright/request_count/resource_type/script': 3,
+ 'playwright/request_count/resource_type/stylesheet': 1,
+ 'playwright/response_count': 15,
+ 'playwright/response_count/method/GET': 14,
+ 'playwright/response_count/method/POST': 1,
+ 'playwright/response_count/resource_type/document': 1,
+ 'playwright/response_count/resource_type/fetch': 1,
+ 'playwright/response_count/resource_type/font': 1,
+ 'playwright/response_count/resource_type/image': 8,
+ 'playwright/response_count/resource_type/script': 3,
+ 'playwright/response_count/resource_type/stylesheet': 1,
+ 'response_received_count': 1,
+ 'responses_per_minute': None,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2025, 3, 19, 14, 33, 59, 967517, tzinfo=datetime.timezone.utc)}
+[32mINFO    [0m [34mSpider closed (finished)[0m
+2025-03-19 16:34:06 [scrapy.core.engine] INFO: Spider closed (finished)
+[32mINFO    [0m [34mClosing download handler[0m
+2025-03-19 16:34:06 [scrapy-playwright] INFO: Closing download handler
+[32mINFO    [0m [34mClosing download handler[0m
+2025-03-19 16:34:06 [scrapy-playwright] INFO: Closing download handler
+[37mDEBUG   [0m [34mBrowser context closed: 'default' (persistent=False, remote=False)[0m
+2025-03-19 16:34:06 [scrapy-playwright] DEBUG: Browser context closed: 'default' (persistent=False, remote=False)
+[32mINFO    [0m [34mClosing browser[0m
+2025-03-19 16:34:06 [scrapy-playwright] INFO: Closing browser
+[37mDEBUG   [0m [34mBrowser disconnected[0m
+2025-03-19 16:34:06 [scrapy-playwright] DEBUG: Browser disconnected
+[33mWARNING [0m [34msys:1: RuntimeWarning: coroutine 'SyncToAsync.__call__' was never awaited
+[0m
+2025-03-19 16:34:06 [py.warnings] WARNING: sys:1: RuntimeWarning: coroutine 'SyncToAsync.__call__' was never awaited
+

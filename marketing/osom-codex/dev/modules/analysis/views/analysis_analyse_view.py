@@ -11,7 +11,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from urllib.parse import urlparse
 from django.core.validators import URLValidator
-from modules.analysis.tasks import run_spider
+from modules.analysis.tasks import run_one_page_spider
 
 class AnalyseView(TemplateView):
     template_name = "modules/analysis/analyse.html"
@@ -41,6 +41,7 @@ class AnalyseView(TemplateView):
             website.save()
 
             Page.objects.filter(website=website).delete()
+            Page.objects.all().delete()
             Page.objects.create(
             website=website,
             url=url,
@@ -56,7 +57,7 @@ class AnalyseView(TemplateView):
             page_title="",
             )
 
-        run_spider.delay(website_id=website.id, website_name=website.start_url)
+        run_one_page_spider.delay(website_id=website.id, website_name=website.start_url)
 
         return redirect(f"/analysis/analyse?website_id={website.id}")
 

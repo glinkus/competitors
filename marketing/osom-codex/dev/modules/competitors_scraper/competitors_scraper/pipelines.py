@@ -22,9 +22,8 @@ from asgiref.sync import sync_to_async
 #                 print(f"URL already exists: {url}")
 
 #         return item
-
+@sync_to_async
 class PagePipeline:
-    @sync_to_async
     def process_item(self, item, spider):
         try:
             item.save()
