@@ -50,6 +50,7 @@ class AnalyseView(TemplateView):
             )
         else:
             website = Website.objects.create(start_url=url, last_visited=timezone.now().date(), crawling_in_progress=True)
+            Page.objects.all().delete()
             Page.objects.create(
             website=website,
             url=url,

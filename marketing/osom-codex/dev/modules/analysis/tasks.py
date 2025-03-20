@@ -3,7 +3,8 @@ import subprocess
 import os
 from time import sleep
 from celery import shared_task
-from modules.analysis.models import Page
+from modules.analysis.models import Page, Website
+
 
 @shared_task
 def run_one_page_spider(website_id, website_name):
@@ -16,15 +17,16 @@ def run_one_page_spider(website_id, website_name):
     output_file = os.path.join(project_root, f'spider_output_{website_id}.txt')
 
     while True:
-        # Query for pages for this website that haven't been visited
         unvisited_pages = list(
             Page.objects.filter(website_id=website_id, visited=False)
             .values_list("url", flat=True)
         )
         if not unvisited_pages:
+            w = Website.objects.filter(id=website_id).first()
+            w.crawling_finished = True
+            w.save()
             return "No unvisited pages found."
 
-        # For each unvisited page, run the one-page spider
         for page_url in unvisited_pages:
             cmd = (
                 f"scrapy crawl one_page_spider -a page_url={page_url} "

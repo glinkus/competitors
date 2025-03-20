@@ -105,11 +105,17 @@ class OnePageSpider(scrapy.Spider):
         website.visited_count += 1
         website.save()
 
-    
+    def save_page_sync(self, website_id, url):
+        page = Page(website_id=website_id, url=url)
+        page.save()
+        return page
+        
     
     def get_page_sync(self, website_id, url):
         norm_url = normalize_url(url)
         return Page.objects.filter(website_id=website_id, url=norm_url).first()
+    
+    
 
     def parse(self, response):
         url = normalize_url(response.url)
@@ -124,6 +130,12 @@ class OnePageSpider(scrapy.Spider):
         d.addCallback(update_if_exists)
         d.addErrback(lambda failure: failure.trap(Page.DoesNotExist))
 
+        content_type = response.headers.get("Content-Type", b"").decode("utf-8")
+        if "text/html" not in content_type.lower():
+            self.logger.info(f"Skipping non-HTML content for URL {url} with content type: {content_type}")
+            self.logger.info("Finished processing single page. Closing spider.")
+            self.crawler.engine.close_spider(self, reason="finished")
+            return
         # Optionally, process links on the page and yield PageItem objects.
         # Since we want to crawl only one page, you may choose to yield items and let a separate process handle these.
         links = response.css("a::attr(href)").getall()
@@ -132,13 +144,14 @@ class OnePageSpider(scrapy.Spider):
             absolute_link = normalize_url(urljoin(url, link))
             self.logger.info(f"Checking link: {absolute_link}")
             self.logger.info(f"Domain matches: {absolute_link} {self.base_keyword}")
-            if domain_matches(absolute_link, self.base_keyword) and absolute_link not in self.urls:
+            if domain_matches(absolute_link, self.base_keyword) and absolute_link != url and absolute_link not in self.urls:
                     self.logger.info(f"Found internal link: {absolute_link}")
-                    item = PageItem()
-                    item["url"] = absolute_link
-                    item["website"] = self.website_instance
-                    item["page_title"] = ""
-                    yield item
+                    self.urls.add(absolute_link)
+                    try:
+                        threads.deferToThread(self.save_page_sync, self.website_id, absolute_link)
+                    except Exception as e:
+                        self.logger.error(f"Error saving page: {e}")
+                    
 
         self.logger.info("Finished processing single page. Closing spider.")
         self.crawler.engine.close_spider(self, reason="finished")
