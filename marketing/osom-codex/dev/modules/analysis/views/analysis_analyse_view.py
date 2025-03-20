@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from django.http import JsonResponse
+from urllib.parse import urlparse, urlunparse, urljoin
 
 from modules.analysis.models import Website, Page
 from scrapy.crawler import CrawlerProcess
@@ -21,7 +22,8 @@ class AnalyseView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        url = request.POST.get("url")
+        u = request.POST.get("url")
+        url = self.normalize_url(u)
         print("Entered URL: ", url)
 
         validate = URLValidator()
@@ -91,5 +93,12 @@ class AnalyseView(TemplateView):
                 'websites': websites,
             }
             return render(request, self.template_name, context)
+        
+    def normalize_url(self, url):
+        parsed = urlparse(url)
+        scheme = 'https'
+        netloc = parsed.netloc.lower()
+        path = parsed.path.rstrip('/') or '/'
+        return urlunparse((scheme, netloc, path, '', '', ''))
 
 

@@ -86,9 +86,10 @@ class OnePageSpider(scrapy.Spider):
                 "playwright_include_page": True,
                 "handle_httpstatus_all": True,
                 "playwright_page_coroutines": [
-                    lambda page: page.wait_for_load_state("networkidle"),
-                    lambda page: page.route("**/*.{png,jpg,jpeg,webm,woff,woff2,ttf,css,mp4}", lambda route: route.abort())
+                    lambda page: page.route("**/*.{png,jpg,jpeg,webm,woff,woff2,ttf,css,mp4}", lambda route: route.abort()),
+                    lambda page: page.wait_for_load_state("networkidle")
                 ]
+
             },
             callback=self.parse,
             dont_filter=True,
@@ -136,8 +137,6 @@ class OnePageSpider(scrapy.Spider):
             self.logger.info("Finished processing single page. Closing spider.")
             self.crawler.engine.close_spider(self, reason="finished")
             return
-        # Optionally, process links on the page and yield PageItem objects.
-        # Since we want to crawl only one page, you may choose to yield items and let a separate process handle these.
         links = response.css("a::attr(href)").getall()
         self.logger.info(f"Found {len(links)} links on the page.")
         for link in links:
@@ -155,3 +154,5 @@ class OnePageSpider(scrapy.Spider):
 
         self.logger.info("Finished processing single page. Closing spider.")
         self.crawler.engine.close_spider(self, reason="finished")
+
+        
