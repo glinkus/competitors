@@ -46,7 +46,6 @@ class OnePageSpider(scrapy.Spider):
             raise ValueError("A page URL must be provided as the 'page_url' argument")
         self.page_url = normalize_url(page_url)
         self.website_id = website_id
-        # Optionally, if a website_name is passed, we can use that; otherwise, it may be looked up.
         self.website_name = normalize_url(website_name) if website_name else ""
 
         self.website_instance = None
@@ -75,10 +74,7 @@ class OnePageSpider(scrapy.Spider):
 
         threads.deferToThread(fetch_urls).addCallback(lambda _: self.start_requests())
         
-
-
     def start_requests(self):
-        # Start with the one page provided
         yield scrapy.Request(
             self.page_url,
             meta={
@@ -95,13 +91,42 @@ class OnePageSpider(scrapy.Spider):
             dont_filter=True,
         )
 
+    def extract_structured_text(self, response):
+        elements = {
+            'title': 'title::text',
+            'h1': 'h1::text',
+            'h2': 'h2::text',
+            'h3': 'h3::text',
+            'h4': 'h4::text',
+            'h5': 'h5::text',
+            'h6': 'h6::text',
+            'alt': 'img::attr(alt)',
+            'p': 'p ::text',
+            'li': 'li::text'
+        }
+        
+        structured = {}
+        for tag, selector in elements.items():
+            texts = response.css(selector).getall()
+            if texts:
+                joined = " ".join(text.strip() for text in texts if text.strip())
+                structured[tag] = joined
+        if 'p' in structured and 'li' in structured:
+            structured['p'] = structured['p'] + " " + structured['li']
+            del structured['li']
+        return structured
+
+
     def update_page_sync(self, page, response):
         close_old_connections()
         page.visited = True
         page.page_title = response.css("title::text").get() or ""
         page.last_visit = timezone.now().date()
+        structured = self.extract_structured_text(response)
+        page.structured_text = structured
+
         page.save()
-        # update visited_count on the website instance
+
         website = page.website
         website.visited_count += 1
         website.save()
