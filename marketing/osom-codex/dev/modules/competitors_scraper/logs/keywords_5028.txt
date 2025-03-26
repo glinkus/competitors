@@ -1,0 +1,15 @@
+gosling swam across: 14.8128
+gosling swam: 13.5228
+across the pond: 12.429599999999999
+swam across the: 11.672999999999998
+swam across: 11.3886
+the pond: 10.5264
+swam: 9.5046
+pond: 8.4513
+gosling: 8.144300000000001
+pond nursery rhme: 7.0424999999999995
+the pond nursery: 6.675
+pond nursery: 6.228
+nursery rhme indeform: 5.0009999999999994
+school with gosling: 4.5486
+school: 3.9629

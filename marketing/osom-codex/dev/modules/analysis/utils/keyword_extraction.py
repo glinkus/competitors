@@ -5,7 +5,6 @@ from modules.analysis.models import Page, ExtractedKeyword
 import torch
 
 class KeywordExtraction:
-
     _instance = None
 
     IMPORTANCE_WEIGHTS = {
@@ -23,10 +22,14 @@ class KeywordExtraction:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(KeywordExtraction, cls).__new__(cls)
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-            cls._instance.model = SentenceTransformer('distiluse-base-multilingual-cased', device=device)
-            cls._instance.kw_extractor = KeyBERT(model=cls._instance.model)
         return cls._instance
+
+    def __init__(self):
+        # Initialize only if not already set
+        if not hasattr(self, "kw_extractor"):
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            self.model = SentenceTransformer('distiluse-base-multilingual-cased', device=device)
+            self.kw_extractor = KeyBERT(model=self.model)
 
     def extract_keywords(self, page: Page, top_n=15):
         structured_text = page.structured_text

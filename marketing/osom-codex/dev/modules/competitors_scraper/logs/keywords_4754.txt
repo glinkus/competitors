@@ -1,0 +1,15 @@
+touch screen game: 14.9088
+screen game: 12.642900000000001
+touch screen: 11.2344
+ezerunas an interactive: 10.587
+interactive touch screen: 9.741
+interactive: 9.1593
+an interactive: 9.1329
+screen: 8.8416
+screen game indeform: 8.535
+interactive touch: 7.7835
+an interactive touch: 7.7235000000000005
+game: 6.8732999999999995
+touch: 6.2625
+interactive museum touch: 5.9328
+museum touch screen: 5.912100000000001

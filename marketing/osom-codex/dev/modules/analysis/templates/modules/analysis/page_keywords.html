@@ -1,0 +1,30 @@
+{% extends 'rarea/layout.html' %}
+
+{% block content %}
+  <h2>Keywords for: "{{ page.page_title }}" ({{ page.url }})</h2>
+  <table border="1" cellpadding="5">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Keyword</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for keyword in keywords %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ keyword.keyword }}</td>
+          <td>{{ keyword.score|floatformat:3 }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">No keywords extracted for this page yet.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'modules.analysis:saved_urls' website_id=page.website.id %}">
+    <button type="button">Back to Pages</button>
+  </a>
+{% endblock %}

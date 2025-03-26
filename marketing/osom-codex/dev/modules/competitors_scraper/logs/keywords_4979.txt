@@ -1,0 +1,15 @@
+explainer video: 15.228600000000002
+systemair 3d: 14.247
+3d explainer video: 10.882
+video: 10.836
+systemair 3d product: 10.0395
+3d explainer: 8.7253
+product explainer video: 8.496
+3d product explainer: 8.4735
+3d product: 8.328000000000001
+3d: 8.1312
+systemair: 7.5611999999999995
+systemair 3d explainer: 7.0956
+product explainer: 5.385
+product: 4.879499999999999
+explainer: 4.480499999999999

@@ -1,0 +1,15 @@
+the sparrow banquet: 15.328500000000002
+sparrow banquet: 14.591999999999999
+the sparrow: 10.6839
+sparrow: 10.0662
+banquet: 8.6892
+banquet nursery rhyme: 8.3955
+sparrow banquet nursery: 7.785
+nursery rhyme indeform: 7.3065
+nursery rhyme: 6.2490000000000006
+banquet nursery: 4.9605
+cheerful sparrow party: 4.8748000000000005
+joyful animated song: 4.560499999999999
+song about cheerful: 4.2329
+about cheerful sparrow: 4.1146
+rhyme indeform: 4.038

@@ -1,0 +1,15 @@
+data visualization monitoring: 22.3246
+visualization monitoring and: 19.2301
+monitoring and control: 18.728
+visualization monitoring: 17.830299999999998
+energy grid data: 15.770599999999998
+grid data visualization: 14.5854
+monitoring and: 13.7079
+data visualization: 13.6593
+monitoring: 12.193200000000001
+and control: 10.5921
+control: 10.497599999999998
+energy grid: 8.831700000000001
+grid data: 8.5887
+visualization: 8.504999999999999
+energy: 7.1874

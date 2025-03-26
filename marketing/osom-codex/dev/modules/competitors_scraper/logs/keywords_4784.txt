@@ -1,0 +1,15 @@
+3d teeth visualization: 0.5226
+realistic 3d teeth: 0.5188
+photo realistic 3d: 0.4385
+schematic medical visualizations: 0.4074
+scientific journal illustration: 0.3943
+3d teeth: 0.3937
+realistic 3d: 0.3926
+illustration photo realistic: 0.3886
+teeth visualization: 0.3869
+medical visualizations of: 0.3759
+medical visualizations: 0.3726
+heart and kidneys: 0.3679
+photo realistic: 0.3088
+schematic medical: 0.3058
+journal illustration photo: 0.2957

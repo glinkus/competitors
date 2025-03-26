@@ -1,0 +1,15 @@
+interactive santa: 19.5485
+an interactive santa: 17.544
+interactive santa claus: 17.1131
+santa claus show: 16.775100000000002
+an interactive: 12.9323
+interactive: 9.9597
+santa: 8.6583
+claus show: 8.282399999999999
+santa claus: 7.959899999999999
+show: 7.790700000000001
+show indeform: 4.821000000000001
+claus show indeform: 4.074
+interactive talking santa: 3.5469000000000004
+solution interactive santa: 3.4188
+magic christmas show: 3.1402

@@ -1,0 +1,15 @@
+holland t5070 animated: 0.5057
+3d video presentation: 0.4997
+t5070 animated 3d: 0.4857
+3d visual presentation: 0.4673
+animated 3d visual: 0.458
+animated 3d video: 0.4518
+an animated 3d: 0.4175
+animated 3d: 0.3989
+tractor new holland: 0.3816
+new holland t5070: 0.3756
+3d visual: 0.3706
+t5070 animated: 0.3701
+3d video: 0.3578
+video presentation: 0.3324
+video presentation of: 0.3312

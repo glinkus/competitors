@@ -1,0 +1,15 @@
+thermo control features: 0.4998
+3d real estate: 0.4995
+real estate visualization: 0.4673
+displaying economical energy: 0.4645
+visualization displaying economical: 0.4203
+estate visualization displaying: 0.3997
+estate visualization: 0.3881
+control features: 0.375
+economical energy saving: 0.3533
+displaying economical: 0.3467
+economical energy: 0.3345
+and thermo control: 0.3267
+thermo control: 0.3264
+saving and thermo: 0.3088
+energy saving and: 0.3077

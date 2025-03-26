@@ -1,0 +1,15 @@
+crow and cheese: 20.7351
+crow and: 17.4561
+and cheese: 14.536200000000001
+cheese: 13.2546
+the crow and: 12.8226
+crow: 11.3487
+the crow: 9.846599999999999
+animated fairy tale: 8.955
+animated fairy: 7.8389999999999995
+tale the crow: 7.3485
+fairy tale the: 7.188000000000001
+fairy tale: 6.9315
+fairy: 5.257499999999999
+tale the: 4.359
+animated: 4.306500000000001

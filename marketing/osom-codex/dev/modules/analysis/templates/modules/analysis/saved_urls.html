@@ -9,6 +9,7 @@
         <th>URL</th>
         <th>Title</th>
         <th>Visited</th>
+        <th>Keywords</th>
       </tr>
     </thead>
     <tbody>
@@ -18,6 +19,11 @@
           <td>{{ page.url }}</td>
           <td>{{ page.page_title }}</td>
           <td>{{ page.visited }}</td>
+          <td>
+            <a href="{% url 'modules.analysis:page_keywords' website.id page.id %}">
+              <button type="button">View Keywords</button>
+            </a>
+          </td>
         </tr>
       {% endfor %}
     </tbody>

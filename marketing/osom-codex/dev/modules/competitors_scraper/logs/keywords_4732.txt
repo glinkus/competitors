@@ -1,0 +1,15 @@
+castle ghost: 17.3388
+interactive animated castle: 11.7015
+interactive: 11.527800000000003
+ghost: 11.5122
+interactive castle ghost: 11.3733
+animated castle ghost: 11.199
+castle: 10.845
+an interactive: 10.638
+interactive castle: 9.418800000000001
+castle ghost indeform: 9.4095
+animated castle: 9.045
+an interactive animated: 8.659500000000001
+interactive animated: 8.4045
+an interactive castle: 7.4502
+ghost indeform: 6.705

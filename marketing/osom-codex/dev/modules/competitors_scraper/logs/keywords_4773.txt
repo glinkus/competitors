@@ -1,0 +1,15 @@
+sparrow: 18.2576
+sparrow sparrow: 15.2853
+sparrow nursery rhyme: 9.4785
+nursery rhyme: 9.1591
+sparrow sparrow nursery: 8.3385
+sparrow nursery: 7.4085
+nursery rhyme indeform: 6.4575
+animated nursery rhyme: 4.2742
+educational animated nursery: 4.1615
+rhyme for kids: 3.8556
+rhyme indeform: 3.777
+nursery rhyme for: 3.5777
+animated nursery: 3.3649
+about little sparrow: 3.2655000000000003
+an educational animated: 3.2018

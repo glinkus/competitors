@@ -1,0 +1,15 @@
+muscle beach: 17.037499999999998
+muscle beach venice: 11.274
+beach: 9.2343
+beach venice renovation: 8.574
+beach venice: 7.9656
+muscle: 7.764600000000001
+muscle beach in: 7.3599
+venice renovation indeform: 6.4305
+venice renovation: 5.862
+renovation indeform: 5.5575
+in venice california: 4.859100000000001
+venice california: 4.7295
+renovation: 4.593
+beach in venice: 4.2552
+california: 3.9312
