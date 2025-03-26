@@ -1,0 +1,28 @@
+{% extends 'rarea/layout.html' %}
+{% load i18n %}
+{% block content %}
+<h2>Keywords for {{ website.start_url }}</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Keyword</th>
+            <th>Count</th>
+            <th>Avg. Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in keyword_summary %}
+        <tr>
+            <td>{{ item.keyword }}</td>
+            <td>{{ item.count }}</td>
+            <td>{{ item.avg_score }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No keywords found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

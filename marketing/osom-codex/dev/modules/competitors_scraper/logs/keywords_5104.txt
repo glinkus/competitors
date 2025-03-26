@@ -1,0 +1,15 @@
+platform for medical: 12.126000000000001
+visual saas platform: 10.0878
+3d visual: 10.0419
+3d visual saas: 9.2412
+medical implants: 9.1935
+medical implant: 8.335
+medical implants indeform: 7.686
+for medical implants: 7.008
+platform for: 6.8865
+saas platform for: 6.832800000000001
+for medical: 6.189
+medical: 5.6397
+implants indeform: 5.478000000000001
+innovative 3d visual: 5.0337000000000005
+medical implant design: 4.9365

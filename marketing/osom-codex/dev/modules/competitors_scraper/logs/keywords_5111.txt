@@ -1,0 +1,15 @@
+interactive 3d jewelry: 19.9938
+an interactive 3d: 18.1764
+3d jewelry designer: 17.9787
+interactive 3d: 17.7197
+jewelry designer: 16.891199999999998
+3d jewelry: 14.360999999999999
+jewelry: 11.3796
+designer: 10.5321
+jewelry designer indeform: 9.378
+an interactive: 9.2376
+interactive: 8.9247
+3d: 7.314
+designer indeform: 6.0615000000000006
+3d webgl jewelry: 3.3179999999999996
+interactive 3d webgl: 3.234

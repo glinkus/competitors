@@ -16,9 +16,9 @@ def normalize_url(url):
     path = parsed.path.rstrip('/') or '/'
     return urlunparse((scheme, netloc, path, '', '', ''))
 
-def domain_matches(url, base_keyword):
-    extracted = tldextract.extract(url)
-    return base_keyword in extracted.domain
+# def domain_matches(url, base_keyword):
+#     extracted = tldextract.extract(url)
+#     return base_keyword in extracted.domain
 
 class OnePageSpider(scrapy.Spider):
     name = "one_page_spider"
@@ -26,8 +26,6 @@ class OnePageSpider(scrapy.Spider):
     custom_settings = {
         "PLAYWRIGHT_BROWSER_TYPE": "chromium",
         "PLAYWRIGHT_LAUNCH_OPTIONS": {"headless": True},
-        # Global downloader concurrency can be higher so that subresources load concurrently,
-        # but we only schedule one main URL.
         "DOWNLOAD_DELAY": 1,
         "DOWNLOAD_HANDLERS": {
             "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
@@ -39,7 +37,6 @@ class OnePageSpider(scrapy.Spider):
         "TWISTED_REACTOR": "twisted.internet.asyncioreactor.AsyncioSelectorReactor",
     }
 
-    # Expect a single page URL to be passed as "page_url" and website_id to indicate the target website.
     def __init__(self, page_url=None, website_id=None, website_name=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if page_url is None:
@@ -49,12 +46,11 @@ class OnePageSpider(scrapy.Spider):
         self.website_name = normalize_url(website_name) if website_name else ""
 
         self.website_instance = None
-        self.urls = set()  # All discovered URLs.
+        self.urls = set()
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super().from_crawler(crawler, *args, **kwargs)
-        # You can connect to spider_opened if you need to do additional initialization.
         crawler.signals.connect(spider.spider_opened, signal=signals.spider_opened)
         return spider
 
@@ -68,9 +64,9 @@ class OnePageSpider(scrapy.Spider):
             u = [normalize_url(u) for u in unvisited_pages.values_list("url", flat=True)]
             self.urls = set(u)
             self.logger.info(f"Initial URLs from DB: {self.urls}")
-            extracted = tldextract.extract(self.website_name)
-            self.base_keyword = extracted.domain
-            self.logger.info(f"Extracted domain: {self.base_keyword}")
+            # extracted = tldextract.extract(self.website_name)
+            # self.base_keyword = extracted.domain
+            # self.logger.info(f"Extracted domain: {self.base_keyword}")
 
         threads.deferToThread(fetch_urls).addCallback(lambda _: self.start_requests())
         
@@ -132,9 +128,10 @@ class OnePageSpider(scrapy.Spider):
         website.save()
 
     def save_page_sync(self, website_id, url):
-        page = Page(website_id=website_id, url=url)
-        page.save()
+        norm_url = normalize_url(url)
+        page, created = Page.objects.get_or_create(website_id=website_id, url=norm_url)
         return page
+
         
     
     def get_page_sync(self, website_id, url):
@@ -167,8 +164,10 @@ class OnePageSpider(scrapy.Spider):
         for link in links:
             absolute_link = normalize_url(urljoin(url, link))
             self.logger.info(f"Checking link: {absolute_link}")
-            self.logger.info(f"Domain matches: {absolute_link} {self.base_keyword}")
-            if domain_matches(absolute_link, self.base_keyword) and absolute_link != url and absolute_link not in self.urls:
+            original_link = urlparse(url).netloc
+            founded_link = urlparse(absolute_link).netloc
+
+            if original_link == founded_link and absolute_link != url and absolute_link not in self.urls:
                     self.logger.info(f"Found internal link: {absolute_link}")
                     self.urls.add(absolute_link)
                     try:
