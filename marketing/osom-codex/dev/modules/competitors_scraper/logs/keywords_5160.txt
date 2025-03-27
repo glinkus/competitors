@@ -1,0 +1,15 @@
+Management Systems Data: 1823.5421850128828
+Greensmith Energy Management: 1500.6336317122953
+Energy Management Systems: 1500.6336317122953
+energy storage data: 542.6419088235423
+Systems Data visualization: 458.4572452430815
+intelligent energy storage: 315.4223783122354
+control subsystem delivered: 222.91587210004002
+storage data visualization: 207.71498846108813
+Management Systems: 175.8671771853552
+Systems Data: 138.75927646686668
+Greensmith Energy: 114.34008208955606
+Energy Management: 114.34008208955606
+data visualization: 70.74571486453658
+storage data: 64.26612789255434
+intelligent energy: 52.86261119241809

@@ -1,0 +1,15 @@
+Jewelry Designer: 2232.2937686088976
+WebGL jewelry customization: 1296.0484327652905
+jewelry customization platform: 1296.0484327652905
+Indeform: 493.47978918663637
+jewelry designer: 350.07703638125923
+customization platform: 299.665204914587
+WebGL jewelry: 250.117632131267
+design tools: 250.117632131267
+Designer: 209.39195625562522
+Jewelry: 193.44262740059355
+Interactive: 174.49329687968768
+jewelry customization: 169.12978483916353
+Solution Conclusion: 146.39871619975236
+jewelry: 121.15067422590866
+interactive: 112.82773196226577

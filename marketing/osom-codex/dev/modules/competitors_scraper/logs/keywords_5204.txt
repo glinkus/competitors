@@ -1,0 +1,15 @@
+CAD display designer: 56018.99024387511
+Display Designer Conclusion: 19930.772022244655
+CAD display: 5934.463939637776
+e-commerce product catalogs: 4285.16290952892
+display designer: 2596.1014654361734
+Problem The Solution: 2025.8750292452307
+Designer Conclusion: 1505.5924767324655
+Client The Problem: 1471.6712123528685
+options The Client: 777.5596736651556
+EASYCAD: 723.7703574737334
+CAD: 637.9582137262162
+product catalogs: 611.1566629371163
+checkout and shipping: 611.1566629371163
+integrated with e-commerce: 409.05464331818894
+e-commerce product: 409.05464331818894

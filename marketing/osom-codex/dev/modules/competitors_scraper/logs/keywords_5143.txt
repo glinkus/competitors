@@ -1,0 +1,15 @@
+medical implant manufacturing: 1881.5182065269262
+Visual SaaS platform: 1036.7629330432633
+Medical Implants Design: 962.3596538650916
+visual SaaS platform: 905.8430047297666
+SaaS platform created: 877.494828927091
+Implants Design SaaS: 561.4301950362886
+Design SaaS Conclusion: 550.4878722408479
+medical implant design: 543.5058028378598
+Indeform: 493.47978918663637
+SaaS platform: 394.9929063528213
+medical implant: 378.57355346549565
+medical implant SaaS: 360.52153869915315
+Visual SaaS: 343.0782415902738
+implant manufacturing: 341.86661202233586
+visual SaaS: 303.6200618722697

@@ -1,14 +1,20 @@
 {% extends 'rarea/layout.html' %}
 {% load i18n %}
 {% block content %}
-<h2>Keywords for {{ website.start_url }}</h2>
+<h2>{% trans "Keywords for" %} {{ website.start_url }}</h2>
+
+<!-- Recalculate Keywords Button -->
+<form action="{% url 'modules.analysis:website_keywords' website.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit">{% trans "Recalculate Keywords" %}</button>
+</form>
 
 <table>
     <thead>
         <tr>
-            <th>Keyword</th>
-            <th>Count</th>
-            <th>Avg. Score</th>
+            <th>{% trans "Keyword" %}</th>
+            <th>{% trans "Count" %}</th>
+            <th>{% trans "Avg. Score" %}</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +26,7 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="3">No keywords found.</td>
+            <td colspan="3">{% trans "No keywords found." %}</td>
         </tr>
         {% endfor %}
     </tbody>
