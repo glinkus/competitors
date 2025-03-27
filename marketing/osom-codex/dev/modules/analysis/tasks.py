@@ -66,16 +66,16 @@ def analyze_page(page_url):
     extractor = KeywordExtraction()
     keywords = extractor.extract_keywords(page)
 
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    project_root = os.path.join(BASE_DIR, 'competitors_scraper')
-    log_dir = os.path.join(project_root, 'logs')
-    os.makedirs(log_dir, exist_ok=True)
-    file_path = os.path.join(log_dir, f'keywords_{page.id}.txt')
+    # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # project_root = os.path.join(BASE_DIR, 'competitors_scraper')
+    # log_dir = os.path.join(project_root, 'logs')
+    # os.makedirs(log_dir, exist_ok=True)
+    # file_path = os.path.join(log_dir, f'keywords_{page.id}.txt')
 
 
-    with open(file_path, "w", encoding="utf-8") as f:
-        for keyword, score in keywords:
-            f.write(f"{keyword}: {score}\n")
+    # with open(file_path, "w", encoding="utf-8") as f:
+    #     for keyword, score in keywords:
+    #         f.write(f"{keyword}: {score}\n")
 
     ExtractedKeyword.objects.filter(page=page).delete()
 
