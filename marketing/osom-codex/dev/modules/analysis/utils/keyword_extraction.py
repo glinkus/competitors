@@ -203,7 +203,12 @@ class KeywordExtraction:
             self.model = SentenceTransformer('distiluse-base-multilingual-cased', device=device)
             self.kw_extractor = KeyBERT(model=self.model)
             self.stop_words = set(stopwords.words('english'))
-            self.vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 3), max_df=0.85)
+            self.vectorizer = TfidfVectorizer(
+                stop_words='english',
+                ngram_range=(1, 3),
+                max_df=1.0,
+                min_df=1
+            )
 
     def preprocess_text(self, text):
         text = text.lower()
