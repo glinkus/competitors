@@ -185,6 +185,7 @@ def analyze_top_keywords_trends(website_id, top_n=10):
 
     geo = 'LT'
     pytrends = TrendReq()
+    # pytrends = TrendReq(hl='en-US', tz=360, timeout=(10,25), proxies=['https://43.153.100.88:18088'], retries=2, backoff_factor=0.1, requests_args={'verify':False})
 
     ExtractedKeyword.objects.filter(
         page__website_id=website_id,

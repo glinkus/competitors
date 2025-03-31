@@ -47,6 +47,10 @@
                         <button>View keywords</button>
                     </a>
                 </td>
+                <td class="action">
+                    <a href="{% url 'modules.analysis:insights' website.id %}">
+                        <button>Generate Insights</button>
+                    </a>
                 </td>
             </tr>
         {% empty %}
