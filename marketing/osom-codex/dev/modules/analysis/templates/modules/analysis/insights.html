@@ -2,5 +2,10 @@
 
 {% block content %}
 <h2>AI Insights on Communication & Positioning</h2>
-<p>{{ text|linebreaks }}</p>
+<div class="prose">{{ insight|safe }}</div>
+
+<form action="{% url 'modules.analysis:insights' website.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Regenerate</button>
+</form>
 {% endblock %}

@@ -39,4 +39,13 @@ class ExtractedKeyword(models.Model):
     def __str__(self):
         return self.keyword
 
+class KeywordInsight(models.Model):
+    website = models.OneToOneField(Website, on_delete=models.CASCADE, related_name="insight")
+    insight_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Insight for {self.website.start_url}"
+
+
 
