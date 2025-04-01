@@ -13,6 +13,7 @@ from scrapy.utils.project import get_project_settings
 from urllib.parse import urlparse
 from django.core.validators import URLValidator
 from modules.analysis.tasks import run_one_page_spider
+from django.urls import reverse
 
 class AnalyseView(TemplateView):
     template_name = "modules/analysis/analyse.html"
@@ -30,8 +31,7 @@ class AnalyseView(TemplateView):
         try:
             validate(url)
         except:
-            # Redirect or show an error message if invalid URL
-            return redirect("/analysis/analyse?error=invalid_url")
+            return redirect(f"{reverse('modules.analysis:analyse')}?error=invalid_url")
         
         website_qs = Website.objects.filter(start_url=url)
         if website_qs.exists():
@@ -60,7 +60,7 @@ class AnalyseView(TemplateView):
 
         run_one_page_spider.delay(website_id=website.id, website_name=website.start_url)
 
-        return redirect(f"/analysis/analyse?website_id={website.id}")
+        return redirect(f"{reverse('modules.analysis:analyse')}?error=invalid_url")
 
     # def get(self, request, *args, **kwargs):
     #     websites = Website.objects.all().order_by('-last_visited')

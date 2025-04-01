@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content %}
-<form action="/analysis/analyse" method="post">
+<form action="/analysis/" method="post">
     {% csrf_token %}
     <label for="url">Enter URL:</label>
     <input type="url" id="url" name="url" placeholder="https://example.com" required>
@@ -52,6 +52,11 @@
                         <button>View insights</button>
                     </a>
                 </td>
+                <td class="action">
+                    <a href="{% url 'modules.analysis:overview' website.id %}">
+                        <button>Overview</button>
+                    </a>
+                </td>
             </tr>
         {% empty %}
             <tr><td colspan="6">No scraped websites yet.</td></tr>
@@ -61,7 +66,7 @@
 
 <script>
 function checkScrapingStatus(websiteId) {
-    fetch(`/analysis/analyse?website_id=${websiteId}`, {
+    fetch(`/analysis?website_id=${websiteId}`, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
@@ -73,7 +78,7 @@ function checkScrapingStatus(websiteId) {
 
         if (data.crawling_finished) {
             row.querySelector('.status').innerHTML = '🟢 Finished';
-            row.querySelector('.action').innerHTML = `<a href="/analysis/analyse/saved-urls/${websiteId}/"><button>View Scraped URLs</button></a>`;
+            row.querySelector('.action').innerHTML = `<a href="/analysis/saved-urls/${websiteId}/"><button>View Scraped URLs</button></a>`;
         } else if (data.crawling_in_progress) {
             row.querySelector('.status').innerHTML = '🟡 In Progress';
             setTimeout(() => checkScrapingStatus(websiteId), 5000);

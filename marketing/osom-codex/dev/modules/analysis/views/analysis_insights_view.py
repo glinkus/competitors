@@ -54,7 +54,8 @@ class InsightsView(TemplateView):
         top_keywords = [kw for kw, _ in sorted_keywords[:20]]
 
         prompt = (
-            f"Aiškink, kaip konkurentų įmonė komunikuoja ir save pozicionuoja, "
+            f"Atlieku konkurentų įmonės svetainės puslapių analizę."
+            f"Paaiškink, kaip konkurentų įmonė komunikuoja ir save pozicionuoja, "
             f"pagal šiuos raktinius žodžius: {', '.join(top_keywords)}. "
             f"Nepateik raktinių žodžių, užklausos rezultate. "
             f"Pasakyk į kokią auditoriją orientuojasi įmonė."

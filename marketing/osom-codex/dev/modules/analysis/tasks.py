@@ -13,6 +13,7 @@ import warnings
 from pytrends.request import TrendReq
 import pandas as pd
 from nltk.corpus import stopwords
+from transformers import pipeline
 
 nltk.download('stopwords')
 
@@ -26,6 +27,11 @@ def run_one_page_spider(website_id, website_name):
     log_dir = os.path.join(project_root, 'logs')
     os.makedirs(log_dir, exist_ok=True)
     output_file = os.path.join(log_dir, f'spider_output_{website_id}.txt')
+    classifier = pipeline(
+        "zero-shot-classification",
+        model="MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli",
+        device=-1 
+    )
 
     env['PYTHONPATH'] = BASE_DIR + os.pathsep + env.get('PYTHONPATH', '')
     while True:
@@ -64,6 +70,10 @@ def run_one_page_spider(website_id, website_name):
                     raise Exception(f"Spider failed for URL {page_url}. See log: {output_file}")
                 
                 analyze_page.delay(page_url)
+                sleep(5)
+                classify_text.delay(page_url)
+
+
         sleep(5)
 
         # web = Website.objects.filter(id=website_id).first()
@@ -307,3 +317,29 @@ def enrich_keyword_with_trends(keyword_id):
     kw_obj.save()
 
     return f"Enriched keyword '{keyword}' with trend data."
+
+@shared_task
+def classify_text(page_url):
+    classifier = pipeline(
+            "zero-shot-classification",
+            model="MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli",
+            device=-1 
+        )
+
+    page = Page.objects.get(url=page_url)
+    structured_text = page.structured_text
+    full_text = ' '.join(structured_text.values())
+
+    candidate_labels = [
+        "technical",
+        "emotional",
+        "neutral"
+    ]
+    
+    result = classifier(full_text, candidate_labels, multi_label=True)
+
+    tone_classification = {label: round(score * 100, 2) for label, score in zip(result["labels"], result["scores"])}
+    page.text_types = tone_classification
+    page.save()
+
+    return {"tone_classification": tone_classification}
