@@ -1,6 +1,44 @@
 {% extends 'rarea/layout.html' %}
 
 {% block content %}
-<div class="prose">{{ average_tones|safe }}</div>
+<div class="prose">
+    <h2>Median Tone Scores</h2>
+    <canvas id="toneChart" width="100" height="70"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script >
+    const ctx = document.getElementById('toneChart').getContext('2d');
+    const toneChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ tone_labels|safe }},
+
+            datasets: [{
+                label: 'Tone Score (%)',
+                data: {{ tone_data|safe }},
+                borderWidth: 1
+            }]
+        },
+        options: {
+        indexAxis: 'y',
+        scales: {
+            x: {
+            beginAtZero: true,
+            max: 100
+            }
+        }
+        }
+    });
+    </script>
+      
+
+    {% if most_technical_url %}
+    <p><strong>Most technical page:</strong> <a href="{{ most_technical_url }}">{{ most_technical_url }}</a></p>
+    {% endif %}
+
+    {% if least_technical_url %}
+    <p><strong>Least technical page:</strong> <a href="{{ least_technical_url }}">{{ least_technical_url }}</a></p>
+    {% endif %}
+
+</div>
 
 {% endblock %}
