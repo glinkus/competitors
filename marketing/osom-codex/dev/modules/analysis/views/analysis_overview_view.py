@@ -1,9 +1,12 @@
 from django.views.generic import TemplateView
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from modules.analysis.models import Page, Website
+from modules.analysis.models import Page, Website, ExtractedKeyword
 from statistics import median, mean
-
+from collections import Counter
+import google.generativeai as genai
+from django.shortcuts import get_object_or_404, redirect
+import json
 class OverviewView(TemplateView):
     template_name = "modules/analysis/overview.html"
 
@@ -18,6 +21,10 @@ class OverviewView(TemplateView):
         pages_stats = Page.objects.filter(website_id=website_id).exclude(text_reading_time__isnull=True, text_readability__isnull=True)
         stats = self.average(pages_stats)
 
+        target_audience = website.target_audience
+        if target_audience is None:
+            target_audience = self.target_audience(website_id)
+
         context.update({
             "website": website,
             "median_tones": median_tones,
@@ -25,7 +32,8 @@ class OverviewView(TemplateView):
             "tone_data": list(median_tones.values()),
             "most_technical_url": most_technical_url,
             "least_technical_url": least_technical_url,
-            **stats,  # includes all readability stats
+            **stats,
+            "target_audience": target_audience,
         })
         return context
 
@@ -92,3 +100,69 @@ class OverviewView(TemplateView):
             least_technical_url = min(technical_scores, key=lambda x: x[0])[1]
 
         return median_tones, most_technical_url, least_technical_url
+    
+    def target_audience(self, website_id):
+        website = get_object_or_404(Website, id=website_id)
+        keywords = ExtractedKeyword.objects.filter(page__website=website)
+        keyword_counter = Counter()
+        keyword_scores = {}
+
+        for kw in keywords:
+            keyword_counter[kw.keyword] += 1
+            keyword_scores.setdefault(kw.keyword, []).append(kw.score)
+
+        sorted_keywords = sorted(
+            keyword_counter.items(),
+            key=lambda item: (-item[1], -sum(keyword_scores[item[0]]) / len(keyword_scores[item[0]]))
+        )
+
+        top_keywords = [kw for kw, _ in sorted_keywords[:20]]
+
+        prompt = (
+            "Atlieku konkurentų įmonės svetainės puslapių analizę. "
+            f"Pagal šiuos raktinius žodžius: {', '.join(top_keywords)}, "
+            "nurodyk, į kokią auditoriją orientuojasi įmonė. "
+            "Atsakyk TIK JSON formatu, naudodamas šią struktūrą:\n"
+            "{\n"
+            "  \"Į ką orientuojasi įmonė\": {\n"
+            "    \"Auditorijos segmentas 1\": \"Trumpas paaiškinimas\",\n"
+            "    \"Auditorijos segmentas 2\": \"Trumpas paaiškinimas\"\n"
+            "  }\n"
+            "}\n"
+            "Pavyzdys:\n"
+            "{\n"
+            "  \"Į ką orientuojasi įmonė\": {\n"
+            "    \"Technologijų įmonės\": \"Įmonės, ieškančios pažangių 3D sprendimų ir duomenų apdorojimo platformų.\",\n"
+            "    \"Dizaineriai\": \"Individualūs dizaineriai ir dizaino komandos, dirbančios su 3D modeliavimu ir vizualizacija.\"\n"
+            "  }\n"
+            "}"
+        )
+
+
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        response = model.generate_content(prompt)
+        insight = response.text
+        parsed_audience = self.extract_json(insight, website_id)
+
+        return parsed_audience
+    
+    def extract_json(self, response, website_id):
+        website = get_object_or_404(Website, id=website_id)
+        try:
+            cleaned = response.strip().strip("```json").strip("```").strip()
+            parsed = json.loads(cleaned)
+
+            if "Į ką orientuojasi įmonė" in parsed:
+                parsed = parsed["Į ką orientuojasi įmonė"]
+
+            if not isinstance(parsed, dict):
+                raise ValueError("Expected a flat dictionary after unwrapping.")
+
+            website.target_audience = parsed
+            website.save()
+            return parsed
+
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Model response could not be parsed as JSON: {e}\nRaw output: {response}") from e
+
+

@@ -7,6 +7,7 @@ class Website(models.Model):
     crawling_in_progress = models.BooleanField(default=False)
     crawling_finished = models.BooleanField(default=False)
     visited_count = models.IntegerField(default=0)
+    target_audience = JSONField(null=True, blank=True)
 
     def __str__(self):
         return self.start_url
