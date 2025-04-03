@@ -97,6 +97,7 @@ LOCALE_PATHS = (BASE_DIR / "locale",)
 STATIC_URL = "/pub/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "pub"),
+    os.path.join(BASE_DIR, "modules"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 MEDIA_URL = "/media/"

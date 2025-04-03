@@ -1,35 +1,14 @@
 {% extends 'rarea/layout.html' %}
+{% load static %}
 
 {% block content %}
+
 <div class="prose">
     <h2>Median Tone Scores</h2>
-    <canvas id="toneChart" width="100" height="70"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script >
-    const ctx = document.getElementById('toneChart').getContext('2d');
-    const toneChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: {{ tone_labels|safe }},
 
-            datasets: [{
-                label: 'Tone Score (%)',
-                data: {{ tone_data|safe }},
-                borderWidth: 1
-            }]
-        },
-        options: {
-        indexAxis: 'y',
-        scales: {
-            x: {
-            beginAtZero: true,
-            max: 100
-            }
-        }
-        }
-    });
-    </script>
-      
+    <div style="width: 400px; height: 200px; margin-bottom: 2rem;">
+        <canvas id="toneChart"></canvas>
+    </div>
 
     {% if most_technical_url %}
     <p><strong>Most technical page:</strong> <a href="{{ most_technical_url }}">{{ most_technical_url }}</a></p>
@@ -39,6 +18,75 @@
     <p><strong>Least technical page:</strong> <a href="{{ least_technical_url }}">{{ least_technical_url }}</a></p>
     {% endif %}
 
-</div>
+    <div style="display: flex; gap: 2rem; justify-content: left; align-items: center;">
+        <div class="tooltip-wrapper">
+            <div style="width: 120px; height: 120px; border-radius: 50%; background-color: #ffe4b5; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <strong>{{ avg_readability }}</strong>
+                <span style="font-size: 0.8rem; text-align: center;">Avg. Readability</span>
+            </div>
+            <div class="tooltip-content">
+                <strong>Readability Score Guide:</strong><br>
+                <ul>
+                    <li><strong>90–100</strong>: Very easy (5th grade)</li>
+                    <li><strong>80–89</strong>: Easy (6th grade)</li>
+                    <li><strong>70–79</strong>: Fairly easy</li>
+                    <li><strong>60–69</strong>: Plain English</li>
+                    <li><strong>50–59</strong>: Fairly difficult</li>
+                    <li><strong>30–49</strong>: Difficult</li>
+                    <li><strong>10–29</strong>: Very difficult</li>
+                    <li><strong>0–9</strong>: Extremely difficult</li>
+                </ul>
+            </div>
+        </div>
 
+        <div style="width: 120px; height: 120px; border-radius: 50%; background-color: #d1e7dd; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <strong>{{ avg_reading_time }}</strong>
+            <span style="font-size: 0.8rem; text-align: center;">Avg. Reading Time</span>
+        </div>
+    </div>
+
+    <div style="margin-top: 2rem;">
+        <h3 class="text-lg font-semibold">Page Readability & Reading Time Stats</h3>
+        <ul class="list-disc pl-6 mt-2">
+            <li><strong>Highest Readability Page:</strong> <a href="{{ highest_readability_url }}" target="_blank">{{ highest_readability_url }}</a></li>
+            <li><strong>Lowest Readability Page:</strong> <a href="{{ lowest_readability_url }}" target="_blank">{{ lowest_readability_url }}</a></li>
+            <li><strong>Longest Reading Time Page:</strong> <a href="{{ longest_reading_url }}" target="_blank">{{ longest_reading_url }}</a></li>
+            <li><strong>Shortest Reading Time Page:</strong> <a href="{{ shortest_reading_url }}" target="_blank">{{ shortest_reading_url }}</a></li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        window.toneLabels = {{ tone_labels|safe }};
+        window.toneData = {{ tone_data|safe }};
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('toneChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ tone_labels|safe }},
+                datasets: [{
+                    label: 'Tone Score (%)',
+                    data: {{ tone_data|safe }},
+                    borderWidth: 1,
+                    backgroundColor: 'rgba(255, 203, 119, 1)',
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+</div>
 {% endblock %}

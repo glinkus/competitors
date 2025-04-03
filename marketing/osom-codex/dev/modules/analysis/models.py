@@ -22,6 +22,8 @@ class Page(models.Model):
     last_visit = models.DateField(null=True, blank=True)
     structured_text = JSONField(default=dict)
     text_types = JSONField(default=dict)
+    text_readability = models.FloatField(null=True, blank=True)
+    text_reading_time = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.page_title or self.url

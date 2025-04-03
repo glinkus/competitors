@@ -14,6 +14,7 @@ from pytrends.request import TrendReq
 import pandas as pd
 from nltk.corpus import stopwords
 from transformers import pipeline
+import textstat
 
 nltk.download('stopwords')
 
@@ -72,6 +73,8 @@ def run_one_page_spider(website_id, website_name):
                 analyze_page.delay(page_url)
                 sleep(5)
                 classify_text.delay(page_url)
+                sleep(5)
+                text_read_analysis.delay(page_url)
 
 
         sleep(5)
@@ -343,3 +346,30 @@ def classify_text(page_url):
     page.save()
 
     return {"tone_classification": tone_classification}
+
+@shared_task
+def text_read_analysis(page_url):
+    page = Page.objects.get(url=page_url)
+    structured_text = page.structured_text
+    full_text = ' '.join(structured_text.values())
+    
+    word_count = len(full_text.split())
+
+    if word_count < 25:
+        return {"skipped": "Text too short for reliable readability analysis."}
+
+    try:
+        reading_score = textstat.flesch_reading_ease(full_text)
+        reading_time = reading_time = round(word_count / 200, 2)
+    except Exception as e:
+        return {"error in text analysis": str(e)}
+
+    page.text_readability = reading_score
+    page.text_reading_time = reading_time
+    page.save()
+
+    return {
+        "text_readability": reading_score,
+        "reading_time": reading_time,
+        "word_count": word_count
+    }
