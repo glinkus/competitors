@@ -261,7 +261,7 @@ def analyze_top_keywords_trends(website_id, top_n=10):
             main_obj.related_terms = related_terms
             main_obj.interest_by_region = region_data
             main_obj.save()
-        sleep(10)
+        sleep(60)
 
     return {"top_keywords_enriched": top_keywords}
 

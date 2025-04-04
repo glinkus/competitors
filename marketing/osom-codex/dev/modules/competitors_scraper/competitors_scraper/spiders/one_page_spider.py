@@ -44,7 +44,6 @@ class OnePageSpider(scrapy.Spider):
         self.page_url = normalize_url(page_url)
         self.website_id = website_id
         self.website_name = normalize_url(website_name) if website_name else ""
-
         self.website_instance = None
         self.urls = set()
 
@@ -118,6 +117,7 @@ class OnePageSpider(scrapy.Spider):
         page.visited = True
         page.page_title = response.css("title::text").get() or ""
         page.last_visit = timezone.now().date()
+        page.raw_html = response.text
         structured = self.extract_structured_text(response)
         page.structured_text = structured
 
@@ -150,6 +150,7 @@ class OnePageSpider(scrapy.Spider):
                 threads.deferToThread(self.update_page_sync, page, response)
             else:
                 self.logger.info(f"No Page record found for URL: {url}")
+
         d.addCallback(update_if_exists)
         d.addErrback(lambda failure: failure.trap(Page.DoesNotExist))
 
@@ -160,14 +161,16 @@ class OnePageSpider(scrapy.Spider):
             self.crawler.engine.close_spider(self, reason="finished")
             return
         links = response.css("a::attr(href)").getall()
+        all_links_count = len(links)
+        internal_links_count = 0
         self.logger.info(f"Found {len(links)} links on the page.")
         for link in links:
             absolute_link = normalize_url(urljoin(url, link))
             self.logger.info(f"Checking link: {absolute_link}")
-            original_link = urlparse(url).netloc
-            founded_link = urlparse(absolute_link).netloc
-
+            original_link = urlparse(url).netloc.replace("www.", "")
+            founded_link = urlparse(absolute_link).netloc.replace("www.", "")
             if original_link == founded_link and absolute_link != url and absolute_link not in self.urls:
+                    internal_links_count += 1
                     self.logger.info(f"Found internal link: {absolute_link}")
                     self.urls.add(absolute_link)
                     try:

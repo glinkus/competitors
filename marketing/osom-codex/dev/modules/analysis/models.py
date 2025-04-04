@@ -20,6 +20,8 @@ class Page(models.Model):
     visited = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)
     page_title = models.CharField(max_length=255)
+    raw_html = models.TextField(null=True, blank=True)
+    analyzed = models.BooleanField(default=False) 
     last_visit = models.DateField(null=True, blank=True)
     structured_text = JSONField(default=dict)
     text_types = JSONField(default=dict)

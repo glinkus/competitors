@@ -60,7 +60,17 @@
         window.toneLabels = {{ tone_labels|safe }};
         window.toneData = {{ tone_data|safe }};
     </script>
-    <p>{{target_audience}}</p>
+    <h2 class="text-xl font-semibold mb-4">Įmonės tikslinė auditorija</h2>
+
+    <ul class="space-y-3">
+      {% for segment, explanation in target_audience.items %}
+        <li class="bg-white shadow rounded p-4">
+          <strong class="block text-lg">{{ segment }}:</strong>
+          <span class="text-gray-700 text-sm">{{ explanation }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('toneChart').getContext('2d');
