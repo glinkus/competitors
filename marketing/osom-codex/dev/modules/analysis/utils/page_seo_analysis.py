@@ -8,6 +8,8 @@ import trafilatura
 import json
 from bs4 import BeautifulSoup
 import os
+from nltk.corpus import stopwords
+import nltk
 
 HEADING_TAGS_XPATHS = {
     "h1": "//h1",
@@ -40,6 +42,10 @@ GENERIC_ANCHORS = {
 IMAGE_EXTENSIONS = {
     ".img", ".png",".jpg",".jpeg", ".gif", ".bmp", ".svg", ".webp", ".avif"
 }
+try:
+    stopwords.words('english')
+except LookupError:
+    nltk.download('stopwords')
 
 class PageSEOAnalysis():
     def __init__(self, url):
@@ -65,6 +71,9 @@ class PageSEOAnalysis():
         self.stem_to_word = {}
         self.content: str = None
         self.content_hash: str = None
+        self.headings = {}
+        self.additional_info = {}
+        
 
     def analyze_headings(self):
         try:
@@ -93,7 +102,10 @@ class PageSEOAnalysis():
                 return False
             raw_html = self.raw_html
 
-        self.content_hash = hashlib.sha1(raw_html.encode(self.encoding)).hexdigest()
+        self.content_hash = hashlib.sha1(raw_html.encode("utf-8")).hexdigest()
+        if self.page.content_hash == self.content_hash:
+            print("No changes detected in the content.")
+            return False
 
         metadata = trafilatura.extract_metadata(
             filecontent=raw_html,
@@ -140,7 +152,8 @@ class PageSEOAnalysis():
         self.verify_h1_tags(raw_html)
         self.analyze_headings()
         self.analyze_additional_tags()
-
+    
+        self.save_analysis_to_db()
 
         return True
     
@@ -174,13 +187,14 @@ class PageSEOAnalysis():
         og_image = soup.findAll("meta", attrs={"property": "og:image"})
 
         if len(og_title) == 0:
-            self.warnings.append("Missing og:title")
+            self.warnings.append(f"Missing og:title on page: {self.url}")
 
         if len(og_description) == 0:
-            self.warnings.append("Missing og:description")
+            self.warnings.append(f"Missing og:description on page: {self.url}")
 
         if len(og_image) == 0:
-            self.warnings.append("Missing og:image")
+            self.warnings.append(f"Missing og:image on page: {self.url}")
+
     
     def analyze_a_tags(self, raw_html):
         html_without_comments = re.sub(r"<!--.*?-->", r"", raw_html, flags=re.DOTALL)
@@ -258,12 +272,87 @@ class PageSEOAnalysis():
         elif len(h1_tags) > 1:
             self.warnings.append("Multiple h1 tags was found")
 
-
-    
-
-
+    def word_list_freq_dist(self, wordlist):
+        return dict(Counter(wordlist))
 
 
+    def sort_freq_dist(self, freqdist, limit=1):
+        aux = [
+            (freqdist[key], self.stem_to_word[key])
+            for key in freqdist
+            if freqdist[key] >= limit
+        ]
+        aux.sort()
+        aux.reverse()
+        return aux
 
+    def raw_tokenize(self, rawtext):
+        token_regex = re.compile(r"(?u)\b\w\w+\b")
+        return token_regex.findall(rawtext.lower())
 
-    
+    def tokenize(self, rawtext):
+        token_regex = re.compile(r"(?u)\b\w\w+\b")
+        return [
+            word
+            for word in token_regex.findall(rawtext.lower())
+            if word not in set(stopwords.words('english'))
+        ]
+
+    def getngrams(self, D, n=2):
+        return zip(*[D[i:] for i in range(n)])
+
+    def process_text(self, page_text):
+        tokens = self.tokenize(page_text)
+        raw_tokens = self.raw_tokenize(page_text)
+        self.total_word_count = len(raw_tokens)
+
+        bigrams = self.getngrams(raw_tokens, 2)
+
+        for ng in bigrams:
+            vt = " ".join(ng)
+            self.bigrams[vt] += 1
+
+        trigrams = self.getngrams(raw_tokens, 3)
+
+        for ng in trigrams:
+            vt = " ".join(ng)
+            self.trigrams[vt] += 1
+
+        freq_dist = self.word_list_freq_dist(tokens)
+
+        for word in freq_dist:
+            cnt = freq_dist[word]
+
+            if word not in self.stem_to_word:
+                self.stem_to_word[word] = word
+
+            if word in self.wordcount:
+                self.wordcount[word] += cnt
+            else:
+                self.wordcount[word] = cnt
+
+            if word in self.keywords:
+                self.keywords[word] += cnt
+            else:
+                self.keywords[word] = cnt
+
+    def save_analysis_to_db(self):
+        self.page.raw_html = self.raw_html
+        self.page.description = self.description
+        self.page.content_hash = self.content_hash
+
+        self.page.keywords = json.dumps(self.keywords)
+        self.page.warnings = json.dumps(self.warnings)
+        self.page.links = json.dumps(self.links)
+        
+        structured_data = {
+            "total_word_count": self.total_word_count,
+            "wordcount": dict(self.wordcount),
+            "bigrams": dict(self.bigrams),
+            "trigrams": dict(self.trigrams),
+            "headings": self.headings,
+            "additional_info": self.additional_info,
+        }
+        self.page.structured_data = json.dumps(structured_data)
+        
+        self.page.save()

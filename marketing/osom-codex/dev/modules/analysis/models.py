@@ -27,6 +27,12 @@ class Page(models.Model):
     text_types = JSONField(default=dict)
     text_readability = models.FloatField(null=True, blank=True)
     text_reading_time = models.FloatField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    keywords = JSONField(default=dict, null=True, blank=True)
+    warnings = JSONField(default=dict, null=True, blank=True)
+    links = JSONField(default=dict, null=True, blank=True)
+    content_hash = models.CharField(max_length=42, blank=True, null=True)
+    structured_data = JSONField(default=dict, null=True, blank=True)
 
     def __str__(self):
         return self.page_title or self.url

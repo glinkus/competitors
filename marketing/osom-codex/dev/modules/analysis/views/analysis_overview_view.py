@@ -7,6 +7,8 @@ from collections import Counter
 import google.generativeai as genai
 from django.shortcuts import get_object_or_404, redirect
 import json
+from modules.analysis.utils.page_seo_analysis import PageSEOAnalysis
+
 class OverviewView(TemplateView):
     template_name = "modules/analysis/overview.html"
 
@@ -24,6 +26,12 @@ class OverviewView(TemplateView):
         target_audience = website.target_audience
         if target_audience is None:
             target_audience = self.target_audience(website_id)
+
+        pages = Page.objects.filter(website_id=website_id)
+        for page in pages:
+            print(f"Analyzing page: {page.url} {page.id}")
+            PageSEOAnalysis(page.url).analyze()
+            break
 
         context.update({
             "website": website,
