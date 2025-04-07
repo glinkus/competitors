@@ -71,32 +71,6 @@
       {% endfor %}
     </ul>
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const ctx = document.getElementById('toneChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {{ tone_labels|safe }},
-                datasets: [{
-                    label: 'Tone Score (%)',
-                    data: {{ tone_data|safe }},
-                    borderWidth: 1,
-                    backgroundColor: 'rgba(255, 203, 119, 1)',
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
-    </script>
+    
 </div>
 {% endblock %}

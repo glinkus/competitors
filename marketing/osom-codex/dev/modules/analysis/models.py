@@ -30,12 +30,21 @@ class Page(models.Model):
     description = models.TextField(null=True, blank=True)
     keywords = JSONField(default=dict, null=True, blank=True)
     warnings = JSONField(default=dict, null=True, blank=True)
+    content = JSONField(default=dict, null=True, blank=True)
     links = JSONField(default=dict, null=True, blank=True)
     content_hash = models.CharField(max_length=42, blank=True, null=True)
     structured_data = JSONField(default=dict, null=True, blank=True)
+    cta_analysis = JSONField(default=dict, null=True, blank=True)
+    seo_recommendations = JSONField(default=dict, null=True, blank=True)
 
     def __str__(self):
         return self.page_title or self.url
+
+class SEORecommendation(models.Model):
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    category = models.CharField(max_length=100)
+    actions = models.JSONField()
+    rationale = models.TextField()
 
 
 class ExtractedKeyword(models.Model):

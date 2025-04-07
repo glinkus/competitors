@@ -71,6 +71,7 @@ class AnalyseView(TemplateView):
     
     
     def get(self, request, *args, **kwargs):
+        
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             website_id = request.GET.get('website_id')
             if website_id:

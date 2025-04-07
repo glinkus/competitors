@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 import os
 from nltk.corpus import stopwords
 import nltk
+from modules.analysis.utils.seo_insights import SEO_Insights
 
 HEADING_TAGS_XPATHS = {
     "h1": "//h1",
@@ -103,9 +104,9 @@ class PageSEOAnalysis():
             raw_html = self.raw_html
 
         self.content_hash = hashlib.sha1(raw_html.encode("utf-8")).hexdigest()
-        if self.page.content_hash == self.content_hash:
-            print("No changes detected in the content.")
-            return False
+        # if self.page.content_hash == self.content_hash:
+        #     print("No changes detected in the content.")
+        #     return False
 
         metadata = trafilatura.extract_metadata(
             filecontent=raw_html,
@@ -142,6 +143,14 @@ class PageSEOAnalysis():
 
         if self.content and "text" in self.content:
             self.process_text(self.content["text"])
+        
+        # SEO_Insights(self.content, self.url).analyze()
+        seo_insights = SEO_Insights(self.content, self.url)
+        # Get platform presence results
+        platform_results = seo_insights.analyze_platform_presence()
+        print("Platform Presence Evaluation:")
+        print(json.dumps(platform_results, indent=2))
+
 
         # Run various analyses.
         self.validate_title()
@@ -344,6 +353,7 @@ class PageSEOAnalysis():
         self.page.keywords = json.dumps(self.keywords)
         self.page.warnings = json.dumps(self.warnings)
         self.page.links = json.dumps(self.links)
+        self.page.content = self.content
         
         structured_data = {
             "total_word_count": self.total_word_count,

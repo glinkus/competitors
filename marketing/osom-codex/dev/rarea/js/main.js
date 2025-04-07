@@ -5,8 +5,9 @@
  * initialization of UI components and tools.
  **/
 
-import Demo from '../../modules/demo/js/main';
 import Analysis from '../../modules/analysis/js/main';
+import Chart from '../../modules/analysis/js/tone_chart';
+import Demo from '../../modules/demo/js/main';
 import DemoCad from './cad';
 
 export default class RAreaMain {
@@ -14,6 +15,7 @@ export default class RAreaMain {
         new Demo();
         new Analysis();
         new DemoCad();
+        new Chart('toneChart').init();
         console.info('[RAreaMain] initialized.');
     }
 }
