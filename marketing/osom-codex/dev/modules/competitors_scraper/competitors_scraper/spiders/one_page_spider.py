@@ -123,6 +123,7 @@ class OnePageSpider(scrapy.Spider):
 
         page.save()
 
+
         website = page.website
         website.visited_count += 1
         website.save()
