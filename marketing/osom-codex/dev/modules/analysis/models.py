@@ -36,6 +36,11 @@ class Page(models.Model):
     structured_data = JSONField(default=dict, null=True, blank=True)
     cta_analysis = JSONField(default=dict, null=True, blank=True)
     seo_recommendations = JSONField(default=dict, null=True, blank=True)
+    internal_links = JSONField(default=dict, null=True, blank=True)
+    external_links = JSONField(default=dict, null=True, blank=True)
+    seo_score = models.FloatField(null=True, blank=True)
+    seo_score_details = models.JSONField(null=True, blank=True)
+    linking_analysis = models.JSONField(null=True, blank=True)
 
     def __str__(self):
         return self.page_title or self.url

@@ -74,6 +74,8 @@ class PageSEOAnalysis():
         self.content_hash: str = None
         self.headings = {}
         self.additional_info = {}
+        self.internal_links = []
+        self.external_links = []
         
 
     def analyze_headings(self):
@@ -129,7 +131,7 @@ class PageSEOAnalysis():
         
         if metadata_keywords and len(metadata_keywords) > 0:
             self.warnings.append("Keywords should be avoided as they are a spam indicator and no longer used by Search Engines")
-
+        # print(raw_html)
         # Extract main content as JSON.
         content = trafilatura.extract(
             raw_html,
@@ -139,17 +141,15 @@ class PageSEOAnalysis():
             include_images=True,
             output_format="json"
         )
-        self.content = json.loads(content) if content else None
+        if content:
+            self.content = json.loads(content)
+            self.content["url"] = self.url
+        # print (f"Content: {self.content}")
+
 
         if self.content and "text" in self.content:
             self.process_text(self.content["text"])
         
-        # SEO_Insights(self.content, self.url).analyze()
-        seo_insights = SEO_Insights(self.content, self.url)
-        # Get platform presence results
-        platform_results = seo_insights.analyze_platform_presence()
-        print("Platform Presence Evaluation:")
-        print(json.dumps(platform_results, indent=2))
 
 
         # Run various analyses.
@@ -163,6 +163,42 @@ class PageSEOAnalysis():
         self.analyze_additional_tags()
     
         self.save_analysis_to_db()
+
+        # print(f"Internal Links: {self.internal_links}")
+        # print(f"External Links: {self.external_links}")
+        # print(f"Warnings: {self.warnings}")
+        # print(f"Word Count: {self.wordcount}")
+
+        # Prepare metrics for LLM scoring
+        overall_metrics = {
+            "total_word_count": self.total_word_count,
+            "number_of_headings": sum(len(v) for v in self.headings.values()),
+            "h1_count": len(self.headings.get("h1", [])),
+            "meta_title_length": len(self.title or ""),
+            "meta_description_length": len(self.description or ""),
+            "warnings": self.warnings,
+            "number_of_internal_links": len(self.internal_links),
+            "number_of_external_links": len(self.external_links),
+            "has_og_title": "og_title" in self.additional_info,
+            "has_og_description": "og_desc" in self.additional_info,
+            "has_og_image": "og_image" in self.additional_info,
+        }
+
+        seo_insights = SEO_Insights(
+            content=self.content,
+            url=self.url,
+            overall_metrics=overall_metrics,
+            internal_links=self.internal_links,
+            external_links=self.external_links,
+            warnings=self.warnings,
+            total_word_count=self.total_word_count
+        )
+
+        try:
+            seo_insights.run_analysis()
+        except Exception as e:
+            print(f"Error running SEO Insights analysis: {e}")
+            return False
 
         return True
     
@@ -207,31 +243,45 @@ class PageSEOAnalysis():
     
     def analyze_a_tags(self, raw_html):
         html_without_comments = re.sub(r"<!--.*?-->", r"", raw_html, flags=re.DOTALL)
-        soap = BeautifulSoup(html_without_comments, "html.parser")
+        soup = BeautifulSoup(html_without_comments, "html.parser")
 
-        anchors = soap.find_all("a", href=True)
+        anchors = soup.find_all("a", href=True)
+
+        self.internal_links = []
+        self.external_links = []
+
         for tag in anchors:
-            tag_text = tag.text.lower().strip()
+            tag_text = tag.text.strip()
             tag_href = tag["href"]
 
             if len(tag.get("title", "")) == 0:
                 self.warnings.append(f"Anchor missing title tag: {tag_href}")
 
-            if tag_text in GENERIC_ANCHORS:
+            if tag_text.lower() in GENERIC_ANCHORS:
                 self.warnings.append(f"Anchor text contains generic text: '{tag_text}'")
 
-            if self.base_domain.netloc not in tag_href and ":" in tag_href:
-                continue
-
-            url = self.normalize_url(tag_href)
-            url_filename, url_file_extension = os.path.splitext(url)
+            normalized_url = self.normalize_url(tag_href)
+            url_filename, url_file_extension = os.path.splitext(normalized_url)
             if url_file_extension in IMAGE_EXTENSIONS:
                 continue
 
-            if "#" in url:
-                url = url[: url.rindex("#")]
+            if "#" in normalized_url:
+                normalized_url = normalized_url[:normalized_url.rindex("#")]
 
-            self.links.append(url)
+            self.links.append(normalized_url)
+
+            is_external = (
+                self.base_domain.netloc not in urlsplit(normalized_url).netloc
+                and ":" in normalized_url
+            )
+
+            link_data = {"url": normalized_url, "anchor": tag_text}
+
+            if is_external:
+                self.external_links.append(link_data)
+            else:
+                self.internal_links.append(link_data)
+
             
     def normalize_url(self, url):
         if ":" in url:
