@@ -7,6 +7,7 @@ from modules.analysis.models import Page, Website, ExtractedKeyword
 from modules.analysis.utils.keyword_extraction import KeywordExtraction
 from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import defaultdict
+import json
 import re
 import nltk
 import warnings
@@ -15,6 +16,8 @@ import pandas as pd
 from nltk.corpus import stopwords
 from transformers import pipeline
 import textstat
+from modules.analysis.utils.page_seo_analysis import PageSEOAnalysis
+from modules.analysis.utils.seo_insights import SEOInsights
 
 nltk.download('stopwords')
 
@@ -75,28 +78,39 @@ def run_one_page_spider(website_id, website_name):
                 classify_text.delay(page_url)
                 sleep(5)
                 text_read_analysis.delay(page_url)
+                run_seo_analysis.delay(page_url)
+
 
 
         sleep(5)
 
-        # web = Website.objects.filter(id=website_id).first()
-        # if web:
-        #     web.crawling_finished = True
-        #     web.save()
-        # else:
-        #     raise Exception(f"Website with id {website_id} not found.")
-        # return "Scraped one page"
-    
-    # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    # project_root = os.path.join(BASE_DIR, 'competitors_scraper')
-    # log_dir = os.path.join(project_root, 'logs')
-    # os.makedirs(log_dir, exist_ok=True)
-    # file_path = os.path.join(log_dir, f'keywords_{page.id}.txt')
+
+@shared_task
+def run_seo_analysis(page_url):
+    page = Page.objects.get(url=page_url)
+
+    page_seo_analysis = PageSEOAnalysis(page_url)
+    analysis = page_seo_analysis.analyze()
+
+    total_word_count = page.structured_data.get("wordcount")
+
+    if analysis:
+        seo_insights = SEOInsights(
+            content=page.content,
+            url=page.url,
+            overall_metrics=analysis,
+            internal_links=page.internal_links,
+            external_links=page.external_links,
+            warnings=page.warnings,
+            total_word_count=total_word_count
+        )
+        
+        try:
+            seo_insights.run_analysis()
+        except Exception as e:
+            print(f"Error running SEO Insights analysis: {e}")
 
 
-    # with open(file_path, "w", encoding="utf-8") as f:
-    #     for keyword, score in keywords:
-    #         f.write(f"{keyword}: {score}\n")
 @shared_task
 def analyze_page(page_url):
     page = Page.objects.get(url=page_url)
@@ -338,8 +352,12 @@ def classify_text(page_url):
         "emotional",
         "neutral"
     ]
-    
-    result = classifier(full_text, candidate_labels, multi_label=True)
+    if len(full_text.split()) < 25:
+        return {f"skipped {page.url}": "Text too short for reliable classification."}
+    try:
+        result = classifier(full_text, candidate_labels, multi_label=True)
+    except Exception as e:
+        return {f"error in text classification analyzing {page.url}: {str(e)}"}
 
     tone_classification = {label: round(score * 100, 2) for label, score in zip(result["labels"], result["scores"])}
     page.text_types = tone_classification

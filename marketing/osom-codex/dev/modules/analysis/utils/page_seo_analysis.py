@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 import os
 from nltk.corpus import stopwords
 import nltk
-from modules.analysis.utils.seo_insights import SEO_Insights
+from modules.analysis.utils.seo_insights import SEOInsights
 
 HEADING_TAGS_XPATHS = {
     "h1": "//h1",
@@ -149,8 +149,6 @@ class PageSEOAnalysis():
 
         if self.content and "text" in self.content:
             self.process_text(self.content["text"])
-        
-
 
         # Run various analyses.
         self.validate_title()
@@ -164,12 +162,6 @@ class PageSEOAnalysis():
     
         self.save_analysis_to_db()
 
-        # print(f"Internal Links: {self.internal_links}")
-        # print(f"External Links: {self.external_links}")
-        # print(f"Warnings: {self.warnings}")
-        # print(f"Word Count: {self.wordcount}")
-
-        # Prepare metrics for LLM scoring
         overall_metrics = {
             "total_word_count": self.total_word_count,
             "number_of_headings": sum(len(v) for v in self.headings.values()),
@@ -184,23 +176,7 @@ class PageSEOAnalysis():
             "has_og_image": "og_image" in self.additional_info,
         }
 
-        seo_insights = SEO_Insights(
-            content=self.content,
-            url=self.url,
-            overall_metrics=overall_metrics,
-            internal_links=self.internal_links,
-            external_links=self.external_links,
-            warnings=self.warnings,
-            total_word_count=self.total_word_count
-        )
-
-        try:
-            seo_insights.run_analysis()
-        except Exception as e:
-            print(f"Error running SEO Insights analysis: {e}")
-            return False
-
-        return True
+        return overall_metrics
     
     def validate_title(self):
         length = len(self.title)
@@ -404,7 +380,7 @@ class PageSEOAnalysis():
         self.page.warnings = json.dumps(self.warnings)
         self.page.links = json.dumps(self.links)
         self.page.content = self.content
-        
+
         structured_data = {
             "total_word_count": self.total_word_count,
             "wordcount": dict(self.wordcount),

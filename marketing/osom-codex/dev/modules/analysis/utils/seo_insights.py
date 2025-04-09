@@ -11,7 +11,8 @@ EXPECTED_RECOMMENDATION_KEYS = {
     "conversational_optimization",
     "cross_platform_presence_improvement",
 }
-class SEO_Insights():
+
+class SEOInsights():
     def __init__(self, content, url, overall_metrics, internal_links, external_links, warnings, total_word_count):
         self.content = content
         self.model = genai.GenerativeModel("gemini-2.0-flash")
@@ -59,7 +60,7 @@ class SEO_Insights():
                     Based on your analysis, return your response in **JSON** with the following format:
 
                     ```json
-                    {
+                    {{
                     "internal_linking_score": 0-100,
                     "external_linking_score": 0-100,
                     "anchor_text_score": 0-100,
@@ -69,7 +70,7 @@ class SEO_Insights():
                         "Add links to related product pages."
                     ],
                     "overall_linking_score": 0-100
-                    }
+                    }}
                     """
         return prompt
 
@@ -125,7 +126,7 @@ class SEO_Insights():
                     For each category, return:
                     - A list of concrete and actionable items under the key `"actions"`.
 
-                    Only use this format (must match exactly):
+                    Only use this format, MUST MATCH EXACTLY:
                     ```json
                     {{
                     "entity_optimization_strategy": {{
@@ -153,9 +154,9 @@ class SEO_Insights():
         # Analyze the content
         self.analyze()
         # Analyze the links
-        # self.analyze_links()
-        # # Analyze the SEO score
-        # self.analyze_score()
+        self.analyze_links()
+        # Analyze the SEO score
+        self.analyze_score()
 
     def analyze(self):
         prompt = self._final_recommendations_prompt()
@@ -173,7 +174,6 @@ class SEO_Insights():
                 "raw_response": content
             }
 
-        # ✅ Validate structure BEFORE saving
         if not self.validate_recommendations_structure(recommendations):
             print("Invalid recommendation structure. Skipping DB save.")
             return {
@@ -195,6 +195,7 @@ class SEO_Insights():
             else:
                 print(f"Skipping category '{category}' due to missing actions")
 
+        print("Successfully did recommendations")
         return recommendations
     
     def analyze_links(self):
@@ -210,11 +211,10 @@ class SEO_Insights():
         except Exception as e:
             print("❌ Failed to parse link analysis JSON:", e)
             return {}
-
-        # Save to DB (you can create a model for this if needed)
-        self.page.linking_analysis = json.dumps(link_scores)
-        self.page.save()
-
+        if self.page.linking_analysis != link_scores:
+            self.page.linking_analysis = link_scores
+            self.page.save()
+        print("Successfully did link analysis")
         return link_scores
 
 
@@ -231,11 +231,11 @@ class SEO_Insights():
         except Exception as e:
             print("❌ Failed to parse SEO score JSON:", e)
             return {}
-
+        
         self.page.seo_score = score_data.get("seo_score", None)
-        self.page.seo_score_details = json.dumps(score_data)
+        self.page.seo_score_details = score_data
         self.page.save()
-
+        print("Successfully did SEO score analysis")
         return score_data
 
     def validate_recommendations_structure(self, data: dict) -> bool:

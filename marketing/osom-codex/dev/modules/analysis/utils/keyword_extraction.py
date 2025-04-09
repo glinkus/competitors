@@ -32,8 +32,7 @@ class KeywordExtraction:
 
     def __init__(self):
         if not hasattr(self, "kw_extractor"):
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-            self.model = SentenceTransformer('distiluse-base-multilingual-cased', device=device)
+            self.model = SentenceTransformer('distiluse-base-multilingual-cased')
             self.kw_extractor = KeyBERT(model=self.model)
             self.stop_words = set(stopwords.words('english'))
             self.vectorizer = TfidfVectorizer(

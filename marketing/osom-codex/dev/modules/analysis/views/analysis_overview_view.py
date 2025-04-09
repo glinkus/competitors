@@ -28,10 +28,6 @@ class OverviewView(TemplateView):
             target_audience = self.target_audience(website_id)
 
         pages = Page.objects.filter(website_id=website_id)
-        for page in pages:
-            print(f"Analyzing page: {page.url} {page.id}")
-            PageSEOAnalysis(page.url).analyze()
-            break
 
         context.update({
             "website": website,
