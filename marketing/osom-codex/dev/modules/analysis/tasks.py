@@ -78,6 +78,7 @@ def run_one_page_spider(website_id, website_name):
                 classify_text.delay(page_url)
                 sleep(5)
                 text_read_analysis.delay(page_url)
+                sleep(5)
                 run_seo_analysis.delay(page_url)
 
 
@@ -372,19 +373,18 @@ def text_read_analysis(page_url):
     full_text = ' '.join(structured_text.values())
     
     word_count = len(full_text.split())
-
     if word_count < 25:
         return {"skipped": "Text too short for reliable readability analysis."}
-
     try:
         reading_score = textstat.flesch_reading_ease(full_text)
-        reading_time = reading_time = round(word_count / 200, 2)
+        reading_time = round(word_count / 200, 2)
     except Exception as e:
         return {"error in text analysis": str(e)}
 
-    page.text_readability = reading_score
-    page.text_reading_time = reading_time
-    page.save()
+    Page.objects.filter(id=page.id).update(
+        text_readability=reading_score,
+        text_reading_time=reading_time
+        )
 
     return {
         "text_readability": reading_score,

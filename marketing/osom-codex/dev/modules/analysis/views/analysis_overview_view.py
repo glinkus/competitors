@@ -41,13 +41,14 @@ class OverviewView(TemplateView):
         })
         return context
 
-    def format_time(self, seconds):
-        if seconds >= 60:
-            minutes = int(seconds // 60)
-            secs = int(seconds % 60)
-            return f"{minutes}min {secs}s"
+    def format_time(self, mins):
+        total_seconds = int(round(mins * 60))
+        if mins >= 1:
+            minutes = int(mins // 1)
+            total_seconds = int(total_seconds % 60)
+            return f"{minutes}min {total_seconds}s"
         else:
-            return f"{int(seconds)}s"
+            return f"{round(mins * 60, 1)}s"
 
     def average(self, pages):
         readability_scores = []
@@ -58,9 +59,10 @@ class OverviewView(TemplateView):
             reading_times.append((page.text_reading_time, page.url))
 
         avg_readability = round(mean(score for score, _ in readability_scores), 2)
+
         avg_reading_time_val = mean(time for time, _ in reading_times)
         avg_reading_time = self.format_time(avg_reading_time_val)
-
+        
         highest_read_page = max(readability_scores, key=lambda x: x[0])[1]
         lowest_read_page = min(readability_scores, key=lambda x: x[0])[1]
         longest_page = max(reading_times, key=lambda x: x[0])[1]
