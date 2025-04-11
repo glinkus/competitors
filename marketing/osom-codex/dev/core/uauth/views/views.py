@@ -30,10 +30,10 @@ def login_page(request):
             messages.error(request, "Invalid Password")
             return redirect('/login/')
         else:
-            # Log in the user and redirect to the home page upon successful login
+            # Log in the user and redirect to the analysis page upon successful login
             login(request, user)
-            # Redirect to “parea:home” which renders parea/index.html
-            return redirect('rarea:index')
+            # Redirect to the analysis page
+            return redirect('/analysis/')
     
     # Render the login page template (GET request)
     return render(request, 'core/uauth/login.html')
@@ -72,6 +72,3 @@ def register_page(request):
     
     # Render the registration page template (GET request)
     return render(request, 'core/uauth/register.html')
-
-def rarea_index(request):
-    return redirect('rarea:index')

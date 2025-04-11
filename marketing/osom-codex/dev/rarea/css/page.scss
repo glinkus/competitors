@@ -1,0 +1,132 @@
+.container {
+    max-width: 960px;
+  }
+  
+  .icon-link > .bi {
+    width: .75em;
+    height: .75em;
+  }
+  
+  /*
+   * Custom translucent site header
+   */
+  
+  .site-header {
+    background-color: rgba(0, 0, 0, .85);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+  .site-header a {
+    color: #8e8e8e;
+    transition: color .15s ease-in-out;
+  }
+  .site-header a:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  
+  .product-device {
+    position: absolute;
+    right: 10%;
+    bottom: -30%;
+    width: 300px;
+    height: 540px;
+    background-color: #333;
+    border-radius: 21px;
+    transform: rotate(30deg);
+  }
+  
+  .product-device::before {
+    position: absolute;
+    top: 10%;
+    right: 10px;
+    bottom: 10%;
+    left: 10px;
+    content: "";
+    background-color: rgba(255, 255, 255, .1);
+    border-radius: 5px;
+  }
+  
+  .product-device-2 {
+    top: -25%;
+    right: auto;
+    bottom: 0;
+    left: 5%;
+    background-color: #e5e5e5;
+  }
+  
+  
+  .flex-equal > * {
+    flex: 1;
+  }
+  @media (min-width: 768px) {
+    .flex-md-equal > * {
+      flex: 1;
+    }
+  }
+  .button-landing {
+    background-color: #71A9F7;
+    border: 0 solid #e2e8f0;
+    border-radius: 1.5rem;
+    box-sizing: border-box;
+    color: #131B23;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Basier circle",-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 1rem 1.6rem;
+    text-align: center;
+    text-decoration: none #0d172a solid;
+    text-decoration-thickness: auto;
+    transition: all .1s cubic-bezier(.4, 0, .2, 1);
+    box-shadow: 0px 1px 2px rgba(166, 175, 195, 0.25);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-landing:hover {
+    background-color: #5c89c9;
+    color: #131B23;
+    transform: scale(1.05);
+    font-size: 1.15rem;
+    transition: all 0.1s ease-in-out;
+  }
+  .button-landing:active {
+    background-color: #3b5881;
+    color: #131B23;
+    transform: scale(1.07);
+    font-size: 1.17rem;
+    transition: all 0.1s ease-in-out;
+  }
+  
+  @media (min-width: 768px) {
+    .button-landing {
+      font-size: 1.125rem;
+      padding: 1rem 2rem;
+    }
+  }
+.grow-hover {
+    transition: transform 0.2s ease-in-out;
+    display: inline-block;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+    
+    &:active {
+        transform: scale(1.1);
+    }
+}
+
+.bg-body-tertiary {
+    background-color: #FEF9EF !important;
+  }
+.content{
+    background: linear-gradient(135deg, #e2d1c386 0%, #ffcb778a 100%);
+  }
+
+  

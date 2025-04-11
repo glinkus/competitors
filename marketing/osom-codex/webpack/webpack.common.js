@@ -34,7 +34,8 @@ module.exports = {
             parea: path.resolve(__dirname, '../dev/parea'),
             shared: path.resolve(__dirname, '../dev/shared'),
         },
-        extensions: ['.js', '.ts'],
+        modules: [path.resolve(__dirname, '../node_modules')], // Ensure node_modules is included
+        extensions: ['.js', '.ts', '.scss'], // Add .scss if missing
         extensionAlias: {
             '.js': ['.ts', '.js'],
         },
@@ -83,6 +84,7 @@ module.exports = {
                             api: 'modern',
                             sassOptions: {
                                 outputStyle: 'compressed',
+                                includePaths: ['./node_modules'],
                             },
                         },
                     },

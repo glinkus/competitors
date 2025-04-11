@@ -2,7 +2,6 @@
 
 <div class="header">
     <ul class="wbar">
-        <li class="logo"></li>
         <li class="user">
             <form method="post" action="{% url 'core/uauth:logout' %}">
                 {% csrf_token %}
@@ -12,7 +11,7 @@
     </ul>
 </div>
 
-<ul class="nav">
+<!-- <ul class="nav">
     {% include request.resolver_match.namespace|add:"/menu.html"|default:"rarea/menu.html" %}
-</ul>
+</ul> -->
 

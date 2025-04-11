@@ -7,7 +7,6 @@ app_name = "parea"
 urlpatterns = [
     path("", uauth_views.login_page, name="index"),
     
-    path("home/", uauth_views.rarea_index, name="home"),
     
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 ]
