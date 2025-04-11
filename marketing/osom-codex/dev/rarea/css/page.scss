@@ -128,5 +128,80 @@
 .content{
     background: linear-gradient(135deg, #e2d1c386 0%, #ffcb778a 100%);
   }
-
+.nav-button{
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    border: 0px;
+    box-sizing: border-box;
+}
+.menu-items{
+    display: flex;
+    align-items: flex-start;
+}
+  
+a.transparent-white-link {
+    background-color: transparent;
+    color: white;
+    text-decoration: none;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    padding-left: 5px;
+  }
+  
+a.transparent-white-link:hover {
+    color: #f0f0f0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+    transform: scale(1.02);
+  }
+a.transparent-white-link:active {
+    color: #b6b6b6;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+    transform: scale(1.02);
+  }
+.button-logout {
+    background-color: #FFFFFF;
+    border: 0;
+    border-radius: .5rem;
+    box-sizing: border-box;
+    color: #111827;
+    font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.25rem;
+    padding: .5rem 1rem;
+    text-align: center;
+    text-decoration: none #FEF9EF solid;
+    text-decoration-thickness: auto;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-logout:hover {
+    background-color: #ddd8ce;
+    transform: scale(1.02);
+  }
+  .button-logout:active {
+    background-color: #b3b1ae;
+    transform: scale(1.02);
+  }
+  .button-logout:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  
+  .button-logout:focus-visible {
+    box-shadow: none;
+  }
+  .logout{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 10px;
+  }
   

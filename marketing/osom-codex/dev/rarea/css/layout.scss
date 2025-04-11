@@ -20,10 +20,13 @@ body {
 ul.nav {
     grid-row: 2;
     grid-column: 1 / 4;
-    background-color: var(--c-primary);
+    background-color: #131B23;
+    align-items: center;
+    justify-content: space-between;
+
 
     li {
-        display: inline-block;
+        display: flex;
 
         a {
             display: block;
@@ -115,9 +118,10 @@ ul.nav {
 .footer {
     grid-row: 4;
     grid-column: 1 / 4;
-    background-color: var(--c-sidebar);
+    background-color: #131B23;
     color: var(--c-on-primary);
     padding: 10px;
     text-align: center;
     font-size: 0.7rem;
 }
+

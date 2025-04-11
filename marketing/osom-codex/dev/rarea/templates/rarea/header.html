@@ -1,17 +1,16 @@
 {% load i18n %}
 
-<div class="header">
-    <ul class="wbar">
-        <li class="user">
-            <form method="post" action="{% url 'core/uauth:logout' %}">
-                {% csrf_token %}
-                <button type="submit"> Logout </button>
-            </form>
-        </li>
-    </ul>
-</div>
-
-<!-- <ul class="nav">
-    {% include request.resolver_match.namespace|add:"/menu.html"|default:"rarea/menu.html" %}
-</ul> -->
+<ul class="nav">
+    <div class="menu-items">
+        <a class="transparent-white-link"href="{% url 'modules.analysis:analysis' %}">
+            Home
+        </a>
+    </div>
+    <div class="logout">
+        <form class="nav-button" method="post" action="{% url 'core/uauth:logout' %}">
+            {% csrf_token %}
+            <button class="button-logout" type="submit"> Logout </button>
+        </form>
+    </div>
+</ul>
 
