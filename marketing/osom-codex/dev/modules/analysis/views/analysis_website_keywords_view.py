@@ -25,9 +25,7 @@ class WebsiteKeywordsView(TemplateView):
         keyword_summary = []
         for keyword, count in keyword_counter.items():
             avg_score = sum(keyword_scores[keyword]) / len(keyword_scores[keyword])
-            
-            # Get any instance of that keyword to access trend data
-            # Inside your loop:
+
             trend_obj = ExtractedKeyword.objects.filter(
                     page__website=website,
                     keyword=keyword,

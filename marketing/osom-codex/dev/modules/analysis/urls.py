@@ -17,8 +17,8 @@ urlpatterns = [
     # Change AnalyseView to a different path
     path('analyse/', AnalyseView.as_view(), name='analyse'),
     
-    path('saved-urls/<int:website_id>/', URLView.as_view(), name='saved_urls'),
-    path('saved-urls/<int:website_id>/<int:page_id>/keywords/', PageKeywordsView.as_view(), name='page_keywords'),
+    path('analyse/website_page/<int:website_id>/', URLView.as_view(), name='website_page'),
+    # path('saved-urls/<int:website_id>/<int:page_id>/keywords/', PageKeywordsView.as_view(), name='page_keywords'),
     path('website-keywords/<int:website_id>/', WebsiteKeywordsView.as_view(), name='website_keywords'),
     path('insights/<int:website_id>/', InsightsView.as_view(), name='insights'),
     path('overview/<int:website_id>/', OverviewView.as_view(), name='overview'),

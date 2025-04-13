@@ -2,12 +2,6 @@
 {% load i18n %}
 
 {% block content %}
-<!-- <form action="/analysis/" method="post">
-    {% csrf_token %}
-    <label for="url">Enter URL:</label>
-    <input type="url" id="url" name="url" placeholder="https://example.com" required>
-    <button type="submit">Submit</button>
-</form> -->
 <div class="analyze-heading">
     <h1 class="analyze-heading">Analyze your competitors</h1>
 </div>
@@ -16,7 +10,6 @@
 </div>
 
 <div class="container my-5">
-    <!-- Add New Website -->
     <div class="card mb-4 shadow-sm analysis">
       <div class="card-body analysis">
         <form action="/analysis/" method="post" class="row g-3 align-items-center analysis">
@@ -31,7 +24,6 @@
       </div>
     </div>
   
-    <!-- Website Cards -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       {% for website in websites %}
         <div class="col">
@@ -59,7 +51,7 @@
               {% endif %}
   
               <div class="mt-auto d-grid gap-2">
-                <a href="{% url 'modules.analysis:saved_urls' website.id %}" class="btn btn-outline-primary btn-sm">URLs</a>
+                <a href="{% url 'modules.analysis:website_page' website.id %}" class="btn btn-outline-primary btn-sm">URLs</a>
                 <a href="{% url 'modules.analysis:website_keywords' website.id %}" class="btn btn-outline-secondary btn-sm">Keywords</a>
                 <a href="{% url 'modules.analysis:insights' website.id %}" class="btn btn-outline-info btn-sm">Insights</a>
                 <a href="{% url 'modules.analysis:overview' website.id %}" class="btn btn-outline-dark btn-sm">Overview</a>
@@ -88,7 +80,7 @@ function checkScrapingStatus(websiteId) {
 
         if (data.crawling_finished) {
             row.querySelector('.status').innerHTML = '🟢 Finished';
-            row.querySelector('.action').innerHTML = `<a href="/analysis/saved-urls/${websiteId}/"><button>View Scraped URLs</button></a>`;
+            row.querySelector('.action').innerHTML = `<a href="/analysis/analyse/website_page/${websiteId}/"><button>View Scraped URLs</button></a>`;
         } else if (data.crawling_in_progress) {
             row.querySelector('.status').innerHTML = '🟡 In Progress';
             setTimeout(() => checkScrapingStatus(websiteId), 5000);
