@@ -2,68 +2,77 @@
 {% load i18n %}
 
 {% block content %}
-<form action="/analysis/" method="post">
+<!-- <form action="/analysis/" method="post">
     {% csrf_token %}
     <label for="url">Enter URL:</label>
     <input type="url" id="url" name="url" placeholder="https://example.com" required>
     <button type="submit">Submit</button>
-</form>
+</form> -->
+<div class="analyze-heading">
+    <h1 class="analyze-heading">Analyze your competitors</h1>
+</div>
+<div class="analyze-heading">
+    <h2 class="analyze-heading">Enter your competitors website url and receive analysis or select already prepared analysis from the list</h2>
+</div>
 
+<div class="container my-5">
+    <!-- Add New Website -->
+    <div class="card mb-4 shadow-sm analysis">
+      <div class="card-body analysis">
+        <form action="/analysis/" method="post" class="row g-3 align-items-center analysis">
+          {% csrf_token %}
+          <div class="col-sm-9">
+            <input type="url" class="form-control" name="url" placeholder="https://example.com" required>
+          </div>
+          <div class="col-sm-3 text-end">
+            <button type="submit" class="button-analyze">Start Analysis</button>
+          </div>
+        </form>
+      </div>
+    </div>
   
-<h2>Scraped Websites:</h2>
-<table border="1" cellpadding="5" cellspacing="0">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Website URL</th>
-            <th>Last Visited</th>
-            <th>Visited Pages</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="websites-table">
-        {% for website in websites %}
-            <tr id="website-row-{{ website.id }}">
-                <td>{{ forloop.counter }}</td>
-                <td>{{ website.start_url }}</td>
-                <td>{{ website.last_visited }}</td>
-                <td class="visited-count">{{ website.visited_count }}</td>
-                <td class="status">
-                    {% if website.crawling_finished %}
-                        🟢 Finished
-                    {% elif website.crawling_in_progress %}
-                        🟡 In Progress
-                    {% else %}
-                        🔴 Not Started
-                    {% endif %}
-                </td>
-                <td class="action">
-                        <a href="{% url 'modules.analysis:saved_urls' website.id %}">
-                            <button>View Scraped URLs</button>
-                        </a>
-                </td>
-                <td class="action">
-                    <a href="{% url 'modules.analysis:website_keywords' website.id %}">
-                        <button>View keywords</button>
-                    </a>
-                </td>
-                <td class="action">
-                    <a href="{% url 'modules.analysis:insights' website.id %}">
-                        <button>View insights</button>
-                    </a>
-                </td>
-                <td class="action">
-                    <a href="{% url 'modules.analysis:overview' website.id %}">
-                        <button>Overview</button>
-                    </a>
-                </td>
-            </tr>
-        {% empty %}
-            <tr><td colspan="6">No scraped websites yet.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <!-- Website Cards -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for website in websites %}
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0">
+            {% if website.favicon_url %}
+              <img src="{{ website.favicon_url }}" class="card-img-top p-3" alt="Favicon" style="width: 48px; height: 48px; object-fit: contain;">
+            {% else %}
+              <div class="p-3 text-center text-muted">No Icon</div>
+            {% endif %}
+  
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title text-truncate" title="{{ website.start_url }}">
+                <a href="{{ website.start_url }}" class="text-decoration-none" target="_blank">{{ website.start_url }}</a>
+              </h6>
+  
+              <p class="mb-1"><strong>Pages:</strong> {{ website.visited_count }}</p>
+              <p class="mb-2"><strong>Last Visited:</strong> {{ website.last_visited }}</p>
+  
+              {% if website.crawling_finished %}
+                <span class="badge bg-success mb-3">🟢 Finished</span>
+              {% elif website.crawling_in_progress %}
+                <span class="badge bg-warning text-dark mb-3">🟡 In Progress</span>
+              {% else %}
+                <span class="badge bg-danger mb-3">🔴 Not Started</span>
+              {% endif %}
+  
+              <div class="mt-auto d-grid gap-2">
+                <a href="{% url 'modules.analysis:saved_urls' website.id %}" class="btn btn-outline-primary btn-sm">URLs</a>
+                <a href="{% url 'modules.analysis:website_keywords' website.id %}" class="btn btn-outline-secondary btn-sm">Keywords</a>
+                <a href="{% url 'modules.analysis:insights' website.id %}" class="btn btn-outline-info btn-sm">Insights</a>
+                <a href="{% url 'modules.analysis:overview' website.id %}" class="btn btn-outline-dark btn-sm">Overview</a>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center text-muted">No websites added yet.</p>
+      {% endfor %}
+    </div>
+  </div>
 
 <script>
 function checkScrapingStatus(websiteId) {

@@ -8,6 +8,7 @@ class Website(models.Model):
     crawling_finished = models.BooleanField(default=False)
     visited_count = models.IntegerField(default=0)
     target_audience = JSONField(null=True, blank=True)
+    favicon_url = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return self.start_url
@@ -42,6 +43,8 @@ class Page(models.Model):
     seo_score_details = models.JSONField(null=True, blank=True)
     linking_analysis = models.JSONField(null=True, blank=True)
 
+
+
     def __str__(self):
         return self.page_title or self.url
 
@@ -71,7 +74,7 @@ class KeywordInsight(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Insight for {self.website.start_url}"
+        return f"Insight for {self.website.start_url}" 
 
 
 

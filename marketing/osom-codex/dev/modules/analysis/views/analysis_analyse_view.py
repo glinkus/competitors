@@ -55,12 +55,12 @@ class AnalyseView(TemplateView):
             website=website,
             url=url,
             visited=False,
-            page_title="",
+            page_title="", 
             )
 
         run_one_page_spider.delay(website_id=website.id, website_name=website.start_url)
 
-        return redirect(f"{reverse('modules.analysis:analyse')}?error=invalid_url")
+        return redirect(reverse('modules.analysis:analyse'))
 
     # def get(self, request, *args, **kwargs):
     #     websites = Website.objects.all().order_by('-last_visited')

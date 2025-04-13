@@ -146,6 +146,7 @@ class OnePageSpider(scrapy.Spider):
         self.logger.info(f"--- Crawling URL --- {url}")
 
         d = threads.deferToThread(self.get_page_sync, self.website_id, url)
+
         def update_if_exists(page):
             if page is not None:
                 threads.deferToThread(self.update_page_sync, page, response)

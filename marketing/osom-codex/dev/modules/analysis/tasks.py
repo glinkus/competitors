@@ -18,6 +18,8 @@ from transformers import pipeline
 import textstat
 from modules.analysis.utils.page_seo_analysis import PageSEOAnalysis
 from modules.analysis.utils.seo_insights import SEOInsights
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 nltk.download('stopwords')
 
@@ -31,6 +33,7 @@ def run_one_page_spider(website_id, website_name):
     log_dir = os.path.join(project_root, 'logs')
     os.makedirs(log_dir, exist_ok=True)
     output_file = os.path.join(log_dir, f'spider_output_{website_id}.txt')
+
     classifier = pipeline(
         "zero-shot-classification",
         model="MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli",
@@ -38,6 +41,7 @@ def run_one_page_spider(website_id, website_name):
     )
 
     env['PYTHONPATH'] = BASE_DIR + os.pathsep + env.get('PYTHONPATH', '')
+
     while True:
         unvisited_pages = list(
             Page.objects.filter(website_id=website_id, visited=False)
@@ -48,13 +52,11 @@ def run_one_page_spider(website_id, website_name):
             if w:
                 w.crawling_finished = True
                 w.save()
-
                 analyze_top_keywords_trends.delay(website_id)
             else:
                 raise Exception(f"Website with id {website_id} not found.")
 
             return "No more unvisited pages found."
-
 
         for page_url in unvisited_pages:
             cmd = (
@@ -73,6 +75,11 @@ def run_one_page_spider(website_id, website_name):
                 if result.returncode != 0:
                     raise Exception(f"Spider failed for URL {page_url}. See log: {output_file}")
                 
+                w = Website.objects.filter(id=website_id).first()
+                if w and not w.favicon_url:
+                    get_icon(page_url, website_id)
+                    print(f"Saved favicon for: {page_url}")
+
                 analyze_page.delay(page_url)
                 sleep(5)
                 classify_text.delay(page_url)
@@ -80,8 +87,6 @@ def run_one_page_spider(website_id, website_name):
                 text_read_analysis.delay(page_url)
                 sleep(5)
                 run_seo_analysis.delay(page_url)
-
-
 
         sleep(5)
 
@@ -365,6 +370,30 @@ def classify_text(page_url):
     page.save()
 
     return {"tone_classification": tone_classification}
+
+def get_icon(page_url, website_id):
+    page = Page.objects.get(url=page_url)
+    raw_html = page.raw_html
+    website = Website.objects.get(id=website_id)
+
+    if website.favicon_url:
+        return
+
+    soup = BeautifulSoup(raw_html, "html.parser")
+    icon_selectors = [
+        'link[rel="icon"]',
+        'link[rel="shortcut icon"]',
+        'link[rel="apple-touch-icon"]',
+        'link[rel="apple-touch-icon-precomposed"]',
+    ]
+
+    for selector in icon_selectors:
+        tag = soup.select_one(selector)
+        if tag and tag.get("href"):
+            icon = urljoin(page.url, tag["href"])
+            website.favicon_url = icon
+            website.save()
+            break
 
 @shared_task
 def text_read_analysis(page_url):
