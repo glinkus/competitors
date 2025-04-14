@@ -4,7 +4,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <h2>{% trans "Keywords for" %} {{ website.start_url }}</h2>
 
-<!-- Recalculate Keywords Button -->
 <form action="{% url 'modules.analysis:website_keywords' website.id %}" method="post">
     {% csrf_token %}
     <button type="submit">{% trans "Recalculate Keywords" %}</button>

@@ -2,75 +2,120 @@
 {% load static %}
 
 {% block content %}
-
-<div class="prose">
-    <h2>Median Tone Scores</h2>
-
-    <div style="width: 400px; height: 200px; margin-bottom: 2rem;">
-        <canvas id="toneChart"></canvas>
+<div class="container py-5 overview-container">
+    <div class="analyze-heading">
+        <h1 class="analyze-heading">Overview of the company</h1>
+    </div>
+    <div class="analyze-heading pb-5">
+        <h2 class="analyze-heading">{{ website.start_url }}</h1>
     </div>
 
-    {% if most_technical_url %}
-    <p><strong>Most technical page:</strong> <a href="{{ most_technical_url }}">{{ most_technical_url }}</a></p>
-    {% endif %}
+    <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+            <h5 class="table-title">Median Text Type Scores</h5>
+            <div style="width: 100%; max-width: 500px;" class="chart-container">
+                <canvas id="toneChart"></canvas>
+            </div>
+        </div>
 
-    {% if least_technical_url %}
-    <p><strong>Least technical page:</strong> <a href="{{ least_technical_url }}">{{ least_technical_url }}</a></p>
-    {% endif %}
-
-    <div style="display: flex; gap: 2rem; justify-content: left; align-items: center;">
-        <div class="tooltip-wrapper">
-            <div style="width: 120px; height: 120px; border-radius: 50%; background-color: #ffe4b5; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="stats-container">
+            <div class="stat-circle readability">
                 <strong>{{ avg_readability }}</strong>
-                <span style="font-size: 0.8rem; text-align: center;">Avg. Readability</span>
+                <span>Avg. Readability</span>
+                <div class="tooltip-box">
+                    <table>
+                        <tr>
+                            <td>90–100</td>
+                            <td>Very Easy</td>
+                        </tr>
+                        <tr>
+                            <td>80–89</td>
+                            <td>Easy</td>
+                        </tr>
+                        <tr>
+                            <td>70–79</td>
+                            <td>Fairly Easy</td>
+                        </tr>
+                        <tr>
+                            <td>60–69</td>
+                            <td>Standard</td>
+                        </tr>
+                        <tr>
+                            <td>50–59</td>
+                            <td>Fairly Difficult</td>
+                        </tr>
+                        <tr>
+                            <td>30–49</td>
+                            <td>Difficult</td>
+                        </tr>
+                        <tr>
+                            <td>0–29</td>
+                            <td>Very Confusing</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div class="tooltip-content">
-                <strong>Readability Score Guide:</strong><br>
-                <ul>
-                    <li><strong>90–100</strong>: Very easy (5th grade)</li>
-                    <li><strong>80–89</strong>: Easy (6th grade)</li>
-                    <li><strong>70–79</strong>: Fairly easy</li>
-                    <li><strong>60–69</strong>: Plain English</li>
-                    <li><strong>50–59</strong>: Fairly difficult</li>
-                    <li><strong>30–49</strong>: Difficult</li>
-                    <li><strong>10–29</strong>: Very difficult</li>
-                    <li><strong>0–9</strong>: Extremely difficult</li>
-                </ul>
+
+            <div class="stat-circle reading-time">
+                <strong>{{ avg_reading_time }}</strong>
+                <span>Avg. Reading Time</span>
             </div>
         </div>
 
-        <div style="width: 120px; height: 120px; border-radius: 50%; background-color: #d1e7dd; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <strong>{{ avg_reading_time }}</strong>
-            <span style="font-size: 0.8rem; text-align: center;">Avg. Reading Time</span>
+    </div>
+    <div class="mt-10 mb-4">
+        <h5 class="table-title pb-2">Text Type Score Per Page</h5>
+
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: end;" class="mb-4">
+            <div>
+                <label for="tonePageType" class="block mb-1 font-semibold">Text Type</label>
+                <select id="tonePageType" class="form-select">
+                    <option value="technical">Technical</option>
+                    <option value="emotional">Emotional</option>
+                    <option value="neutral">Neutral</option>
+                </select>
+            </div>
+            <div>
+                <label for="tonePageChartType" class="block mb-1 font-semibold">Chart Style</label>
+                <select id="tonePageChartType" class="form-select">
+                    <option value="line">Line</option>
+                    <option value="bar">Bar</option>
+                </select>
+            </div>
+            <button id="renderTonePageChart" class="button-analyze">Generate</button>
         </div>
+
+        <canvas id="tonePageChart" height="120" class="chart-container"></canvas>
     </div>
 
-    <div style="margin-top: 2rem;">
-        <h3 class="text-lg font-semibold">Page Readability & Reading Time Stats</h3>
-        <ul class="list-disc pl-6 mt-2">
-            <li><strong>Highest Readability Page:</strong> <a href="{{ highest_readability_url }}" target="_blank">{{ highest_readability_url }}</a></li>
-            <li><strong>Lowest Readability Page:</strong> <a href="{{ lowest_readability_url }}" target="_blank">{{ lowest_readability_url }}</a></li>
-            <li><strong>Longest Reading Time Page:</strong> <a href="{{ longest_reading_url }}" target="_blank">{{ longest_reading_url }}</a></li>
-            <li><strong>Shortest Reading Time Page:</strong> <a href="{{ shortest_reading_url }}" target="_blank">{{ shortest_reading_url }}</a></li>
-        </ul>
+    <h5 class="table-title">Reading Time per Page</h5>
+    <div class="mt-10 p-3">
+        <canvas id="readingTimeChart" height="150" class="chart-container"></canvas>
     </div>
+
+    <div class="mt-10 p-3">
+        <h5 class="table-title">Readability Score per Page</h5>
+        <canvas id="readabilityChart" height="150" class="chart-container"></canvas>
+    </div>
+
+    <h2 class="table-title pb-2">Įmonės tikslinė auditorija</h2>
+    <ul class="space-y-3">
+        {% for segment, explanation in target_audience.items %}
+        <li class="bg-white shadow rounded p-3 m-2">
+            <strong class="font-weight-bold">{{ segment }}:</strong>
+            <span class="text-gray-700 text-sm">{{ explanation }}</span>
+        </li>
+        {% endfor %}
+    </ul>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         window.toneLabels = {{ tone_labels|safe }};
         window.toneData = {{ tone_data|safe }};
+        window.readingLabels = {{ reading_labels|safe }};
+        window.perPageTones = {{ per_page_tones|safe }};
+        window.readingValues = {{ reading_values|safe }};
+        window.readabilityValues = {{ readability_values|safe }};
     </script>
-    <h2 class="text-xl font-semibold mb-4">Įmonės tikslinė auditorija</h2>
-
-    <ul class="space-y-3">
-      {% for segment, explanation in target_audience.items %}
-        <li class="bg-white shadow rounded p-4">
-          <strong class="block text-lg">{{ segment }}:</strong>
-          <span class="text-gray-700 text-sm">{{ explanation }}</span>
-        </li>
-      {% endfor %}
-    </ul>
-    
-    
 </div>
 {% endblock %}

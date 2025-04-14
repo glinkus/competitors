@@ -4,7 +4,7 @@ ul.dash {
     padding-left: 20px;
 }
 
-ul.dash > li:before {
+ul.dash>li:before {
     display: inline-block;
     content: "-";
     width: 1em;
@@ -79,4 +79,111 @@ ul.dash > li:before {
 
 .gap {
     gap: 20px;
+}
+
+.icon-link>.bi {
+    width: .75em;
+    height: .75em;
+}
+
+.flex-equal>* {
+    flex: 1;
+}
+
+@media (min-width: 768px) {
+    .flex-md-equal>* {
+        flex: 1;
+    }
+}
+
+@media (min-width: 768px) {
+    .button-landing {
+        font-size: 1.125rem;
+        padding: 1rem 2rem;
+    }
+}
+
+.grow-hover {
+    transition: transform 0.2s ease-in-out;
+    display: inline-block;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &:active {
+        transform: scale(1.1);
+    }
+}
+
+.bg-body-tertiary {
+    background-color: #FEF9EF !important;
+}
+
+h1.analyze-heading {
+    font-family: Figtree, "Figtree Fallback";
+    font-size: 60px !important;
+    font-weight: 650 !important;
+    width: 100%;
+    text-align: center;
+}
+
+h2.analyze-heading {
+    font-family: Moderat, "Moderat Fallback";
+    font-size: 1.5rem !important;
+    font-weight: 400 !important;
+    width: 60%;
+    text-align: center;
+    color: #726F6C;
+}
+
+.analyze-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-around
+}
+
+.content-website {
+    background-color: #FEF9EF;
+}
+
+.list-group-item {
+    text-wrap: wrap;
+}
+
+.custom-p-3 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+}
+
+h5.table-title {
+    padding-bottom: 0.5rem;
+    font-family: Figtree, "Figtree Fallback";
+    font-size: 1.3rem !important;
+}
+
+h6.table-title {
+    padding-bottom: 0.3rem;
+    font-family: Figtree, "Figtree Fallback";
+    font-size: 1rem !important;
+}
+
+.reduce-padding {
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin: 0px !important;
+}
+
+.mb-custom {
+    padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+    margin: 0px !important;
+}
+
+.space-y-3 {
+    strong {
+        font-weight: 700;
+    }
 }

@@ -200,18 +200,15 @@ def extract_keywords_for_website(website_id, top_n=20):
 def analyze_top_keywords_trends(website_id, top_n=10):
     keywords = ExtractedKeyword.objects.filter(page__website_id=website_id)
 
-    # Aggregate by keyword
     keyword_counter = defaultdict(list)
     for kw in keywords:
         keyword_counter[kw.keyword].append(kw.score)
 
-    # Sort by count and average score
     keyword_summary = sorted(
         [(kw, len(scores), sum(scores) / len(scores)) for kw, scores in keyword_counter.items()],
         key=lambda x: (-x[1], -x[2])
     )
 
-    # Top N keywords
     top_keywords = [kw for kw, _, _ in keyword_summary[:top_n]]
     if not top_keywords:
         return {"message": "No keywords to enrich."}
@@ -242,7 +239,6 @@ def analyze_top_keywords_trends(website_id, top_n=10):
 
             main_obj = keyword_objs.first()
 
-            # Interest over time
             df_time = pytrends.interest_over_time()
             if not df_time.empty and keyword in df_time:
                 interest_data = {
@@ -254,7 +250,6 @@ def analyze_top_keywords_trends(website_id, top_n=10):
                 interest_data = {}
                 trend_score = 0
 
-            # Related queries
             related_terms = []
             try:
                 related = pytrends.related_queries()
@@ -263,7 +258,6 @@ def analyze_top_keywords_trends(website_id, top_n=10):
             except Exception:
                 pass
 
-            # Interest by region
             try:
                 df_region = pytrends.interest_by_region(
                     resolution='REGION',
@@ -284,62 +278,6 @@ def analyze_top_keywords_trends(website_id, top_n=10):
         sleep(60)
 
     return {"top_keywords_enriched": top_keywords}
-
-@shared_task
-def enrich_keyword_with_trends(keyword_id):
-    warnings.filterwarnings("ignore", category=FutureWarning)
-
-    kw_obj = ExtractedKeyword.objects.filter(id=keyword_id).first()
-    if not kw_obj:
-        return f"Keyword {keyword_id} not found."
-
-    keyword = kw_obj.keyword
-    geo = 'LT'
-
-    pytrends = TrendReq()
-    pytrends.build_payload([keyword], timeframe='today 3-m', geo=geo)
-
-    # Interest over time
-    df_time = pytrends.interest_over_time()
-    if not df_time.empty:
-        interest_data = {
-            date.strftime("%Y-%m-%d"): int(val)
-            for date, val in df_time[keyword].items()
-        }
-        trend_score = int(df_time[keyword].mean())
-    else:
-        interest_data = {}
-        trend_score = 0
-
-    # Related terms
-    related = pytrends.related_queries()
-    related_terms = []
-    if related and keyword in related:
-        top_df = related[keyword].get("top")
-        if top_df is not None:
-            related_terms = top_df.to_dict(orient="records")
-
-    # Interest by region
-    try:
-        df_region = pytrends.interest_by_region(
-            resolution='REGION',
-            inc_low_vol=True,
-            inc_geo_code=False
-        )
-        df_region = df_region[df_region[keyword] > 0]
-        region_data = df_region[keyword].to_dict()
-    except Exception:
-        print("Error fetching interest by region.")
-        region_data = {}
-
-    # Update keyword entry
-    kw_obj.trend_score = trend_score
-    kw_obj.interest_over_time = interest_data
-    kw_obj.related_terms = related_terms
-    kw_obj.interest_by_region = region_data
-    kw_obj.save()
-
-    return f"Enriched keyword '{keyword}' with trend data."
 
 @shared_task
 def classify_text(page_url):

@@ -16,14 +16,12 @@ body {
     color: var(--c-on-primary);
 }
 
-// Main navigation.
 ul.nav {
     grid-row: 2;
     grid-column: 1 / 4;
     background-color: #131B23;
     align-items: center;
     justify-content: space-between;
-
 
     li {
         display: flex;
@@ -87,6 +85,7 @@ ul.nav {
     padding: 40px 45px 40px 45px;
     color: var(--c-on-secondary);
     background-color: var(--c-secondary);
+    background: transparent url(img/desktop-5.svg) center center no-repeat;
     width: 100%;
 
     h1,
@@ -94,6 +93,7 @@ ul.nav {
         font-size: 1.3rem;
         font-weight: bold;
     }
+
     h1.con-header {
         margin-bottom: 25px;
     }
@@ -125,3 +125,59 @@ ul.nav {
     font-size: 0.7rem;
 }
 
+.site-header {
+    background-color: rgba(0, 0, 0, .85);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+}
+
+.site-header a {
+    color: #8e8e8e;
+    transition: color .15s ease-in-out;
+}
+
+.site-header a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.product-device {
+    position: absolute;
+    right: 10%;
+    bottom: -30%;
+    width: 300px;
+    height: 540px;
+    background-color: #333;
+    border-radius: 21px;
+    transform: rotate(30deg);
+}
+
+.product-device::before {
+    position: absolute;
+    top: 10%;
+    right: 10px;
+    bottom: 10%;
+    left: 10px;
+    content: "";
+    background-color: rgba(255, 255, 255, .1);
+    border-radius: 5px;
+}
+
+.product-device-2 {
+    top: -25%;
+    right: auto;
+    bottom: 0;
+    left: 5%;
+    background-color: #e5e5e5;
+}
+
+.menu-items {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+}
+
+.analysis {
+    background-color: #FFFFFF;
+    border-radius: 2.5rem;
+}

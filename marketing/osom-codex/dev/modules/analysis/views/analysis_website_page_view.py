@@ -5,7 +5,7 @@ from collections import defaultdict
 import json
 
 class URLView(TemplateView):
-    template_name = "modules/analysis/saved_urls.html"
+    template_name = "modules/analysis/website_page.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

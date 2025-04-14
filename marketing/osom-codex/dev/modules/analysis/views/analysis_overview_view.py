@@ -22,6 +22,18 @@ class OverviewView(TemplateView):
 
         pages_stats = Page.objects.filter(website_id=website_id).exclude(text_reading_time__isnull=True, text_readability__isnull=True)
         stats = self.average(pages_stats)
+        reading_labels = [page.url for page in pages_stats]
+        reading_values = [round(page.text_reading_time * 60, 1) for page in pages_stats]
+        readability_values = [round(page.text_readability, 2) for page in pages_stats]
+
+        per_page_tones = []
+        for page in pages_stats:
+            tone_data = {
+                "technical": page.text_types.get("technical", 0),
+                "emotional": page.text_types.get("emotional", 0),
+                "neutral": page.text_types.get("neutral", 0)
+            }
+            per_page_tones.append(tone_data)
 
         target_audience = website.target_audience
         if target_audience is None:
@@ -38,6 +50,10 @@ class OverviewView(TemplateView):
             "least_technical_url": least_technical_url,
             **stats,
             "target_audience": target_audience,
+            "reading_labels": reading_labels,
+            "reading_values": reading_values,
+            "readability_values": readability_values,
+            "per_page_tones": per_page_tones,	
         })
         return context
 
@@ -67,6 +83,7 @@ class OverviewView(TemplateView):
         lowest_read_page = min(readability_scores, key=lambda x: x[0])[1]
         longest_page = max(reading_times, key=lambda x: x[0])[1]
         shortest_page = min(reading_times, key=lambda x: x[0])[1]
+
 
         return {
             "avg_readability": avg_readability,

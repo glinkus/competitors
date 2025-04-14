@@ -29,11 +29,8 @@ class InsightsView(TemplateView):
     def post(self, request, *args, **kwargs):
         website = get_object_or_404(Website, id=kwargs.get('website_id'))
 
-        # Delete existing insight if present
         KeywordInsight.objects.filter(website=website).delete()
-
-        # Regenerate and store
-        new_insight = self._generate_insight(website)
+        self._generate_insight(website)
 
         return redirect(reverse("modules.analysis:insights", kwargs={"website_id": website.id}))
 

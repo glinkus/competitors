@@ -9,8 +9,6 @@ from modules.analysis.models import Page
 from scrapy_djangoitem import DjangoItem
 
 class CompetitorsScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
     pass
 
 class WebsiteItem(DjangoItem):

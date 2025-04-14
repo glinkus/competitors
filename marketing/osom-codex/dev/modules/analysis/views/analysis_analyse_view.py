@@ -61,13 +61,6 @@ class AnalyseView(TemplateView):
         run_one_page_spider.delay(website_id=website.id, website_name=website.start_url)
 
         return redirect(reverse('modules.analysis:analyse'))
-
-    # def get(self, request, *args, **kwargs):
-    #     websites = Website.objects.all().order_by('-last_visited')
-    #     context = {
-    #         'websites': websites,
-    #     }
-    #     return render(request, self.template_name, context)
     
     
     def get(self, request, *args, **kwargs):

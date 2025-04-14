@@ -2,12 +2,12 @@
 
 {% block content %}
   <div class="analyze-heading">
-    <h1 class="analyze-heading">Analyze competitors website</h1>
+    <h1 class="analyze-heading">Specific page analysis</h1>
   </div>
   <div class="analyze-heading">
     <h2 class="analyze-heading">Select website page from the list to see analysis below</h2>
   </div>
-  <div class="container py-5">
+  <div class="container p-5">
     <div class="mb-4">
       <label for="pageDropdown" class="form-label">Select Page:</label>
       <select id="pageDropdown" class="form-select">
@@ -16,12 +16,6 @@
           <option value="{{ page.id }}">{{ page.url }}</option>
         {% endfor %}
       </select>
-    </div>
-  
-    <!-- Keywords Section -->
-    <div id="keywordsDisplay" class="mb-5">
-      <h5 class="table-title">Keywords for Selected Page:</h5>
-      <ul id="keywordList" class="list-group"></ul>
     </div>
   
     <!-- SEO Details -->
@@ -48,7 +42,13 @@
         <h5 class="table-title">SEO Score Details</h5>
         <pre id="seoScoreDetails" class="seo-score-box"></pre>
       </div>
-  
+      
+      <!-- Keywords Section -->
+    <h5 class="table-title">Page keywords</h5>
+    <div id="keywordsDisplay" class="mb-5">
+      <ul id="keywordList" class="list-group"></ul>
+    </div>
+
       <div class="mb-4">
         <h5 class="table-title">Recommendations</h5>
         <div id="recommendationsContainer"></div>
@@ -73,7 +73,6 @@
     dropdown.addEventListener("change", function () {
       const selectedId = this.value;
   
-      // Clear all sections
       keywordList.innerHTML = "";
       warningList.innerHTML = "";
       linkingAnalysis.textContent = "";
@@ -165,16 +164,9 @@
       if (!Object.keys(details).length) {
         seoHtml = "<p class='text-muted'>No SEO score details available.</p>";
       } else {
-        seoHtml += `
-          <div class="section-block">
-            <strong>SEO Score:</strong>
-            <span class="badge">${details.seo_score ?? 'N/A'}</span>
-          </div>
-        `;
-
         if (details.strengths?.length) {
           seoHtml += `
-            <div class="mb-3">
+            <div class="mb-3 mb-custom">
               <h6 class="text-success">Strengths</h6>
               <ul class="list-group list-group-flush">
                 ${details.strengths.map(item => `<li class="list-group-item text-success">${item}</li>`).join("")}
@@ -185,7 +177,7 @@
 
         if (details.weaknesses?.length) {
           seoHtml += `
-            <div class="mb-3">
+            <div class="mb-3 mb-custom">
               <h6 class="text-danger">Weaknesses</h6>
               <ul class="list-group list-group-flush">
                 ${details.weaknesses.map(item => `<li class="list-group-item text-danger">${item}</li>`).join("")}
@@ -196,7 +188,7 @@
 
         if (details.recommendations?.length) {
           seoHtml += `
-            <div class="mb-3">
+            <div class="mb-3 mb-custom">
               <h6 class="text-primary">Recommendations</h6>
               <ul class="list-group list-group-flush">
                 ${details.recommendations.map(item => `<li class="list-group-item">${item}</li>`).join("")}
@@ -208,8 +200,6 @@
 
       seoScoreDetails.innerHTML = seoHtml;
 
-  
-      // Recommendations
       const recs = recommendations[selectedId] || [];
       recs.forEach(rec => {
         const card = document.createElement("div");
@@ -217,7 +207,6 @@
         card.innerHTML = `
           <div class="card-body">
             <h6 class="card-title text-primary">${rec.category.replace(/_/g, ' ')}</h6>
-            <p class="card-text"><strong>Rationale:</strong> ${rec.rationale || "N/A"}</p>
             <ul class="mb-0">${(rec.actions || []).map(action => `<li>${action}</li>`).join('')}</ul>
           </div>
         `;
@@ -225,12 +214,12 @@
       });
   
       // Keywords
-      const keywords = keywordsByPage[selectedId] || [];
+      const keywords = (keywordsByPage[selectedId] || []).slice(0, 10);
       if (keywords.length) {
-        keywords.forEach(kw => {
+        keywords.forEach((kw, index) => {
           const li = document.createElement("li");
-          li.textContent = kw;
-          li.classList.add("list-group-item");
+          li.textContent = `${index + 1}.  ${kw}`;
+          li.classList.add("list-group-item", "keywords-table");
           keywordList.appendChild(li);
         });
       } else {
@@ -239,6 +228,8 @@
         li.classList.add("list-group-item", "text-muted");
         keywordList.appendChild(li);
       }
+
+
     });
   </script>
   

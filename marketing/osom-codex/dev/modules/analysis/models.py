@@ -43,8 +43,6 @@ class Page(models.Model):
     seo_score_details = models.JSONField(null=True, blank=True)
     linking_analysis = models.JSONField(null=True, blank=True)
 
-
-
     def __str__(self):
         return self.page_title or self.url
 
