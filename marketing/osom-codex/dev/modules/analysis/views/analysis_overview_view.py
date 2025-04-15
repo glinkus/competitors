@@ -8,6 +8,24 @@ import google.generativeai as genai
 from django.shortcuts import get_object_or_404, redirect
 import json
 from modules.analysis.utils.page_seo_analysis import PageSEOAnalysis
+from modules.analysis.tasks import generate_website_insight
+from django.http import JsonResponse
+from modules.analysis.tasks import generate_target_audience
+
+def website_insight_status(request, website_id):
+    website = Website.objects.filter(id=website_id).first()
+    if website and website.insight_text:
+        return JsonResponse({
+            "ready": True,
+            "insight": website.insight_text
+        })
+    return JsonResponse({"ready": False})
+
+def target_audience_status(request, website_id):
+    website = Website.objects.filter(id=website_id).first()
+    if website and website.target_audience:
+        return JsonResponse({"ready": True, "audience": website.target_audience})
+    return JsonResponse({"ready": False})
 
 class OverviewView(TemplateView):
     template_name = "modules/analysis/overview.html"
@@ -26,6 +44,47 @@ class OverviewView(TemplateView):
         reading_values = [round(page.text_reading_time * 60, 1) for page in pages_stats]
         readability_values = [round(page.text_readability, 2) for page in pages_stats]
 
+        keywords = ExtractedKeyword.objects.filter(page__website=website)
+        
+        keyword_counter = Counter()
+        keyword_scores = {}
+
+        for kw in keywords:
+            keyword_counter[kw.keyword] += 1
+            keyword_scores.setdefault(kw.keyword, []).append(kw.score)
+
+        keyword_summary = []
+        for keyword, count in keyword_counter.items():
+            avg_score = sum(keyword_scores[keyword]) / len(keyword_scores[keyword])
+
+            trend_obj = ExtractedKeyword.objects.filter(
+                page__website=website,
+                keyword=keyword,
+                interest_over_time__isnull=False
+            ).exclude(interest_over_time={}).first()
+
+            if trend_obj and trend_obj.interest_over_time:
+                trend_keys = list(trend_obj.interest_over_time.keys())
+                trend_values = list(trend_obj.interest_over_time.values())
+            else:
+                trend_keys = []
+                trend_values = []
+
+            keyword_summary.append({
+                'keyword': keyword,
+                'count': count,
+                'avg_score': round(avg_score, 2),
+                'trend_keys': json.dumps(trend_keys),
+                'trend_values': json.dumps(trend_values),
+                'interest_by_region': trend_obj.interest_by_region if trend_obj else {},
+                'trend_score': trend_obj.trend_score if trend_obj else 0,
+            })
+
+
+        context["keyword_summary"] = sorted(
+            keyword_summary, key=lambda x: (-x["count"], -x["avg_score"])
+        )[:10]
+
         per_page_tones = []
         for page in pages_stats:
             tone_data = {
@@ -35,10 +94,14 @@ class OverviewView(TemplateView):
             }
             per_page_tones.append(tone_data)
 
+        if website.insight_text is None:
+            generate_website_insight.delay(website_id)
+
         target_audience = website.target_audience
         if target_audience is None:
-            target_audience = self.target_audience(website_id)
+            generate_target_audience.apply_async(args=[website_id], countdown=10)
 
+        
         pages = Page.objects.filter(website_id=website_id)
 
         context.update({
@@ -94,7 +157,6 @@ class OverviewView(TemplateView):
             "shortest_reading_url": shortest_page,
         }
 
-
     def calculate_median_tones(self, pages):
         tone_scores = {}
         technical_scores = []
@@ -124,68 +186,5 @@ class OverviewView(TemplateView):
 
         return median_tones, most_technical_url, least_technical_url
     
-    def target_audience(self, website_id):
-        website = get_object_or_404(Website, id=website_id)
-        keywords = ExtractedKeyword.objects.filter(page__website=website)
-        keyword_counter = Counter()
-        keyword_scores = {}
-
-        for kw in keywords:
-            keyword_counter[kw.keyword] += 1
-            keyword_scores.setdefault(kw.keyword, []).append(kw.score)
-
-        sorted_keywords = sorted(
-            keyword_counter.items(),
-            key=lambda item: (-item[1], -sum(keyword_scores[item[0]]) / len(keyword_scores[item[0]]))
-        )
-
-        top_keywords = [kw for kw, _ in sorted_keywords[:20]]
-
-        prompt = (
-            "Atlieku konkurentų įmonės svetainės puslapių analizę. "
-            f"Pagal šiuos raktinius žodžius: {', '.join(top_keywords)}, "
-            "nurodyk, į kokią auditoriją orientuojasi įmonė. "
-            "Atsakyk TIK JSON formatu, naudodamas šią struktūrą:\n"
-            "{\n"
-            "  \"Į ką orientuojasi įmonė\": {\n"
-            "    \"Auditorijos segmentas 1\": \"Trumpas paaiškinimas\",\n"
-            "    \"Auditorijos segmentas 2\": \"Trumpas paaiškinimas\"\n"
-            "  }\n"
-            "}\n"
-            "Pavyzdys:\n"
-            "{\n"
-            "  \"Į ką orientuojasi įmonė\": {\n"
-            "    \"Technologijų įmonės\": \"Įmonės, ieškančios pažangių 3D sprendimų ir duomenų apdorojimo platformų.\",\n"
-            "    \"Dizaineriai\": \"Individualūs dizaineriai ir dizaino komandos, dirbančios su 3D modeliavimu ir vizualizacija.\"\n"
-            "  }\n"
-            "}"
-        )
-
-
-        model = genai.GenerativeModel("gemini-2.0-flash")
-        response = model.generate_content(prompt)
-        insight = response.text
-        parsed_audience = self.extract_json(insight, website_id)
-
-        return parsed_audience
-    
-    def extract_json(self, response, website_id):
-        website = get_object_or_404(Website, id=website_id)
-        try:
-            cleaned = response.strip().strip("```json").strip("```").strip()
-            parsed = json.loads(cleaned)
-
-            if "Į ką orientuojasi įmonė" in parsed:
-                parsed = parsed["Į ką orientuojasi įmonė"]
-
-            if not isinstance(parsed, dict):
-                raise ValueError("Expected a flat dictionary after unwrapping.")
-
-            website.target_audience = parsed
-            website.save()
-            return parsed
-
-        except json.JSONDecodeError as e:
-            raise ValueError(f"Model response could not be parsed as JSON: {e}\nRaw output: {response}") from e
 
 

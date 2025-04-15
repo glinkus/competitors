@@ -5,7 +5,7 @@ from .views.analysis_website_page_view import URLView
 from .views.analysis_page_keywords_view import PageKeywordsView
 from .views.analysis_website_keywords_view import WebsiteKeywordsView
 from .views.analysis_insights_view import InsightsView
-from .views.analysis_overview_view import OverviewView
+from .views.analysis_overview_view import OverviewView, website_insight_status, target_audience_status
 from .views.analysis_landing_view import LandingView
 
 app_name = "modules.analysis" 
@@ -17,4 +17,7 @@ urlpatterns = [
     path('website-keywords/<int:website_id>/', WebsiteKeywordsView.as_view(), name='website_keywords'),
     path('insights/<int:website_id>/', InsightsView.as_view(), name='insights'),
     path('overview/<int:website_id>/', OverviewView.as_view(), name='overview'),
+    path('api/website/<int:website_id>/insight-status/', website_insight_status, name='website-insight-status'),
+    path("api/website/target-audience-status/<int:website_id>/", target_audience_status, name="target_audience_status"),
+
 ]

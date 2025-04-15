@@ -9,6 +9,7 @@ class Website(models.Model):
     visited_count = models.IntegerField(default=0)
     target_audience = JSONField(null=True, blank=True)
     favicon_url = models.URLField(null=True, blank=True)
+    insight_text = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.start_url
@@ -35,10 +36,8 @@ class Page(models.Model):
     links = JSONField(default=dict, null=True, blank=True)
     content_hash = models.CharField(max_length=42, blank=True, null=True)
     structured_data = JSONField(default=dict, null=True, blank=True)
-    cta_analysis = JSONField(default=dict, null=True, blank=True)
-    seo_recommendations = JSONField(default=dict, null=True, blank=True)
-    internal_links = JSONField(default=dict, null=True, blank=True)
-    external_links = JSONField(default=dict, null=True, blank=True)
+    internal_links = JSONField(default=list, null=True, blank=True)
+    external_links = JSONField(default=list, null=True, blank=True)
     seo_score = models.FloatField(null=True, blank=True)
     seo_score_details = models.JSONField(null=True, blank=True)
     linking_analysis = models.JSONField(null=True, blank=True)

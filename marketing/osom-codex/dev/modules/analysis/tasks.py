@@ -3,10 +3,10 @@ import subprocess
 import os
 from time import sleep
 from celery import shared_task
-from modules.analysis.models import Page, Website, ExtractedKeyword
+from modules.analysis.models import Page, Website, ExtractedKeyword, SEORecommendation
 from modules.analysis.utils.keyword_extraction import KeywordExtraction
 from sklearn.feature_extraction.text import TfidfVectorizer
-from collections import defaultdict
+from collections import defaultdict, Counter
 import json
 import re
 import nltk
@@ -20,6 +20,8 @@ from modules.analysis.utils.page_seo_analysis import PageSEOAnalysis
 from modules.analysis.utils.seo_insights import SEOInsights
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+from statistics import mean
+import google.generativeai as genai
 
 nltk.download('stopwords')
 
@@ -358,3 +360,115 @@ def text_read_analysis(page_url):
         "reading_time": reading_time,
         "word_count": word_count
     }
+
+@shared_task
+def generate_website_insight(website_id):
+    website = Website.objects.get(id=website_id)
+    pages = Page.objects.filter(website=website).exclude(text_readability__isnull=True)
+
+    if not pages.exists():
+        return "No pages to analyze."
+
+    keywords_by_page = defaultdict(list)
+    keywords = ExtractedKeyword.objects.filter(page__in=pages).order_by('-score')
+    recommendations = SEORecommendation.objects.filter(page__in=pages)
+
+    keyword_count_by_page = defaultdict(int)
+    for kw in keywords:
+        if keyword_count_by_page[kw.page_id] < 7:
+            keywords_by_page[kw.page_id].append(kw.keyword)
+            keyword_count_by_page[kw.page_id] += 1
+            
+    summaries = []
+    for page in pages:
+        summaries.append({
+            "url": page.url,
+            "readability": page.text_readability,
+            "reading_time": page.text_reading_time,
+            "tones": page.text_types,
+            "seo_score": page.seo_score,
+            "seo_score_details": page.seo_score_details,
+            "linking_analysis": page.linking_analysis,
+            "warnings": page.warnings,
+        })
+        
+    recommendations_list = list(recommendations.values_list('actions', flat=True))
+    
+    summaries.append({
+        "keywords": dict(keywords_by_page),
+        "recommendations": recommendations_list
+    })
+    prompt = (
+        "You are analyzing a company's website based on the data extracted from its pages. "
+        "Each page contains a title, URL, readability score, reading time (in minutes), tone classification "
+        "(technical, emotional, neutral), SEO score, and a list of SEO-related warnings, seo recommendations and other recommendations .\n\n"
+        "Given this data for all pages in JSON format below, write a concise executive summary of the entire website's content and SEO performance. "
+        "Identify tone trends, content clarity, SEO health, recurring weaknesses, and provide improvement suggestions. "
+        "Be clear, professional, and do not include the raw URLs or page titles directly. Focus on aggregated insight. \n\n"
+        f"Website Pages JSON:\n{json.dumps(summaries, ensure_ascii=False)}"
+    )
+
+    model = genai.GenerativeModel("gemini-2.0-flash")
+    response = model.generate_content(prompt)
+
+    print(f"Insight response: {response}")
+    website.insight_text = response.text.strip()
+    website.save()
+
+    return "Insight generated successfully"
+
+@shared_task
+def generate_target_audience(website_id):
+    try:
+        website = Website.objects.get(id=website_id)
+        keywords = ExtractedKeyword.objects.filter(page__website=website)
+
+        keyword_counter = Counter()
+        keyword_scores = {}
+
+        for kw in keywords:
+            keyword_counter[kw.keyword] += 1
+            keyword_scores.setdefault(kw.keyword, []).append(kw.score)
+
+        sorted_keywords = sorted(
+            keyword_counter.items(),
+            key=lambda item: (-item[1], -sum(keyword_scores[item[0]]) / len(keyword_scores[item[0]]))
+        )
+
+        top_keywords = [kw for kw, _ in sorted_keywords[:20]]
+
+        print(f"Top keywords for target audience: {top_keywords}")
+
+        prompt = (
+            "I am analyzing the pages of a competitor's company website. "
+            f"Based on these keywords: {', '.join(top_keywords)}, "
+            "identify the target audience the company is focusing on. "
+            "Respond ONLY in JSON format using the following structure and present at least 4 audience segments:\n"
+            "{\n"
+            '  "Company Target Audience": {\n'
+            '    "Audience Segment 1": "Short explanation",\n'
+            '    "Audience Segment 2": "Short explanation"\n'
+            "  }\n"
+            "}\n"
+            "Example:\n"
+            "{\n"
+            '  "Company Target Audience": {\n'
+            '    "Tech Companies": "Businesses looking for advanced 3D solutions and data processing platforms.",\n'
+            '    "Designers": "Individual designers and design teams working with 3D modeling and visualization."\n'
+            "  }\n"
+            "}"
+        )
+
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        response = model.generate_content(prompt)
+        cleaned = response.text.strip().strip("```json").strip("```").strip()
+        parsed = json.loads(cleaned)
+
+        if "Company Target Audience" in parsed:
+            parsed = parsed["Company Target Audience"]
+
+        website.target_audience = parsed
+        website.save()
+
+    except Exception as e:
+        print(f"Error generating target audience: {e}")

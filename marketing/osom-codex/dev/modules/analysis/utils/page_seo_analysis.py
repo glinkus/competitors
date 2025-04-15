@@ -380,7 +380,8 @@ class PageSEOAnalysis():
         self.page.warnings = json.dumps(self.warnings)
         self.page.links = json.dumps(self.links)
         self.page.content = self.content
-
+        self.page.internal_links = self.internal_links
+        self.page.external_links = self.external_links
         structured_data = {
             "total_word_count": self.total_word_count,
             "wordcount": dict(self.wordcount),
