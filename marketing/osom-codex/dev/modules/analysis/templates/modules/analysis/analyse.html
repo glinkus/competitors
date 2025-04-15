@@ -3,102 +3,106 @@
 
 {% block content %}
 <div class="analyze-heading">
-    <h1 class="analyze-heading">Analyze your competitors</h1>
+  <h1 class="analyze-heading">Analyze your competitors</h1>
 </div>
 <div class="analyze-heading">
-    <h2 class="analyze-heading">Enter your competitors website url and receive analysis or select already prepared analysis from the list</h2>
+  <h2 class="analyze-heading">Enter your competitors website url and receive analysis or select already prepared
+    analysis from the list</h2>
 </div>
 
 <div class="container my-5">
-    <div class="card mb-4 shadow-sm analysis">
-      <div class="card-body analysis">
-        <form action="/analysis/" method="post" class="row g-3 align-items-center analysis">
-          {% csrf_token %}
-          <div class="col-sm-9">
-            <input type="url" class="form-control" name="url" placeholder="https://example.com" required>
-          </div>
-          <div class="col-sm-3 text-end">
-            <button type="submit" class="button-analyze">Start Analysis</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      {% for website in websites %}
-        <div class="col">
-          <div class="card h-100 shadow-sm border-0">
-            {% if website.favicon_url %}
-              <img src="{{ website.favicon_url }}" class="card-img-top p-3" alt="Favicon" style="width: 48px; height: 48px; object-fit: contain;">
-            {% else %}
-              <div class="p-3 text-center text-muted">No Icon</div>
-            {% endif %}
-  
-            <div class="card-body d-flex flex-column">
-              <h6 class="card-title text-truncate" title="{{ website.start_url }}">
-                <a href="{{ website.start_url }}" class="text-decoration-none" target="_blank">{{ website.start_url }}</a>
-              </h6>
-  
-              <p class="mb-1"><strong>Pages:</strong> {{ website.visited_count }}</p>
-              <p class="mb-2"><strong>Last Visited:</strong> {{ website.last_visited }}</p>
-  
-              {% if website.crawling_finished %}
-                <span class="badge bg-success mb-3">🟢 Finished</span>
-              {% elif website.crawling_in_progress %}
-                <span class="badge bg-warning text-dark mb-3">🟡 In Progress</span>
-              {% else %}
-                <span class="badge bg-danger mb-3">🔴 Not Started</span>
-              {% endif %}
-  
-              <div class="mt-auto d-grid gap-2">
-                <a href="{% url 'modules.analysis:website_page' website.id %}" class="btn btn-outline-primary btn-sm">URLs</a>
-                <a href="{% url 'modules.analysis:website_keywords' website.id %}" class="btn btn-outline-secondary btn-sm">Keywords</a>
-                <a href="{% url 'modules.analysis:insights' website.id %}" class="btn btn-outline-info btn-sm">Insights</a>
-                <a href="{% url 'modules.analysis:overview' website.id %}" class="btn btn-outline-dark btn-sm">Overview</a>
-  
-              </div>
-            </div>
-          </div>
+  <div class="card mb-4 shadow-sm analysis">
+    <div class="card-body analysis">
+      <form action="{% url 'modules.analysis:analyse' %}" method="post" class="row g-3 align-items-center analysis">
+        {% csrf_token %}
+        <div class="col-sm-9">
+          <input type="url" class="form-control" name="url" placeholder="https://example.com" required>
         </div>
-      {% empty %}
-        <p class="text-center text-muted">No websites added yet.</p>
-      {% endfor %}
+        <div class="col-sm-3 text-end">
+          <button type="submit" class="button-analyze">Start Analysis</button>
+        </div>
+      </form>
     </div>
   </div>
 
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for website in websites %}
+    <div class="col" id="website-row-{{ website.id }}"> <!-- ✅ Added ID for JS targeting -->
+      <div class="card h-100 shadow-sm border-0">
+        {% if website.favicon_url %}
+        <img src="{{ website.favicon_url }}" class="card-img-top p-3" alt="Favicon"
+          style="width: 48px; height: 48px; object-fit: contain;">
+        {% else %}
+        <div class="p-3 text-center text-muted">No Icon</div>
+        {% endif %}
+
+        <div class="card-body d-flex flex-column">
+          <h6 class="card-title text-truncate" title="{{ website.start_url }}">
+            <a href="{{ website.start_url }}" class="text-decoration-none" target="_blank">{{ website.start_url }}</a>
+          </h6>
+
+          <p class="mb-1 visited-count"><strong>Pages:</strong> {{ website.visited_count }}</p>
+          <p class="mb-2"><strong>Last Visited:</strong> {{ website.last_visited }}</p>
+
+          {% if website.crawling_finished %}
+          <span class="badge bg-success mb-3 status">🟢 Finished</span>
+          {% elif website.crawling_in_progress %}
+          <span class="badge bg-warning text-dark mb-3 status">🟡 In Progress</span>
+          {% else %}
+          <span class="badge bg-danger mb-3 status">🔴 Not Started</span>
+          {% endif %}
+
+          <div class="mt-auto d-grid gap-2 action">
+            <a href="{% url 'modules.analysis:website_page' website.id %}"
+              class="btn btn-outline-primary btn-sm">URLs</a>
+            <a href="{% url 'modules.analysis:website_keywords' website.id %}"
+              class="btn btn-outline-secondary btn-sm">Keywords</a>
+            <a href="{% url 'modules.analysis:insights' website.id %}" class="btn btn-outline-info btn-sm">Insights</a>
+            <a href="{% url 'modules.analysis:overview' website.id %}" class="btn btn-outline-dark btn-sm">Overview</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-center text-muted">No websites added yet.</p>
+    {% endfor %}
+  </div>
+
+</div>
+
 <script>
-function checkScrapingStatus(websiteId) {
-    fetch(`/analysis?website_id=${websiteId}`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
+  function checkScrapingStatus(websiteId) {
+    fetch(`/analysis/analyse/?website_id=${websiteId}`, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
     })
-    .then(response => response.json())
-    .then(data => {
+      .then(response => response.json())
+      .then(data => {
         const row = document.querySelector(`#website-row-${websiteId}`);
         row.querySelector('.visited-count').innerText = data.visited_count;
 
         if (data.crawling_finished) {
-            row.querySelector('.status').innerHTML = '🟢 Finished';
-            row.querySelector('.action').innerHTML = `<a href="/analysis/analyse/website_page/${websiteId}/"><button>View Scraped URLs</button></a>`;
+          row.querySelector('.status').innerHTML = '🟢 Finished';
+          row.querySelector('.action').innerHTML = `<a href="/analysis/analyse/website_page/${websiteId}/"><button>View Scraped URLs</button></a>`;
         } else if (data.crawling_in_progress) {
-            row.querySelector('.status').innerHTML = '🟡 In Progress';
-            setTimeout(() => checkScrapingStatus(websiteId), 5000);
+          row.querySelector('.status').innerHTML = '🟡 In Progress';
+          setTimeout(() => checkScrapingStatus(websiteId), 2000);
         }
-    });
-}
+      });
+  }
 
 
-document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => {
     const rows = document.querySelectorAll('tbody#websites-table tr');
     rows.forEach(row => {
-        const status = row.querySelector('.status').innerText;
-        if (status.includes('In Progress')) {
-            const websiteId = row.id.replace('website-row-', '');
-            checkScrapingStatus(websiteId);
-        }
+      const status = row.querySelector('.status').innerText;
+      if (status.includes('In Progress')) {
+        const websiteId = row.id.replace('website-row-', '');
+        checkScrapingStatus(websiteId);
+      }
     });
-});
+  });
 </script>
 
 {% endblock %}

@@ -1,130 +1,150 @@
 {% extends 'rarea/layout.html' %}
 
 {% block content %}
-  <div class="analyze-heading">
-    <h1 class="analyze-heading">Specific page analysis</h1>
+<div class="analyze-heading">
+  <h1 class="analyze-heading">Specific page analysis</h1>
+</div>
+<div class="analyze-heading">
+  <h2 class="analyze-heading">Select website page from the list to see analysis below</h2>
+</div>
+<div class="container p-5">
+  <div class="mb-4">
+    <label for="pageDropdown" class="form-label">Select Page:</label>
+    <select id="pageDropdown" class="form-select">
+      <option value="">-- Select a page --</option>
+      {% for page in pages %}
+      <option value="{{ page.id }}">{{ page.url }}</option>
+      {% endfor %}
+    </select>
   </div>
-  <div class="analyze-heading">
-    <h2 class="analyze-heading">Select website page from the list to see analysis below</h2>
-  </div>
-  <div class="container p-5">
+
+  <!-- SEO Details -->
+  <div id="seoDetails" class="d-none">
     <div class="mb-4">
-      <label for="pageDropdown" class="form-label">Select Page:</label>
-      <select id="pageDropdown" class="form-select">
-        <option value="">-- Select a page --</option>
-        {% for page in pages %}
-          <option value="{{ page.id }}">{{ page.url }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  
-    <!-- SEO Details -->
-    <div id="seoDetails" class="d-none">
-      <div class="mb-4">
-        <h5 class="table-title">SEO Score</h4>
+      <h5 class="table-title">SEO Score</h4>
         <div class="progress">
           <div id="seoScoreBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
         </div>
-      </div>
-  
-      <div class="row mb-4">
-        <div class="col-md-6">
-          <h5 class="table-title">Warnings</h5>
-          <ul id="warningList" class="list-group"></ul>
-        </div>
-        <div class="col-md-6">
-          <h5 class="table-title">Linking Analysis</h5>
-          <pre id="linkingAnalysis" class="bg-light custom-p-3 rounded border"></pre>
-        </div>
-      </div>
-  
-      <div class="mb-4">
-        <h5 class="table-title">SEO Score Details</h5>
-        <pre id="seoScoreDetails" class="seo-score-box"></pre>
-      </div>
-      
-      <!-- Keywords Section -->
-    <h5 class="table-title">Page keywords</h5>
-    <div id="keywordsDisplay" class="mb-5">
-      <ul id="keywordList" class="list-group"></ul>
     </div>
 
-      <div class="mb-4">
-        <h5 class="table-title">Recommendations</h5>
-        <div id="recommendationsContainer"></div>
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <h5 class="table-title">Warnings</h5>
+        <ul id="warningList" class="list-group"></ul>
+      </div>
+      <div class="col-md-6">
+        <h5 class="table-title">Linking Analysis</h5>
+        <pre id="linkingAnalysis" class="bg-light custom-p-3 rounded border"></pre>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <h5 class="table-title">SEO Score Details</h5>
+      <pre id="seoScoreDetails" class="seo-score-box"></pre>
+    </div>
+
+    <h5 class="table-title pt-4 pb-2">Top Keywords for Selected Page</h5>
+    <div id="keywordsDisplay" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"></div>
+
+
+    <div class="mb-4">
+      <h5 class="table-title">Recommendations</h5>
+      <div id="recommendationsContainer"></div>
+    </div>
+  </div>
+  <div class="modal fade" id="keywordTrendModal" tabindex="-1" aria-labelledby="keywordTrendModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered limited-width">
+      <div class="modal-content justify-content-center">
+        <div class="modal-header">
+          <h5 class="modal-title" id="keywordTrendModalLabel">Keyword Trend</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <canvas id="trendChartModal" height="120" class="mb-4"></canvas>
+          <h6 class="mt-4">Interest by Region</h6>
+          <canvas id="regionChartModal" height="100"></canvas>
+        </div>
       </div>
     </div>
   </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
   
-  <script>
-    const keywordsByPage = {{ keywords_by_page|safe }};
-    const pageData = {{ pages_json|safe }};
-    const recommendations = {{ recommendations_json|safe }};
-  
-    const dropdown = document.getElementById("pageDropdown");
-    const keywordList = document.getElementById("keywordList");
-    const seoDetails = document.getElementById("seoDetails");
-    const seoScoreBar = document.getElementById("seoScoreBar");
-    const warningList = document.getElementById("warningList");
-    const linkingAnalysis = document.getElementById("linkingAnalysis");
-    const seoScoreDetails = document.getElementById("seoScoreDetails");
-    const recommendationsContainer = document.getElementById("recommendationsContainer");
-  
-    dropdown.addEventListener("change", function () {
-      const selectedId = this.value;
-  
-      keywordList.innerHTML = "";
-      warningList.innerHTML = "";
-      linkingAnalysis.textContent = "";
-      seoScoreDetails.textContent = "";
-      recommendationsContainer.innerHTML = "";
-  
-      if (!selectedId || !pageData[selectedId]) {
-        seoDetails.classList.add("d-none");
-        return;
+  const pageData = {{ pages_json| safe }};
+  const recommendations = {{ recommendations_json| safe }};
+
+  const dropdown = document.getElementById("pageDropdown");
+  const seoDetails = document.getElementById("seoDetails");
+  const seoScoreBar = document.getElementById("seoScoreBar");
+  const warningList = document.getElementById("warningList");
+  const linkingAnalysis = document.getElementById("linkingAnalysis");
+  const seoScoreDetails = document.getElementById("seoScoreDetails");
+  const recommendationsContainer = document.getElementById("recommendationsContainer");
+  let keywordAnalysisInstance = null;
+  dropdown.addEventListener("change", function () {
+    const selectedId = this.value;
+
+    if (keywordAnalysisInstance) {
+      keywordAnalysisInstance.trendChartInstance?.destroy();
+      keywordAnalysisInstance.regionChartInstance?.destroy();
+      keywordAnalysisInstance = null;
+    }
+
+    warningList.innerHTML = "";
+    linkingAnalysis.textContent = "";
+    seoScoreDetails.textContent = "";
+    recommendationsContainer.innerHTML = "";
+
+    if (!selectedId || !pageData[selectedId]) {
+      seoDetails.classList.add("d-none");
+      return;
+    }
+
+    // Show SEO details
+    seoDetails.classList.remove("d-none");
+
+    const data = pageData[selectedId];
+
+    // SEO Score
+    const score = data.seo_score || 0;
+    seoScoreBar.style.width = score + "%";
+    seoScoreBar.innerText = score + "%";
+    seoScoreBar.classList.remove("bg-success", "bg-warning", "bg-danger");
+    seoScoreBar.classList.add(
+      score >= 70 ? "bg-success" :
+        score >= 40 ? "bg-warning" :
+          "bg-danger"
+    );
+
+    let warnings = data.warnings;
+    if (typeof warnings === "string") {
+      try {
+        warnings = JSON.parse(warnings);
+      } catch (e) {
+        console.error("Failed to parse warnings JSON:", e);
+        warnings = [];
       }
-  
-      // Show SEO details
-      seoDetails.classList.remove("d-none");
-  
-      const data = pageData[selectedId];
-  
-      // SEO Score
-      const score = data.seo_score || 0;
-      seoScoreBar.style.width = score + "%";
-      seoScoreBar.innerText = score + "%";
-      seoScoreBar.classList.remove("bg-success", "bg-warning", "bg-danger");
-      seoScoreBar.classList.add(
-        score >= 70 ? "bg-success" :
-          score >= 40 ? "bg-warning" :
-            "bg-danger"
-      );
+    }
+    (warnings || []).forEach(w => {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item", "text-danger");
+      li.innerText = w;
+      warningList.appendChild(li);
+    });
 
-      let warnings = data.warnings;
-      if (typeof warnings === "string") {
-        try {
-          warnings = JSON.parse(warnings);
-        } catch (e) {
-          console.error("Failed to parse warnings JSON:", e);
-          warnings = [];
-        }
-      }
-      (warnings || []).forEach(w => {
-        const li = document.createElement("li");
-        li.classList.add("list-group-item", "text-danger");
-        li.innerText = w;
-        warningList.appendChild(li);
-      });
 
-  
-      // Linking Analysis
-      const linking = data.linking_analysis || {};
-      let html = "";
+    // Linking Analysis
+    const linking = data.linking_analysis || {};
+    let html = "";
 
-      if (Object.keys(linking).length === 0) {
-        html = "<p class='text-muted'>No linking data available.</p>";
-      } else {
-        html += `
+    if (Object.keys(linking).length === 0) {
+      html = "<p class='text-muted'>No linking data available.</p>";
+    } else {
+      html += `
           <ul class="list-group mb-3">
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <strong>Internal Linking Score</strong>
@@ -145,27 +165,27 @@
           </ul>
         `;
 
-        if (Array.isArray(linking.linking_recommendations) && linking.linking_recommendations.length > 0) {
-          html += `<h6 class="table-title">Recommendations:</h6><ul class="list-group">`;
-          linking.linking_recommendations.forEach(rec => {
-            html += `<li class="list-group-item">${rec}</li>`;
-          });
-          html += `</ul>`;
-        }
+      if (Array.isArray(linking.linking_recommendations) && linking.linking_recommendations.length > 0) {
+        html += `<h6 class="table-title">Recommendations:</h6><ul class="list-group">`;
+        linking.linking_recommendations.forEach(rec => {
+          html += `<li class="list-group-item">${rec}</li>`;
+        });
+        html += `</ul>`;
       }
+    }
 
-      linkingAnalysis.innerHTML = html;
+    linkingAnalysis.innerHTML = html;
 
-  
-      // Score Details
-      const details = data.seo_score_details || {};
-      let seoHtml = "";
 
-      if (!Object.keys(details).length) {
-        seoHtml = "<p class='text-muted'>No SEO score details available.</p>";
-      } else {
-        if (details.strengths?.length) {
-          seoHtml += `
+    // Score Details
+    const details = data.seo_score_details || {};
+    let seoHtml = "";
+
+    if (!Object.keys(details).length) {
+      seoHtml = "<p class='text-muted'>No SEO score details available.</p>";
+    } else {
+      if (details.strengths?.length) {
+        seoHtml += `
             <div class="mb-3 mb-custom">
               <h6 class="text-success">Strengths</h6>
               <ul class="list-group list-group-flush">
@@ -173,10 +193,10 @@
               </ul>
             </div>
           `;
-        }
+      }
 
-        if (details.weaknesses?.length) {
-          seoHtml += `
+      if (details.weaknesses?.length) {
+        seoHtml += `
             <div class="mb-3 mb-custom">
               <h6 class="text-danger">Weaknesses</h6>
               <ul class="list-group list-group-flush">
@@ -184,10 +204,10 @@
               </ul>
             </div>
           `;
-        }
+      }
 
-        if (details.recommendations?.length) {
-          seoHtml += `
+      if (details.recommendations?.length) {
+        seoHtml += `
             <div class="mb-3 mb-custom">
               <h6 class="text-primary">Recommendations</h6>
               <ul class="list-group list-group-flush">
@@ -195,42 +215,54 @@
               </ul>
             </div>
           `;
-        }
       }
+    }
 
-      seoScoreDetails.innerHTML = seoHtml;
+    seoScoreDetails.innerHTML = seoHtml;
 
-      const recs = recommendations[selectedId] || [];
-      recs.forEach(rec => {
-        const card = document.createElement("div");
-        card.className = "card mb-3";
-        card.innerHTML = `
+    const recs = recommendations[selectedId] || [];
+    recs.forEach(rec => {
+      const card = document.createElement("div");
+      card.className = "card mb-3";
+      card.innerHTML = `
           <div class="card-body">
             <h6 class="card-title text-primary">${rec.category.replace(/_/g, ' ')}</h6>
             <ul class="mb-0">${(rec.actions || []).map(action => `<li>${action}</li>`).join('')}</ul>
           </div>
         `;
-        recommendationsContainer.appendChild(card);
-      });
-  
-      // Keywords
-      const keywords = (keywordsByPage[selectedId] || []).slice(0, 10);
-      if (keywords.length) {
-        keywords.forEach((kw, index) => {
-          const li = document.createElement("li");
-          li.textContent = `${index + 1}.  ${kw}`;
-          li.classList.add("list-group-item", "keywords-table");
-          keywordList.appendChild(li);
-        });
-      } else {
-        const li = document.createElement("li");
-        li.textContent = "No keywords found for this page.";
-        li.classList.add("list-group-item", "text-muted");
-        keywordList.appendChild(li);
-      }
-
-
+      recommendationsContainer.appendChild(card);
     });
-  </script>
-  
+    const keywordContainer = document.getElementById("keywordsDisplay");
+    keywordContainer.innerHTML = "";
+
+    const keywordData = ({{ keywords_by_page|safe }})[selectedId] || [];
+    window.keywordData = keywordData;
+
+    keywordData.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "col";
+      div.innerHTML = `
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title">
+              <a href="#" class="text-decoration-none text-primary" data-keyword-index="${index}">
+                ${item.keyword}
+              </a>
+            </h6>
+            <p class="mb-2"><strong>Google Trends score:</strong> ${item.trend_score}</p>
+            <p class="mb-2"><strong>Avg. score:</strong> ${item.score}</p>
+          </div>
+        </div>
+      `;
+      keywordContainer.appendChild(div);
+    });
+
+    if (keywordData.length > 0) {
+      keywordAnalysisInstance = new KeywordAnalysis(keywordData);
+      keywordAnalysisInstance.init();
+    }
+    
+  });
+</script>
+
 {% endblock %}

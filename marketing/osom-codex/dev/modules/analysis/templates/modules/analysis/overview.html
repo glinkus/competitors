@@ -119,12 +119,12 @@
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
                         <h6 class="card-title">
-                            <a href="#" class="text-decoration-none text-primary"
-                                onclick="openKeywordModal({{ forloop.counter0 }})">
+                            <a href="#" class="text-decoration-none text-primary" data-keyword-index="{{ forloop.counter0 }}">
                                 {{ item.keyword }}
                             </a>
                         </h6>
-                        <p class="mb-2"><strong>Count:</strong> {{ item.count }}</p>
+                        <p class="mb-2"><strong>Appeared in </strong> {{ item.count }} pages</p>
+                        <p class="mb-2"><strong>Google Trends score: </strong>{{ item.trend_score }}</p>
                         <div id="trend-container-{{ forloop.counter }}" class="d-none">
                             <canvas id="trendChart{{ forloop.counter }}" height="120"></canvas>
                         </div>
@@ -154,6 +154,7 @@
         window.perPageTones = {{ per_page_tones | safe }};
         window.readingValues = {{ reading_values | safe }};
         window.readabilityValues = {{ readability_values | safe }};
+        window.keywordData = {{ keyword_summary|safe }};
         const checkInsightReady = () => {
             fetch("{% url 'modules.analysis:website-insight-status' website.id %}")
                 .then(res => res.json())
@@ -200,72 +201,11 @@
 
         checkAudienceReady();
     </script>
-    <script>
-        const keywordData = {{ keyword_summary| safe }};
-
-        function openKeywordModal(index) {
-            const data = keywordData[index];
-            const modalTitle = document.getElementById("keywordTrendModalLabel");
-            modalTitle.textContent = `Keyword: ${data.keyword}`;
-
-            if (window.trendChartInstance) window.trendChartInstance.destroy();
-            if (window.regionChartInstance) window.regionChartInstance.destroy();
-
-            const trendCtx = document.getElementById("trendChartModal").getContext("2d");
-            window.trendChartInstance = new Chart(trendCtx, {
-                type: 'line',
-                data: {
-                    labels: JSON.parse(data.trend_keys),
-                    datasets: [{
-                        label: 'Trend over time',
-                        data: JSON.parse(data.trend_values),
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 2,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: { ticks: { maxTicksLimit: 6 } },
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-
-            const regionData = data.interest_by_region || {};
-            const regionLabels = Object.keys(regionData);
-            const regionValues = Object.values(regionData);
-
-            const regionCtx = document.getElementById("regionChartModal").getContext("2d");
-            window.regionChartInstance = new Chart(regionCtx, {
-                type: 'pie',
-                data: {
-                    labels: regionLabels,
-                    datasets: [{
-                        data: regionValues,
-                        backgroundColor: regionLabels.map(() => `hsl(${Math.random() * 360}, 60%, 70%)`),
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'right'
-                        }
-                    }
-                }
-            });
-
-            const modal = new bootstrap.Modal(document.getElementById('keywordTrendModal'));
-            modal.show();
-        }
-    </script>
 
     <div class="modal fade" id="keywordTrendModal" tabindex="-1" aria-labelledby="keywordTrendModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
+        <div class="modal-dialog modal-xl modal-dialog-centered limited-width">
+            <div class="modal-content justify-content-center">
                 <div class="modal-header">
                     <h5 class="modal-title" id="keywordTrendModalLabel">Keyword Trend</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -262,8 +262,8 @@ def analyze_top_keywords_trends(website_id, top_n=10):
 
             try:
                 df_region = pytrends.interest_by_region(
-                    resolution='REGION',
-                    inc_low_vol=True,
+                    resolution='COUNTRY',
+                    inc_low_vol=False,
                     inc_geo_code=False
                 )
                 df_region = df_region[df_region[keyword] > 0]

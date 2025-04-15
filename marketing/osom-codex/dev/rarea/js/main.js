@@ -10,7 +10,10 @@ import Chart from '../../modules/analysis/js/tone_chart';
 import Demo from '../../modules/demo/js/main';
 import DemoCad from './cad';
 import TonePageChart from '../../modules/analysis/js/tone_page_chart';
-import ReadingCharts from '../../modules/analysis/js/reading_charts'; 
+import ReadingCharts from '../../modules/analysis/js/reading_charts';
+import KeywordAnalysis from '../../modules/analysis/js/keyword_analysis';
+
+window.KeywordAnalysis = KeywordAnalysis;
 
 export default class RAreaMain {
     constructor() {
@@ -37,6 +40,14 @@ export default class RAreaMain {
 
         if (document.getElementById('readingTimeChart') || document.getElementById('readabilityChart')) {
             new ReadingCharts().init();
+        }
+
+        if (window.keywordData) {
+            new KeywordAnalysis(window.keywordData).init();
+        }
+        
+        if (window.keywordData && document.querySelectorAll('[data-keyword-index]').length) {
+            new KeywordAnalysis(window.keywordData).init();
         }
 
         console.info('[RAreaMain] initialized.');

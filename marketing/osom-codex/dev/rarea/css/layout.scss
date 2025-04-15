@@ -186,3 +186,11 @@ ul.nav {
     max-width: 700px !important;
     max-height: 300px !important;
 }
+.limited-width {
+    max-width: 700px !important;
+}
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
