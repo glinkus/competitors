@@ -27,7 +27,7 @@
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     {% for website in websites %}
-    <div class="col" id="website-row-{{ website.id }}"> <!-- ✅ Added ID for JS targeting -->
+    <div class="col" id="website-row-{{ website.id }}">
       <div class="card h-100 shadow-sm border-0">
         {% if website.favicon_url %}
         <img src="{{ website.favicon_url }}" class="card-img-top p-3" alt="Favicon"
