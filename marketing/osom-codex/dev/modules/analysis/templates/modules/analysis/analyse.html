@@ -25,80 +25,166 @@
     </div>
   </div>
 
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% for website in websites %}
-    <div class="col" id="website-row-{{ website.id }}">
-      <div class="card h-100 shadow-sm border-0">
-        {% if website.favicon_url %}
-        <img src="{{ website.favicon_url }}" class="card-img-top p-3" alt="Favicon"
-          style="width: 48px; height: 48px; object-fit: contain;">
-        {% else %}
-        <div class="p-3 text-center text-muted">No Icon</div>
-        {% endif %}
-
-        <div class="card-body d-flex flex-column">
-          <h6 class="card-title text-truncate" title="{{ website.start_url }}">
-            <a href="{{ website.start_url }}" class="text-decoration-none" target="_blank">{{ website.start_url }}</a>
-          </h6>
-
-          <p class="mb-1 visited-count"><strong>Pages:</strong> {{ website.visited_count }}</p>
-          <p class="mb-2"><strong>Last Visited:</strong> {{ website.last_visited }}</p>
-
-          {% if website.crawling_finished %}
-          <span class="badge bg-success mb-3 status">🟢 Finished</span>
-          {% elif website.crawling_in_progress %}
-          <span class="badge bg-warning text-dark mb-3 status">🟡 In Progress</span>
+  <div class="container my-5">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for website in websites %}
+      <div class="col" id="website-row-{{ website.id }}">
+        <div class="card h-100 shadow-sm border-0">
+          {% if website.favicon_url %}
+          <div class="d-flex justify-content-center align-items-center">
+            <img src="{{ website.favicon_url }}" class="card-img-top p-3 " alt="Favicon"
+              style="width: 48px; height: 48px; object-fit: contain;">
+          </div>
           {% else %}
-          <span class="badge bg-danger mb-3 status">🔴 Not Started</span>
+          <div class="p-3 text-center text-muted">No Icon</div>
           {% endif %}
 
-          <div class="mt-auto d-grid gap-2 action">
-            <a href="{% url 'modules.analysis:website_page' website.id %}"
-              class="btn btn-outline-primary btn-sm">URLs</a>
-            <a href="{% url 'modules.analysis:website_keywords' website.id %}"
-              class="btn btn-outline-secondary btn-sm">Keywords</a>
-            <a href="{% url 'modules.analysis:insights' website.id %}" class="btn btn-outline-info btn-sm">Insights</a>
-            <a href="{% url 'modules.analysis:overview' website.id %}" class="btn btn-outline-dark btn-sm">Overview</a>
+          <div class="card-body d-flex flex-column">
+            <h6 class="card-title text-truncate" title="{{ website.start_url }}">
+              <a href="{{ website.start_url }}" class="text-decoration-none" target="_blank">
+                {{ website.start_url }}
+              </a>
+            </h6>
+            <p class="mb-1 visited-count"><strong>Pages:</strong> {{ website.visited_count }}</p>
+            <p class="mb-2"><strong>Last Visited:</strong> {{ website.last_visited }}</p>
+          {% if website.crawling_finished %}
+            <span class="badge bg-success mb-3 status">🟢 Finished</span>
+            <div class="mt-auto d-grid gap-2 action">
+              <a href="{% url 'modules.analysis:website_page' website.id %}" class="btn btn-outline-primary btn-sm">URLs</a>
+              <a href="{% url 'modules.analysis:overview' website.id %}" class="btn btn-outline-dark btn-sm">Overview</a>
+            </div>
+          {% elif website.crawling_in_progress and not website.crawling_finished %}
+            <span class="badge bg-warning text-dark mb-3 status">🟡 In Progress</span>
+            <button id="stop-btn-{{ website.id }}" onclick="stopScraping({{ website.id }})" class="btn btn-danger btn-sm mb-2">Stop Scraping</button>
+            <p id="scraping-stopped-{{ website.id }}" class="text-danger d-none">Scraping was stopped.</p>
+
+            {% elif website.scraping_stopped %}
+            <span class="badge bg-danger text-dark mb-3 status">🔴 Stopped</span>
+            <button onclick="continueScraping({{ website.id }})" class="btn btn-primary btn-sm mb-2">Continue Scraping</button>
+            <p id="scraping-stopped-{{ website.id }}" class="text-danger">Scraping was stopped.</p>
+            {% else %}
+            <span class="badge bg-danger mb-3 status">🔴 Not Started</span>
+            {% endif %}
+            
           </div>
         </div>
       </div>
+      {% empty %}
+      <p class="text-center text-muted">No websites added yet.</p>
+      {% endfor %}
     </div>
-    {% empty %}
-    <p class="text-center text-muted">No websites added yet.</p>
-    {% endfor %}
   </div>
-
 </div>
-
 <script>
   function checkScrapingStatus(websiteId) {
     fetch(`/analysis/analyse/?website_id=${websiteId}`, {
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      }
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
       .then(response => response.json())
       .then(data => {
-        const row = document.querySelector(`#website-row-${websiteId}`);
-        row.querySelector('.visited-count').innerText = data.visited_count;
+        const card = document.getElementById(`website-row-${websiteId}`);
+        if (!card) return;
+
+        const visitedEl = card.querySelector('.visited-count');
+        const statusEl = card.querySelector('.status');
+        const actionEl = card.querySelector('.action');
+
+        if (visitedEl) {
+          visitedEl.innerHTML = `<strong>Pages:</strong> ${data.visited_count}`;
+        }
 
         if (data.crawling_finished) {
-          row.querySelector('.status').innerHTML = '🟢 Finished';
-          row.querySelector('.action').innerHTML = `<a href="/analysis/analyse/website_page/${websiteId}/"><button>View Scraped URLs</button></a>`;
-        } else if (data.crawling_in_progress) {
-          row.querySelector('.status').innerHTML = '🟡 In Progress';
+          statusEl.innerHTML = '🟢 Finished';
+          statusEl.className = 'badge bg-success mb-3 status';
+        } 
+        else if (data.crawling_in_progress) {
+          statusEl.innerHTML = '🟡 In Progress';
+          statusEl.className = 'badge bg-warning text-dark mb-3 status';
           setTimeout(() => checkScrapingStatus(websiteId), 2000);
         }
+      })
+      .catch(error => {
+        console.error("Error checking status for website " + websiteId, error);
       });
   }
 
+    function stopScraping(websiteId) {
+    fetch(`/analysis/stop-scraping/${websiteId}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.stopped) {
+        const card = document.getElementById(`website-row-${websiteId}`);
+        const stopMsg = document.getElementById(`scraping-stopped-${websiteId}`);
+        const stopBtn = document.getElementById(`stop-btn-${websiteId}`);
+        const statusEl = card.querySelector('.status');
+
+        if (statusEl) {
+          statusEl.innerHTML = '🔴 Stopped';
+          statusEl.className = 'badge bg-danger text-dark mb-3 status';
+        }
+
+        if (stopBtn) stopBtn.remove();
+        if (stopMsg) stopMsg.classList.remove("d-none");
+
+        const continueBtn = document.createElement("button");
+        continueBtn.textContent = "Continue Scraping";
+        continueBtn.className = "btn btn-primary btn-sm mb-2";
+        continueBtn.onclick = () => continueScraping(websiteId);
+        card.querySelector(".card-body").appendChild(continueBtn);
+      }
+    })
+    .catch(error => {
+      console.error("Failed to stop scraping:", error);
+    });
+  }
+
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (const cookie of cookies) {
+        const trimmed = cookie.trim();
+        if (trimmed.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(trimmed.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function continueScraping(websiteId) {
+  fetch(`/analysis/continue-scraping/${websiteId}/`, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': getCookie('csrftoken'),
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.continued) {
+      location.reload();
+    }
+  })
+  .catch(error => {
+    console.error("Failed to continue scraping:", error);
+  });
+}
 
   document.addEventListener('DOMContentLoaded', () => {
-    const rows = document.querySelectorAll('tbody#websites-table tr');
-    rows.forEach(row => {
-      const status = row.querySelector('.status').innerText;
-      if (status.includes('In Progress')) {
-        const websiteId = row.id.replace('website-row-', '');
+    const websiteCards = document.querySelectorAll('[id^="website-row-"]');
+    websiteCards.forEach(card => {
+      const websiteId = card.id.replace('website-row-', '');
+      const statusEl = card.querySelector('.status');
+      if (statusEl && statusEl.innerText.includes("In Progress")) {
         checkScrapingStatus(websiteId);
       }
     });

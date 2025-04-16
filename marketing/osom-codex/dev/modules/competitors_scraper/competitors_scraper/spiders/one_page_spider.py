@@ -4,10 +4,12 @@ import scrapy
 from twisted.internet import threads
 from scrapy import signals
 from competitors_scraper.items import PageItem
-from modules.analysis.models import Page, Website
+from modules.analysis.models import Page, Website, LoadingTime
 from django.conf import settings
 from django.utils import timezone
 from django.db import close_old_connections
+import time
+import json
 
 def normalize_url(url):
     parsed = urlparse(url)
@@ -15,10 +17,6 @@ def normalize_url(url):
     netloc = parsed.netloc.lower()
     path = parsed.path.rstrip('/') or '/'
     return urlunparse((scheme, netloc, path, '', '', ''))
-
-# def domain_matches(url, base_keyword):
-#     extracted = tldextract.extract(url)
-#     return base_keyword in extracted.domain
 
 class OnePageSpider(scrapy.Spider):
     name = "one_page_spider"
@@ -63,13 +61,12 @@ class OnePageSpider(scrapy.Spider):
             u = [normalize_url(u) for u in unvisited_pages.values_list("url", flat=True)]
             self.urls = set(u)
             self.logger.info(f"Initial URLs from DB: {self.urls}")
-            # extracted = tldextract.extract(self.website_name)
-            # self.base_keyword = extracted.domain
-            # self.logger.info(f"Extracted domain: {self.base_keyword}")
 
         threads.deferToThread(fetch_urls).addCallback(lambda _: self.start_requests())
         
     def start_requests(self):
+        self.start_time = time.time()
+
         yield scrapy.Request(
             self.page_url,
             meta={
@@ -78,9 +75,9 @@ class OnePageSpider(scrapy.Spider):
                 "handle_httpstatus_all": True,
                 "playwright_page_coroutines": [
                     lambda page: page.route("**/*.{png,jpg,jpeg,webm,woff,woff2,ttf,css,mp4}", lambda route: route.abort()),
+                    lambda page: page.expose_function("mark_fully_loaded", lambda: time.time()),
                     lambda page: page.wait_for_load_state("networkidle")
                 ]
-
             },
             callback=self.parse,
             dont_filter=True,
@@ -123,7 +120,6 @@ class OnePageSpider(scrapy.Spider):
 
         page.save()
 
-
         website = page.website
         website.visited_count += 1
         website.save()
@@ -133,23 +129,45 @@ class OnePageSpider(scrapy.Spider):
         page, created = Page.objects.get_or_create(website_id=website_id, url=norm_url)
         return page
 
-        
+    def save_loading_time_sync(self, page, metrics):
+        for attempt in range(3):
+            try:
+                close_old_connections()
+                LoadingTime.objects.update_or_create(
+                    page=page,
+                    defaults={
+                        "time_to_first_byte": round(metrics.get("time_to_first_byte"), 1) if metrics.get("time_to_first_byte") is not None else None,
+                        "first_contentful_paint": round(metrics.get("first_contentful_paint"), 1) if metrics.get("first_contentful_paint") is not None else None,
+                        "largest_contentful_paint": round(metrics.get("largest_contentful_paint"), 1) if metrics.get("largest_contentful_paint") is not None else None,
+                        "fully_loaded": round(metrics.get("fully_loaded"), 1) if metrics.get("fully_loaded") is not None else None,
+                        "page_speed_score": None
+                    }
+                )
+                self.logger.info(f"Saved LoadingTime for {page.url}")
+                break
+            except Exception as e:
+                self.logger.error(f"Attempt {attempt + 1} failed: {e}")
+                time.sleep(1)
     
     def get_page_sync(self, website_id, url):
         norm_url = normalize_url(url)
         return Page.objects.filter(website_id=website_id, url=norm_url).first()
-    
-    
 
-    def parse(self, response):
+    async def parse(self, response):
         url = normalize_url(response.url)
+        page = response.meta["playwright_page"]
+
         self.logger.info(f"--- Crawling URL --- {url}")
+
+        metrics = await self.collect_metrics(page)
+        self.logger.info(f"Performance metrics: {metrics}")
 
         d = threads.deferToThread(self.get_page_sync, self.website_id, url)
 
         def update_if_exists(page):
             if page is not None:
                 threads.deferToThread(self.update_page_sync, page, response)
+                threads.deferToThread(self.save_loading_time_sync, page, metrics)
             else:
                 self.logger.info(f"No Page record found for URL: {url}")
 
@@ -163,8 +181,7 @@ class OnePageSpider(scrapy.Spider):
             self.crawler.engine.close_spider(self, reason="finished")
             return
         links = response.css("a::attr(href)").getall()
-        all_links_count = len(links)
-        internal_links_count = 0
+
         self.logger.info(f"Found {len(links)} links on the page.")
         for link in links:
             absolute_link = normalize_url(urljoin(url, link))
@@ -172,7 +189,6 @@ class OnePageSpider(scrapy.Spider):
             original_link = urlparse(url).netloc.replace("www.", "")
             founded_link = urlparse(absolute_link).netloc.replace("www.", "")
             if original_link == founded_link and absolute_link != url and absolute_link not in self.urls:
-                    internal_links_count += 1
                     self.logger.info(f"Found internal link: {absolute_link}")
                     self.urls.add(absolute_link)
                     try:
@@ -184,4 +200,33 @@ class OnePageSpider(scrapy.Spider):
         self.logger.info("Finished processing single page. Closing spider.")
         self.crawler.engine.close_spider(self, reason="finished")
 
-        
+    async def collect_metrics(self, page):
+        perf = await page.evaluate("""
+        () => {
+            return new Promise((resolve) => {
+                let lcp = null;
+                const po = new PerformanceObserver((entryList) => {
+                    const entries = entryList.getEntries();
+                    lcp = entries[entries.length - 1];
+                });
+                po.observe({ type: "largest-contentful-paint", buffered: true });
+
+                const resolveMetrics = () => {
+                    const nav = performance.getEntriesByType("navigation")[0];
+                    const paintEntries = performance.getEntriesByType("paint");
+                    const fcp = paintEntries.find(p => p.name === "first-contentful-paint");
+
+                    resolve({
+                        time_to_first_byte: nav.responseStart - nav.startTime,
+                        first_contentful_paint: fcp ? fcp.startTime : null,
+                        largest_contentful_paint: lcp ? lcp.startTime : null,
+                        fully_loaded: nav.loadEventEnd - nav.startTime
+                    });
+                };
+
+                // Wait a bit to make sure LCP entries arrive
+                setTimeout(resolveMetrics, 3000);
+            });
+        }
+        """)
+        return perf

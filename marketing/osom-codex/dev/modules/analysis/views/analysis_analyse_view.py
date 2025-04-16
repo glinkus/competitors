@@ -14,6 +14,29 @@ from urllib.parse import urlparse
 from django.core.validators import URLValidator
 from modules.analysis.tasks import run_one_page_spider
 from django.urls import reverse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+
+@require_POST
+def stop_scraping(request, website_id):
+    website = Website.objects.filter(id=website_id).first()
+    if website and website.crawling_in_progress:
+        website.crawling_in_progress = False
+        website.scraping_stopped = True
+        website.save()
+        return JsonResponse({'stopped': True})
+    return JsonResponse({'error': 'Invalid or already stopped'}, status=400)
+
+@require_POST
+def continue_scraping(request, website_id):
+    website = Website.objects.filter(id=website_id).first()
+    if website and not website.crawling_in_progress:
+        website.crawling_in_progress = True
+        website.scraping_stopped = False
+        website.save()
+        run_one_page_spider.delay(website_id=website.id, website_name=website.start_url)
+        return JsonResponse({'continued': True})
+    return JsonResponse({'error': 'Unable to continue'}, status=400)
 
 class AnalyseView(TemplateView):
     template_name = "modules/analysis/analyse.html"
@@ -70,13 +93,15 @@ class AnalyseView(TemplateView):
             if website_id:
                 try:
                     website = Website.objects.get(id=website_id)
+                    visited_count = Page.objects.filter(website_id=website.id, visited=True).count()
                     data = {
                         'crawling_in_progress': website.crawling_in_progress,
                         'crawling_finished': website.crawling_finished,
-                        'visited_count': website.visited_count,
+                        'visited_count': visited_count,
                     }
                 except Website.DoesNotExist:
                     data = {'error': 'Website not found'}
+                print("Data: ", data)
                 return JsonResponse(data)
             return JsonResponse({'error': 'No website_id provided'})
         else:

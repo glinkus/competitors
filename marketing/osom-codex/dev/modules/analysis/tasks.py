@@ -36,15 +36,14 @@ def run_one_page_spider(website_id, website_name):
     os.makedirs(log_dir, exist_ok=True)
     output_file = os.path.join(log_dir, f'spider_output_{website_id}.txt')
 
-    classifier = pipeline(
-        "zero-shot-classification",
-        model="MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli",
-        device=-1 
-    )
-
     env['PYTHONPATH'] = BASE_DIR + os.pathsep + env.get('PYTHONPATH', '')
 
     while True:
+        website = Website.objects.filter(id=website_id).first()
+        if not website or not website.crawling_in_progress:
+            print(f"Scraping manually stopped for website ID {website_id}")
+            return "Scraping stopped by user."
+        
         unvisited_pages = list(
             Page.objects.filter(website_id=website_id, visited=False)
             .values_list("url", flat=True)
@@ -52,7 +51,9 @@ def run_one_page_spider(website_id, website_name):
         if not unvisited_pages:
             w = Website.objects.filter(id=website_id).first()
             if w:
+                w.crawling_in_progress = False
                 w.crawling_finished = True
+                w.scraping_stopped = False
                 w.save()
                 analyze_top_keywords_trends.delay(website_id)
             else:
@@ -89,6 +90,10 @@ def run_one_page_spider(website_id, website_name):
                 text_read_analysis.delay(page_url)
                 sleep(5)
                 run_seo_analysis.delay(page_url)
+            website = Website.objects.filter(id=website_id).first()
+            if not website or not website.crawling_in_progress:
+                print(f"Scraping manually stopped for website ID {website_id}")
+                return "Scraping stopped by user."
 
         sleep(5)
 

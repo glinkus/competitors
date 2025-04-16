@@ -10,6 +10,7 @@ class Website(models.Model):
     target_audience = JSONField(null=True, blank=True)
     favicon_url = models.URLField(null=True, blank=True)
     insight_text = models.TextField(null=True, blank=True)
+    scraping_stopped = models.BooleanField(default=False)
 
     def __str__(self):
         return self.start_url
@@ -44,6 +45,14 @@ class Page(models.Model):
 
     def __str__(self):
         return self.page_title or self.url
+
+class LoadingTime(models.Model):
+    page = models.OneToOneField(Page, on_delete=models.CASCADE, related_name="loading_time")
+    page_speed_score = models.FloatField(null=True, blank=True)
+    time_to_first_byte = models.FloatField(null=True, blank=True)
+    first_contentful_paint = models.FloatField(null=True, blank=True)
+    fully_loaded = models.FloatField(null=True, blank=True)
+    largest_contentful_paint = models.FloatField(null=True, blank=True)
 
 class SEORecommendation(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)

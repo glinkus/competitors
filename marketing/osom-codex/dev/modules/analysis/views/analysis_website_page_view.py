@@ -14,39 +14,28 @@ class URLView(TemplateView):
         pages = website.pages.all()
 
         keywords_by_page = defaultdict(list)
-        all_keywords = ExtractedKeyword.objects.filter(page__in=pages)
+        keywords = ExtractedKeyword.objects.filter(page__in=pages)
+        for kw in keywords:
+            keywords_by_page[kw.page_id].append(kw.keyword)
 
-        keyword_scores = defaultdict(list)
-        for kw in all_keywords:
-            keyword_scores[(kw.page_id, kw.keyword)].append(kw.score)
+        pages_json = {}
+        for page in pages:
+            loading_time = getattr(page, 'loading_time', None)
 
-        for kw in all_keywords:
-            avg_score = sum(keyword_scores[(kw.page_id, kw.keyword)]) / len(keyword_scores[(kw.page_id, kw.keyword)])
-
-            trend_keys = list(kw.interest_over_time.keys()) if kw.interest_over_time else []
-            trend_values = list(kw.interest_over_time.values()) if kw.interest_over_time else []
-
-            keywords_by_page[kw.page_id].append({
-                "keyword": kw.keyword,
-                "score": round(avg_score, 2),
-                "trend_keys": json.dumps(trend_keys),
-                "trend_values": json.dumps(trend_values),
-                "interest_by_region": kw.interest_by_region if kw.interest_by_region else {},
-                "trend_score": kw.trend_score if kw.trend_score else 0,
-            })
-
-        # Serialize SEO metadata
-        pages_json = {
-            page.id: {
+            pages_json[page.id] = {
                 "seo_score": page.seo_score,
                 "seo_score_details": page.seo_score_details,
                 "linking_analysis": page.linking_analysis,
                 "warnings": page.warnings,
             }
-            for page in pages
-        }
+            if loading_time:
+                pages_json[page.id].update({
+                    "time_to_first_byte": loading_time.time_to_first_byte,
+                    "first_contentful_paint": loading_time.first_contentful_paint,
+                    "largest_contentful_paint": loading_time.largest_contentful_paint,
+                    "fully_loaded": loading_time.fully_loaded,
+                })
 
-        # Serialize recommendations
         recommendations = SEORecommendation.objects.filter(page__in=pages)
         recommendations_json = defaultdict(list)
         for rec in recommendations:
@@ -59,9 +48,8 @@ class URLView(TemplateView):
         context.update({
             "website": website,
             "pages": pages,
-            "keywords_by_page": json.dumps(keywords_by_page),
+            "keywords_by_page": dict(keywords_by_page),
             "pages_json": json.dumps(pages_json),
             "recommendations_json": json.dumps(recommendations_json),
         })
         return context
-

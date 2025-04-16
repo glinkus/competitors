@@ -43,8 +43,49 @@
       <pre id="seoScoreDetails" class="seo-score-box"></pre>
     </div>
 
-    <h5 class="table-title pt-4 pb-2">Top Keywords for Selected Page</h5>
-    <div id="keywordsDisplay" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"></div>
+    <!-- Keywords Section -->
+    <h5 class="table-title">Page keywords</h5>
+    <div id="keywordsDisplay" class="mb-5">
+      <ul id="keywordList" class="list-group"></ul>
+    </div>
+
+    <div class="mb-4">
+      <h5 class="table-title">Page Load Metrics</h5>
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="card text-center shadow-sm">
+            <div class="card-body">
+              <h6 class="card-title">Time to First Byte</h6>
+              <p class="card-text"><span id="ttfbValue">-</span> ms</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center shadow-sm">
+            <div class="card-body">
+              <h6 class="card-title">Firt Contentful Paint (FCP)</h6>
+              <p class="card-text"><span id="fcpValue">-</span> ms</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center shadow-sm">
+            <div class="card-body">
+              <h6 class="card-title">Largest Contentful Paint (LCP)</h6>
+              <p class="card-text"><span id="lcpValue">-</span> ms</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center shadow-sm">
+            <div class="card-body">
+              <h6 class="card-title">Fully Loaded</h6>
+              <p class="card-text"><span id="loadedValue">-</span> ms</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
     <div class="mb-4">
@@ -52,48 +93,33 @@
       <div id="recommendationsContainer"></div>
     </div>
   </div>
-  <div class="modal fade" id="keywordTrendModal" tabindex="-1" aria-labelledby="keywordTrendModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered limited-width">
-      <div class="modal-content justify-content-center">
-        <div class="modal-header">
-          <h5 class="modal-title" id="keywordTrendModalLabel">Keyword Trend</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <canvas id="trendChartModal" height="120" class="mb-4"></canvas>
-          <h6 class="mt-4">Interest by Region</h6>
-          <canvas id="regionChartModal" height="100"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <script>
-  
+  const keywordsByPage = {{ keywords_by_page| safe }};
   const pageData = {{ pages_json| safe }};
   const recommendations = {{ recommendations_json| safe }};
 
   const dropdown = document.getElementById("pageDropdown");
+  const keywordList = document.getElementById("keywordList");
   const seoDetails = document.getElementById("seoDetails");
   const seoScoreBar = document.getElementById("seoScoreBar");
   const warningList = document.getElementById("warningList");
   const linkingAnalysis = document.getElementById("linkingAnalysis");
   const seoScoreDetails = document.getElementById("seoScoreDetails");
   const recommendationsContainer = document.getElementById("recommendationsContainer");
-  let keywordAnalysisInstance = null;
+
   dropdown.addEventListener("change", function () {
     const selectedId = this.value;
+    const page = pageData[selectedId];
 
-    if (keywordAnalysisInstance) {
-      keywordAnalysisInstance.trendChartInstance?.destroy();
-      keywordAnalysisInstance.regionChartInstance?.destroy();
-      keywordAnalysisInstance = null;
-    }
+    document.getElementById("ttfbValue").textContent = page.time_to_first_byte ?? "-";
+    console.log(page.time_to_first_byte)
+    document.getElementById("fcpValue").textContent = page.first_contentful_paint ?? "-";
+    document.getElementById("lcpValue").textContent = page.largest_contentful_paint ?? "-";
+    document.getElementById("loadedValue").textContent = page.fully_loaded ?? "-";
 
+    keywordList.innerHTML = "";
     warningList.innerHTML = "";
     linkingAnalysis.textContent = "";
     seoScoreDetails.textContent = "";
@@ -232,36 +258,24 @@
         `;
       recommendationsContainer.appendChild(card);
     });
-    const keywordContainer = document.getElementById("keywordsDisplay");
-    keywordContainer.innerHTML = "";
 
-    const keywordData = ({{ keywords_by_page|safe }})[selectedId] || [];
-    window.keywordData = keywordData;
-
-    keywordData.forEach((item, index) => {
-      const div = document.createElement("div");
-      div.className = "col";
-      div.innerHTML = `
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h6 class="card-title">
-              <a href="#" class="text-decoration-none text-primary" data-keyword-index="${index}">
-                ${item.keyword}
-              </a>
-            </h6>
-            <p class="mb-2"><strong>Google Trends score:</strong> ${item.trend_score}</p>
-            <p class="mb-2"><strong>Avg. score:</strong> ${item.score}</p>
-          </div>
-        </div>
-      `;
-      keywordContainer.appendChild(div);
-    });
-
-    if (keywordData.length > 0) {
-      keywordAnalysisInstance = new KeywordAnalysis(keywordData);
-      keywordAnalysisInstance.init();
+    // Keywords
+    const keywords = (keywordsByPage[selectedId] || []).slice(0, 10);
+    if (keywords.length) {
+      keywords.forEach((kw, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${index + 1}.  ${kw}`;
+        li.classList.add("list-group-item", "keywords-table");
+        keywordList.appendChild(li);
+      });
+    } else {
+      const li = document.createElement("li");
+      li.textContent = "No keywords found for this page.";
+      li.classList.add("list-group-item", "text-muted");
+      keywordList.appendChild(li);
     }
-    
+
+
   });
 </script>
 
