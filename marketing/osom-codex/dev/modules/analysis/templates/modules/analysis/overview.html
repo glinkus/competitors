@@ -110,7 +110,7 @@
         <h5 class="table-title">Readability Score per Page</h5>
         <canvas id="readabilityChart" height="150" class="chart-container"></canvas>
     </div>
-
+    
     <div class="mt-5">
         <h5 class="table-title pb-2">Top Keywords</h5>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
@@ -135,6 +135,39 @@
         </div>
     </div>
 
+    <div class="mt-5">
+        <h5 class="table-title">Average Page Load Metrics</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">⏱️ Time to First Byte: <strong>{{ avg_ttfb }} ms</strong></li>
+          <li class="list-group-item">🌸 First Contentful Paint: <strong>{{ avg_fcp }} ms</strong></li>
+          <li class="list-group-item">🏔️ Largest Contentful Paint: <strong>{{ avg_lcp }} ms</strong></li>
+          <li class="list-group-item">✅ Fully Loaded: <strong>{{ avg_loaded }} ms</strong></li>
+        </ul>
+    </div>
+
+    <div class="mt-5 mb-4">
+        <h5 class="table-title">Page Load Speed per Page</h5>
+        <div class="d-flex gap-3 align-items-end flex-wrap mb-3">
+            <div>
+                <label for="metricTypeSelect" class="form-label">Metric</label>
+                <select id="metricTypeSelect" class="form-select">
+                    <option value="ttfb">Time To First Byte</option>
+                    <option value="fcp">First Contentful Paint</option>
+                    <option value="lcp">Largest Contentful Paint</option>
+                    <option value="loaded">Fully Loaded</option>
+                </select>
+            </div>
+            <div>
+                <label for="metricChartStyleSelect" class="form-label">Chart Type</label>
+                <select id="metricChartStyleSelect" class="form-select">
+                    <option value="line">Line</option>
+                    <option value="bar">Bar</option>
+                </select>
+            </div>
+            <button id="renderSpeedChartBtn" class="button-analyze">Generate</button>
+        </div>
+        <canvas id="loadingMetricChart" height="120" class="chart-container"></canvas>
+    </div>
 
     <h5 class="table-title pb-2 pr-2 pt-5">Target audience of company</h5>
     <div id="target-audience-loading" class="text-center my-4">
@@ -148,13 +181,38 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        window.toneLabels = {{ tone_labels | safe }};
+        window.loadLabels = {{ load_labels|safe }};
+        window.loadTTFB = {{ load_ttfb|safe }};
+        window.loadFCP = {{ load_fcp|safe }};
+        window.loadLCP = {{ load_lcp|safe }};
+        window.loadFullyLoaded = {{ load_loaded|safe }};
         window.toneData = {{ tone_data | safe }};
+        window.tpyeLabels = {{ tone_labels | safe }};
+        window.typeData = {{ tone_data | safe }};
+
+        window.speedMetrics = [
+            { key: "ttfb", values: {{ load_ttfb|safe }} },
+            { key: "fcp", values: {{ load_fcp|safe }} },
+            { key: "lcp", values: {{ load_lcp|safe }} },
+            { key: "loaded", values: {{ load_loaded|safe }} }
+        ];
+        window.pageUrls = {{ load_labels|safe }};
+
+        window.toneLabels = {{ reading_labels | safe }};
+        const perPageTones = {{ per_page_tones | safe }};
+
+        window.toneMetrics = ["technical", "emotional", "neutral"].map(type => ({
+            key: type,
+            values: perPageTones.map(p => p[type] ?? 0)
+        }));
+
         window.readingLabels = {{ reading_labels | safe }};
         window.perPageTones = {{ per_page_tones | safe }};
         window.readingValues = {{ reading_values | safe }};
         window.readabilityValues = {{ readability_values | safe }};
+
         window.keywordData = {{ keyword_summary|safe }};
+
         const checkInsightReady = () => {
             fetch("{% url 'modules.analysis:website-insight-status' website.id %}")
                 .then(res => res.json())
@@ -200,8 +258,10 @@
         };
 
         checkAudienceReady();
-    </script>
 
+        
+    </script>
+    
     <div class="modal fade" id="keywordTrendModal" tabindex="-1" aria-labelledby="keywordTrendModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered limited-width">

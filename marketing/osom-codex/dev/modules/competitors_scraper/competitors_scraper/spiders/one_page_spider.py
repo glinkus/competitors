@@ -136,10 +136,10 @@ class OnePageSpider(scrapy.Spider):
                 LoadingTime.objects.update_or_create(
                     page=page,
                     defaults={
-                        "time_to_first_byte": round(metrics.get("time_to_first_byte"), 1) if metrics.get("time_to_first_byte") is not None else None,
-                        "first_contentful_paint": round(metrics.get("first_contentful_paint"), 1) if metrics.get("first_contentful_paint") is not None else None,
-                        "largest_contentful_paint": round(metrics.get("largest_contentful_paint"), 1) if metrics.get("largest_contentful_paint") is not None else None,
-                        "fully_loaded": round(metrics.get("fully_loaded"), 1) if metrics.get("fully_loaded") is not None else None,
+                        "time_to_first_byte": round(metrics.get("time_to_first_byte"), 0) if metrics.get("time_to_first_byte") is not None else None,
+                        "first_contentful_paint": round(metrics.get("first_contentful_paint"), 0) if metrics.get("first_contentful_paint") is not None else None,
+                        "largest_contentful_paint": round(metrics.get("largest_contentful_paint"), 0) if metrics.get("largest_contentful_paint") is not None else None,
+                        "fully_loaded": round(metrics.get("fully_loaded"), 0) if metrics.get("fully_loaded") is not None else None,
                         "page_speed_score": None
                     }
                 )

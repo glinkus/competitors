@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from modules.analysis.models import Page, Website, ExtractedKeyword
+from modules.analysis.models import Page, Website, ExtractedKeyword, LoadingTime
 from statistics import median, mean
 from collections import Counter
 import google.generativeai as genai
@@ -104,6 +104,8 @@ class OverviewView(TemplateView):
         
         pages = Page.objects.filter(website_id=website_id)
 
+        speed_metrics, avg_metrics = self.get_loading_time(website_id)
+
         context.update({
             "website": website,
             "median_tones": median_tones,
@@ -117,6 +119,12 @@ class OverviewView(TemplateView):
             "reading_values": reading_values,
             "readability_values": readability_values,
             "per_page_tones": per_page_tones,	
+            "load_labels": speed_metrics["labels"],
+            "load_ttfb": speed_metrics["ttfb"],
+            "load_fcp": speed_metrics["fcp"],
+            "load_lcp": speed_metrics["lcp"],
+            "load_loaded": speed_metrics["loaded"],
+            **avg_metrics
         })
         return context
 
@@ -128,6 +136,35 @@ class OverviewView(TemplateView):
             return f"{minutes}min {total_seconds}s"
         else:
             return f"{round(mins * 60, 1)}s"
+    
+    def get_loading_time(self, website_id):
+        pages = Page.objects.filter(website_id=website_id)
+        loading_times = LoadingTime.objects.filter(page__in=pages).select_related('page')
+
+        speed_metrics = {
+            "labels": [],
+            "ttfb": [],
+            "fcp": [],
+            "lcp": [],
+            "loaded": [],
+        }
+
+        for loading_time in loading_times:
+            speed_metrics["labels"].append(loading_time.page.url)
+            speed_metrics["ttfb"].append(round(loading_time.time_to_first_byte or 0, 1))
+            speed_metrics["fcp"].append(round(loading_time.first_contentful_paint or 0, 1))
+            speed_metrics["lcp"].append(round(loading_time.largest_contentful_paint or 0, 1))
+            speed_metrics["loaded"].append(round(loading_time.fully_loaded or 0, 1))
+
+        avg_metrics = {
+            "avg_ttfb": round(mean(speed_metrics["ttfb"]), 0) if speed_metrics["ttfb"] else None,
+            "avg_fcp": round(mean(speed_metrics["fcp"]), 0) if speed_metrics["fcp"] else None,
+            "avg_lcp": round(mean(speed_metrics["lcp"]), 0) if speed_metrics["lcp"] else None,
+            "avg_loaded": round(mean(speed_metrics["loaded"]), 0) if speed_metrics["loaded"] else None,
+        }
+        
+        return speed_metrics, avg_metrics
+
 
     def average(self, pages):
         readability_scores = []

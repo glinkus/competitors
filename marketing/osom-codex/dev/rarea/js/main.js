@@ -9,7 +9,7 @@ import Analysis from '../../modules/analysis/js/main';
 import Chart from '../../modules/analysis/js/tone_chart';
 import Demo from '../../modules/demo/js/main';
 import DemoCad from './cad';
-import TonePageChart from '../../modules/analysis/js/tone_page_chart';
+import UniversalMetricChart from '../../modules/analysis/js/tone_page_chart';
 import ReadingCharts from '../../modules/analysis/js/reading_charts';
 import KeywordAnalysis from '../../modules/analysis/js/keyword_analysis';
 
@@ -23,19 +23,29 @@ export default class RAreaMain {
         new Chart('toneChart').init();
 
         if (document.getElementById('tonePageChart')) {
-            const readingLabels = window.readingLabels || [];
-            const perPageTones = window.perPageTones || [];
-
-            const toneChart = new TonePageChart({
+            const toneChart = new UniversalMetricChart({
                 chartId: 'tonePageChart',
                 triggerId: 'renderTonePageChart',
-                toneSelectId: 'tonePageType',
+                metricSelectId: 'tonePageType',
                 chartTypeSelectId: 'tonePageChartType',
-                labels: readingLabels,
-                dataSet: perPageTones
+                labels: window.toneLabels,
+                datasets: window.toneMetrics
+            });
+        
+            toneChart.init();
+        }
+
+        if (document.getElementById('loadingMetricChart')) {
+            const speedChart = new UniversalMetricChart({
+                chartId: 'loadingMetricChart',
+                triggerId: 'renderSpeedChartBtn',
+                metricSelectId: 'metricTypeSelect',
+                chartTypeSelectId: 'metricChartStyleSelect',
+                labels: window.pageUrls,
+                datasets: window.speedMetrics
             });
 
-            toneChart.init();
+            speedChart.init();
         }
 
         if (document.getElementById('readingTimeChart') || document.getElementById('readabilityChart')) {
@@ -45,7 +55,7 @@ export default class RAreaMain {
         if (window.keywordData) {
             new KeywordAnalysis(window.keywordData).init();
         }
-        
+
         if (window.keywordData && document.querySelectorAll('[data-keyword-index]').length) {
             new KeywordAnalysis(window.keywordData).init();
         }
