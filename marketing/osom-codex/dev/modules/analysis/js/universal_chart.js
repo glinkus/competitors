@@ -2,10 +2,10 @@ export default class UniversalMetricChart {
     constructor(config) {
         this.chartId = config.chartId;
         this.triggerId = config.triggerId;
-        this.metricSelectId = config.metricSelectId || config.toneSelectId; // 🎯 fallback for old tone config
+        this.metricSelectId = config.metricSelectId || config.toneSelectId;
         this.chartTypeSelectId = config.chartTypeSelectId;
         this.labels = config.labels;
-        this.datasets = config.datasets || config.dataSet; // 🎯 fallback for flat array
+        this.datasets = config.datasets || config.dataSet;
         this.chart = null;
         this.colors = config.colors || {
             border: '#0d6efd',
@@ -35,21 +35,16 @@ export default class UniversalMetricChart {
 
         let data = [];
 
-        // Support for: datasets = [{ key: 'ttfb', values: [...] }]
         if (Array.isArray(this.datasets) && typeof this.datasets[0] === 'object') {
             data = this.datasets.find(d => d.key === metric)?.values || [];
         }
-        // Support for: datasets = { ttfb: [...] }
         else if (typeof this.datasets === 'object' && this.datasets !== null) {
             data = this.datasets[metric] || [];
         }
-        // Support for: dataSet = flat array for tone (no selector used)
         else if (Array.isArray(this.datasets)) {
-            // supports array of objects (tone-style)
             if (typeof this.datasets[0] === 'object') {
                 data = this.datasets.map(d => d[metric] ?? 0);
             } else {
-                // flat values array fallback
                 data = this.datasets;
             }
         }

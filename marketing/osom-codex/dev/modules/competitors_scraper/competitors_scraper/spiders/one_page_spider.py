@@ -224,7 +224,6 @@ class OnePageSpider(scrapy.Spider):
                     });
                 };
 
-                // Wait a bit to make sure LCP entries arrive
                 setTimeout(resolveMetrics, 3000);
             });
         }

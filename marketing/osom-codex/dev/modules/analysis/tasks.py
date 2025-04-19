@@ -477,3 +477,82 @@ def generate_target_audience(website_id):
 
     except Exception as e:
         print(f"Error generating target audience: {e}")
+    
+@shared_task
+def positioning_insights(website_id):
+    try:
+        website = Website.objects.get(id=website_id)
+        keywords = ExtractedKeyword.objects.filter(page__website=website)
+        keyword_counter = Counter()
+        keyword_scores = {}
+
+        for kw in keywords:
+            keyword_counter[kw.keyword] += 1
+            keyword_scores.setdefault(kw.keyword, []).append(kw.score)
+
+        keyword_summary = []
+        for keyword, count in keyword_counter.items():
+            avg_score = sum(keyword_scores[keyword]) / len(keyword_scores[keyword])
+
+            trend_obj = ExtractedKeyword.objects.filter(
+                page__website=website,
+                keyword=keyword,
+                interest_over_time__isnull=False
+            ).exclude(interest_over_time={}).first()
+
+            if trend_obj and trend_obj.interest_over_time:
+                trend_keys = list(trend_obj.interest_over_time.keys())
+                trend_values = list(trend_obj.interest_over_time.values())
+            else:
+                trend_keys = []
+                trend_values = []
+
+            keyword_summary.append({
+                'keyword': keyword,
+                'count': count,
+                'avg_score': round(avg_score, 2),
+                'trend_keys': json.dumps(trend_keys),
+                'trend_values': json.dumps(trend_values),
+                'interest_by_region': trend_obj.interest_by_region if trend_obj else {},
+                'trend_score': trend_obj.trend_score if trend_obj else 0,
+            })
+
+
+        keyword_summary = sorted(
+            keyword_summary, key=lambda x: (-x["count"], -x["avg_score"])
+        )[:10]
+        page_titles = list(website.pages.values_list("page_title", flat=True).exclude(page_title__isnull=True))
+        descriptions = list(website.pages.values_list("description", flat=True).exclude(description__isnull=True))
+        audience_data = website.target_audience or {}
+        audience_segments = [f"{k}: {v}" for k, v in audience_data.items()]
+
+
+        print(f"Top keywords for positioning insights: {keyword_summary}")
+
+        prompt = (
+            "You are an expert in branding and digital positioning. Analyze the data extracted from a company’s website "
+            "and generate a brief summary describing the company’s positioning. Your answer should clearly highlight: "
+            "What the company does (its product or service focus), its unique value proposition or market differentiation"
+            "Its unique value proposition or market differentiation"
+            "Be concise, professional in tone, and avoid generic buzzwords. Use only the content provided."
+            f"Website url: {website.start_url}\n"
+            f"Top keywords: {', '.join([kw['keyword'] for kw in keyword_summary])}.\n"
+            f"Target Audience Segments: {', '.join(audience_segments)}\n"
+            f"Page Titles: {', '.join(page_titles[:5])}\n"
+            f"Descriptions: {' | '.join(descriptions[:3])}\n"
+            ""
+        )
+
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        response = model.generate_content(prompt)
+        cleaned = response.text.strip().strip("```json").strip("```").strip()
+        parsed = json.loads(cleaned)
+
+        if "Company Positioning" in parsed:
+            parsed = parsed["Company Positioning"]
+
+        website.positioning_insights = parsed
+        website.save()
+
+    except Exception as e:
+        print(f"Error generating positioning insights: {e}")

@@ -7,6 +7,7 @@ from .views.analysis_website_keywords_view import WebsiteKeywordsView
 from .views.analysis_insights_view import InsightsView
 from .views.analysis_overview_view import OverviewView, website_insight_status, target_audience_status
 from .views.analysis_landing_view import LandingView
+from .views.analysis_compare_view import CompareView
 
 app_name = "modules.analysis" 
 
@@ -21,5 +22,6 @@ urlpatterns = [
     path("api/website/target-audience-status/<int:website_id>/", target_audience_status, name="target_audience_status"),
     path('stop-scraping/<int:website_id>/', stop_scraping, name='stop_scraping'),
     path('continue-scraping/<int:website_id>/', continue_scraping, name='continue-scraping'),
+    path('analyse/compare/', CompareView.as_view(), name='compare'),
 
 ]

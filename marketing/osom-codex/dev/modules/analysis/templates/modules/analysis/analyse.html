@@ -24,21 +24,24 @@
       </form>
     </div>
   </div>
-
+  </form>
   <div class="container my-5">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       {% for website in websites %}
       <div class="col" id="website-row-{{ website.id }}">
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card h-100 shadow-sm position-relative border-0" data-id="{{ website.id }}">
+          <div class="form-check position-absolute top-0 end-0 m-2 d-none compare-check">
+            <input class="form-check-input" type="checkbox" value="{{ website.id }}">
+          </div>
+  
           {% if website.favicon_url %}
           <div class="d-flex justify-content-center align-items-center">
-            <img src="{{ website.favicon_url }}" class="card-img-top p-3 " alt="Favicon"
-              style="width: 48px; height: 48px; object-fit: contain;">
+            <img src="{{ website.favicon_url }}" class="card-img-top p-3" alt="Favicon" style="width: 48px; height: 48px; object-fit: contain;">
           </div>
           {% else %}
           <div class="p-3 text-center text-muted">No Icon</div>
           {% endif %}
-
+  
           <div class="card-body d-flex flex-column">
             <h6 class="card-title text-truncate" title="{{ website.start_url }}">
               <a href="{{ website.start_url }}" class="text-decoration-none" target="_blank">
@@ -47,17 +50,17 @@
             </h6>
             <p class="mb-1 visited-count"><strong>Pages:</strong> {{ website.visited_count }}</p>
             <p class="mb-2"><strong>Last Visited:</strong> {{ website.last_visited }}</p>
-          {% if website.crawling_finished %}
+  
+            {% if website.crawling_finished %}
             <span class="badge bg-success mb-3 status">🟢 Finished</span>
             <div class="mt-auto d-grid gap-2 action">
-              <a href="{% url 'modules.analysis:website_page' website.id %}" class="btn btn-outline-primary btn-sm">URLs</a>
-              <a href="{% url 'modules.analysis:overview' website.id %}" class="btn btn-outline-dark btn-sm">Overview</a>
+              <a href="{% url 'modules.analysis:website_page' website.id %}" class="btn btn-outline-primary btn-sm">Pages overview</a>
+              <a href="{% url 'modules.analysis:overview' website.id %}" class="btn btn-outline-dark btn-sm">Website overview</a>
             </div>
-          {% elif website.crawling_in_progress and not website.crawling_finished %}
+            {% elif website.crawling_in_progress and not website.crawling_finished %}
             <span class="badge bg-warning text-dark mb-3 status">🟡 In Progress</span>
             <button id="stop-btn-{{ website.id }}" onclick="stopScraping({{ website.id }})" class="btn btn-danger btn-sm mb-2">Stop Scraping</button>
             <p id="scraping-stopped-{{ website.id }}" class="text-danger d-none">Scraping was stopped.</p>
-
             {% elif website.scraping_stopped %}
             <span class="badge bg-danger text-dark mb-3 status">🔴 Stopped</span>
             <button onclick="continueScraping({{ website.id }})" class="btn btn-primary btn-sm mb-2">Continue Scraping</button>
@@ -65,7 +68,6 @@
             {% else %}
             <span class="badge bg-danger mb-3 status">🔴 Not Started</span>
             {% endif %}
-            
           </div>
         </div>
       </div>
@@ -74,6 +76,20 @@
       {% endfor %}
     </div>
   </div>
+  <form class="compare" id="compare-form" action="{% url 'modules.analysis:compare' %}" method="get">
+    <button
+      id="start-compare-btn"
+      type="button"
+      class="button-logout m-2"
+    >Select websites to compare</button>
+  
+    <button
+      id="compare-btn"
+      type="submit"
+      class="compare-selected m-2"
+      hidden
+    >Compare</button>
+    <input type="hidden" name="ids" id="compare-ids" value="">
 </div>
 <script>
   function checkScrapingStatus(websiteId) {
@@ -187,6 +203,50 @@
       if (statusEl && statusEl.innerText.includes("In Progress")) {
         checkScrapingStatus(websiteId);
       }
+    });
+  });
+</script>
+<script>
+  let compareMode = false;
+  const startBtn = document.getElementById('start-compare-btn');
+  const compareBtn = document.getElementById('compare-btn');
+  const compareIdsInput = document.getElementById('compare-ids');
+  const cards = document.querySelectorAll('.card[data-id]');
+
+  function updateCompareState() {
+    const checked = [...document.querySelectorAll('.compare-check input:checked')];
+    compareBtn.disabled = checked.length !== 2;
+    compareIdsInput.value = checked.map(cb => cb.value).join(',');
+  }
+
+  startBtn.addEventListener('click', () => {
+    compareMode = !compareMode;
+    startBtn.textContent = compareMode ? 'Cancel Compare' : 'Select websites to compare';
+
+    cards.forEach(card => {
+      const checkWrapper = card.querySelector('.compare-check');
+      const checkbox = checkWrapper.querySelector('input');
+      checkWrapper.classList.toggle('d-none', !compareMode);
+      checkbox.checked = false;
+    });
+
+    compareBtn.hidden = !compareMode;
+    compareBtn.disabled = true;
+    compareIdsInput.value = '';
+  });
+
+  cards.forEach(card => {
+    const checkbox = card.querySelector('.compare-check input');
+    checkbox.addEventListener('change', () => {
+      const checked = [...document.querySelectorAll('.compare-check input:checked')];
+
+      if (checked.length > 2) {
+        checkbox.checked = false;
+        alert('You can compare a maximum of 2 websites.');
+        return;
+      }
+
+      updateCompareState();
     });
   });
 </script>

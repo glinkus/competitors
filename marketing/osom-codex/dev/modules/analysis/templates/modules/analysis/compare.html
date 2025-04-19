@@ -1,0 +1,37 @@
+{% extends 'rarea/layout.html' %}
+{% block content %}
+  <h1>Website Comparison</h1>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        {% for row in comparison %}
+          <th>{{ row.site.start_url }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pages Crawled</td>
+        {% for row in comparison %}<td>{{ row.pages_crawled }}</td>{% endfor %}
+      </tr>
+      <tr>
+        <td>Avg. TTFB (ms)</td>
+        {% for row in comparison %}<td>{{ row.avg_ttfb|floatformat:0 }}</td>{% endfor %}
+      </tr>
+      <tr>
+        <td>Avg. FCP (ms)</td>
+        {% for row in comparison %}<td>{{ row.avg_fcp|floatformat:0 }}</td>{% endfor %}
+      </tr>
+      <tr>
+        <td>Avg. Fully Loaded (ms)</td>
+        {% for row in comparison %}<td>{{ row.avg_loaded|floatformat:0 }}</td>{% endfor %}
+      </tr>
+      <tr>
+        <td>Avg. SEO Score</td>
+        {% for row in comparison %}<td>{{ row.seo_score|floatformat:1 }}</td>{% endfor %}
+      </tr>
+    </tbody>
+  </table>
+  <a href="{% url 'modules.analysis:analyse' %}" class="btn btn-secondary">← Back</a>
+{% endblock %}
