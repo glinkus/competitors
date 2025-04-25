@@ -12,7 +12,7 @@ export default class ToneChart {
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: window.toneLabels,
+                        labels: window.tpyeLabels,
                         datasets: [{
                             label: 'Tone Score (%)',
                             data: window.toneData,

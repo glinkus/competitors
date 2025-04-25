@@ -1,7 +1,7 @@
 import json
 import google.generativeai as genai
 from dotenv import load_dotenv
-from modules.analysis.models import Page, SEORecommendation
+from modules.analysis.models import Page, SEORecommendation, PageAnalysis
 load_dotenv()
 
 EXPECTED_RECOMMENDATION_KEYS = {
@@ -17,6 +17,7 @@ class SEOInsights():
         self.content = content
         self.model = genai.GenerativeModel("gemini-2.0-flash")
         self.page = Page.objects.filter(url=url).first()
+        self.page_analysis, created = PageAnalysis.objects.get_or_create(page=self.page)
         self.overall_metrics = overall_metrics
         self.internal_links = internal_links
         self.external_links = external_links
@@ -26,54 +27,121 @@ class SEOInsights():
 
     def _links_prompt(self) -> str:
         prompt = f"""
-                    You are an SEO expert. Analyze the quality of links on a web page based on the information below.
-                    Evaluate internal and external links, anchor text quality, and provide a score with detailed feedback.
+        You are an SEO strategist analyzing a **competitor's webpage** to uncover link-related strengths, weaknesses, and strategic patterns. Use the data below to evaluate link quality, extract meaning from where they link to, and identify weaknesses you could exploit.
 
-                    Your analysis should include:
+        Analyze the following areas:
 
-                    1. **Internal Linking**
-                    - Are internal links relevant and helpful?
-                    - Do they guide users to important or related pages?
-                    - Is there a good distribution of internal links across the content?
+        1. **Internal Linking Quality**
+        - Do internal links cover a diverse set of strategic pages (e.g. product pages, conversion points, blogs)?
+        - Is the internal link structure deep or shallow?
+        - Are any important sections or high-value pages missing internal references?
 
-                    2. **External Linking**
-                    - Are external links pointing to authoritative and relevant sources?
-                    - Are there any broken or suspicious external links?
-                    - Are links unnecessarily pointing to competing domains?
+        2. **External Linking Quality**
+        - Are outbound links pointing to authoritative and industry-relevant sources?
+        - Are any links potentially risky (low authority, outdated, broken)?
+        - Is there an overuse of outbound linking, or lack of it (which may indicate a "closed-off" strategy)?
 
-                    3. **Anchor Text Quality**
-                    - Is the anchor text descriptive and keyword-relevant?
-                    - Are generic anchors like “click here” or “read more” overused?
+        3. **Anchor Text Relevance**
+        - Are anchor texts meaningful and keyword-relevant?
+        - Are vague or generic phrases like “read more” overused?
+        - Are there signs of unnatural linking patterns?
 
-                    4. **Link Optimization Issues**
-                    - Are there missing `title` attributes on important links?
-                    - Is there overlinking or underlinking?
-                    - Are links placed naturally in the content flow?
+        4. **Link Optimization Signals**
+        - Are `title` attributes or descriptive `alt` texts missing?
+        - Are links evenly distributed through content or bunched together?
+        - Are there image or icon-based links with missing metadata?
 
-                    Data to analyze:
-                    - Page URL: {self.page}
-                    - Internal links: {self.internal_links} (List of URL + anchor text)
-                    - External links: {self.external_links} (List of URL + anchor text)
-                    - Warnings: {self.warnings} (e.g. generic anchors, missing titles)
-                    - Word count: {self.total_word_count}
+        5. **Contextual Understanding of Links**
+        - Provide a short **summary of what content the internal links lead to** (e.g. “product categories”, “case studies”, “company blog”, etc.).
+        - Provide a **summary of what kinds of external sources** are linked (e.g. “documentation sites”, “competitor tools”, “news media”, etc.).
+        - What can you infer about this website's **content strategy** or **authority-building tactics** based on this?
 
-                    Based on your analysis, return your response in **JSON** with the following format:
+        6. **Competitive Opportunity Analysis**
+        - What weaknesses in their link strategy reduce their SEO effectiveness or user experience?
+        - How could you structure your own linking better to outshine this competitor?
 
-                    ```json
-                    {{
-                    "internal_linking_score": 0-100,
-                    "external_linking_score": 0-100,
-                    "anchor_text_score": 0-100,
-                    "linking_recommendations": [
-                        "Improve anchor text on internal links.",
-                        "Remove broken external links.",
-                        "Add links to related product pages."
-                    ],
-                    "overall_linking_score": 0-100
-                    }}
-                    """
+        ---  
+
+        **Data to analyze**:
+        - Page URL: {self.page}
+        - Internal Links: {self.internal_links} (List of URLs + anchor texts)
+        - External Links: {self.external_links} (List of URLs + anchor texts)
+        - Warnings: {self.warnings} (e.g. generic anchors, missing titles)
+        - Word Count: {self.total_word_count}
+
+        ---  
+
+        Must return your analysis as **JSON** using the structure below:
+
+        ```json
+        {{
+        "internal_linking_score": 0-100,
+        "external_linking_score": 0-100,
+        "anchor_text_score": 0-100,
+        "overall_linking_score": 0-100,
+
+        "internal_link_targets_summary": "Links mostly lead to blog posts and outdated case studies.",
+        "external_link_targets_summary": "Links point to low-authority partners and one competitor site.",
+        "linking_strategy_observation": "The website seems to favor minimal outbound linking, likely aiming to retain SEO juice but missing opportunities to build authority.",
+
+        "linking_recommendations": [
+            "Improve anchor text on internal links.",
+            "Add internal links to underlinked service pages.",
+            "Include outbound links to credible industry sources."
+        ],
+
+        "competitor_weaknesses": [
+            "No internal links to high-converting pages like Contact or Pricing.",
+            "Overuse of generic anchor text such as 'read more'.",
+            "Lack of outbound links suggests missed authority-building opportunities."
+        ],
+
+        "exploitation_opportunities": [
+            "Target and optimize for keywords where their anchor text is vague.",
+            "Create clearer, structured navigation that links to every strategic area.",
+            "Build links from third-party sites they are not leveraging."
+        ]
+        }}
+        ```
+        overall_linking_score, anchor_text_score, external_linking_score, and internal_linking_score should be between 0 and 100.
+        The higher the score, the better the linking strategy. 100 means most optimal linking strategy. The lower the score, the worse the linking strategy.
+        """
         return prompt
 
+    def cta_analysis_prompt(self, ctas: dict, page_url: str, word_count: int) -> str:
+        return f"""
+            You are analyzing a **competitor's web page** for its **Call-To-Action (CTA)** strategy. You have been provided with structured data containing CTA links and their visible anchor text.
+            Your task is to evaluate the effectiveness of the CTA usage on the page, both in terms of user engagement and conversion optimization.
+            ### Data:
+            - Page URL: {page_url}
+            - Word count: {word_count}
+            - CTAs on the page:
+            {json.dumps(ctas, indent=2)}
+
+            ### Instructions:
+            1. Identify how well the CTAs are distributed across the page.
+            2. Evaluate the diversity and persuasiveness of the anchor text.
+            3. Determine whether the CTAs serve different funnel stages (e.g., awareness, consideration, action).
+            4. Comment on the tone and specificity of the anchor phrases (e.g., “Learn more” vs. “Start your free trial”).
+            5. Point out if any opportunities for stronger CTAs were missed.
+
+            ### Output:
+            Must return ONLY a **JSON** object with the following keys:
+
+            ```json
+            {{
+            "cta": {{
+                "https://example.com/signup": "Start your free trial",
+                "https://example.com/contact": "Get in Touch"
+            }},
+            "cta_score": 0-100,
+            "summary": "In-depth written analysis of CTA usage, structure, persuasiveness, and UX impact."
+            }}
+            ```
+            cta_score should be a score from 0 to 100, where 100 indicates an optimal CTA strategy.
+            Do not return explanations, markdown, or additional formatting.
+            Only return the JSON object.
+            """
 
     def _seo_score_prompt(self) -> str:
         prompt = f"""
@@ -151,14 +219,48 @@ class SEOInsights():
         return prompt
     
     def run_analysis(self):
+        # Analyze the CTAs
+        self.analyze_ctas()
         # Analyze the content
-        self.analyze()
+        self.analyze_recommendations()
         # Analyze the links
         self.analyze_links()
         # Analyze the SEO score
         self.analyze_score()
+    
+    def analyze_ctas(self):
+        internal_links = self.page_analysis.internal_links or []
+        external_links = self.page_analysis.external_links or []
+        
+        if isinstance(internal_links, str):
+            internal_links = json.loads(internal_links)
+        if isinstance(external_links, str):
+            external_links = json.loads(external_links)
+            
+        ctas = self.extract_ctas(internal_links + external_links)
 
-    def analyze(self):
+        if not ctas:
+            print("❗ No CTAs found for analysis.")
+            return None
+
+        prompt = self.cta_analysis_prompt(ctas, self.page.url, self.total_word_count)
+        response = self.model.generate_content(prompt)
+        content = response.text.strip("```json").strip("```").strip()
+
+        try:
+            cta_data = json.loads(content)
+            if not all(k in cta_data for k in ["cta", "cta_score", "summary"]):
+                raise ValueError("Missing required keys in CTA response")
+            self.page_analysis.cta_analysis = cta_data
+            self.page_analysis.save()
+            print("Successfully saved CTA analysis.")
+            return cta_data
+        except Exception as e:
+            print("Failed to parse or save CTA analysis:", e)
+            print("Raw output:", content)
+            return None
+
+    def analyze_recommendations(self):
         prompt = self._final_recommendations_prompt()
         response = self.model.generate_content(prompt)
         content = response.text
@@ -209,11 +311,13 @@ class SEOInsights():
         try:
             link_scores = json.loads(content)
         except Exception as e:
-            print("❌ Failed to parse link analysis JSON:", e)
+            print("Failed to parse link analysis JSON:", e)
             return {}
-        if self.page.linking_analysis != link_scores:
-            self.page.linking_analysis = link_scores
-            self.page.save()
+            
+        if self.page_analysis.linking_analysis != link_scores:
+            self.page_analysis.linking_analysis = link_scores
+            self.page_analysis.save()
+            
         print("Successfully did link analysis")
         return link_scores
 
@@ -232,9 +336,10 @@ class SEOInsights():
             print("❌ Failed to parse SEO score JSON:", e)
             return {}
         
-        self.page.seo_score = score_data.get("seo_score", None)
-        self.page.seo_score_details = score_data
-        self.page.save()
+        self.page_analysis.seo_score = score_data.get("seo_score", None)
+        self.page_analysis.seo_score_details = score_data
+        self.page_analysis.save()
+        
         print("Successfully did SEO score analysis")
         return score_data
 
@@ -262,4 +367,14 @@ class SEOInsights():
                 return False
 
         return True
+    
+    def extract_ctas(self, links):
+        ctas = {}
+        for link in links:
+            anchor = (link.get("anchor") or "").strip()
+            url = link.get("url")
+            if url and anchor and len(anchor) > 2:
+                ctas[url] = anchor
+        return ctas
+
 

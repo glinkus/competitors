@@ -156,7 +156,13 @@ h2.analyze-heading {
     padding-right: 1rem;
     padding-bottom: 1rem;
 }
-
+.summary {
+    font-family: Figtree, "Figtree Fallback";
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    color: #4b4846;
+    text-align: justify;
+}
 h4.table-title {
     padding-bottom: 0.5rem;
     font-family: Figtree, "Figtree Fallback";
@@ -193,4 +199,18 @@ h6.table-title {
     strong {
         font-weight: 700;
     }
+}
+p.conclusion {
+    font-family: Figtree, "Figtree Fallback";
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+    color: #393838;
+    text-align: justify;
+}
+p.data {
+    font-family: Figtree, "Figtree Fallback";
+    font-size: 17px !important;
+    font-weight: 400 !important;
+    color: #393838;
+    text-align: justify;
 }

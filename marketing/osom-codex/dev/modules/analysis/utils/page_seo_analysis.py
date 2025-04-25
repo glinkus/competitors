@@ -1,4 +1,4 @@
-from modules.analysis.models import Page, Website
+from modules.analysis.models import Page, Website, PageAnalysis
 from urllib.parse import urlsplit
 from collections import Counter
 import lxml.html as lh
@@ -372,16 +372,16 @@ class PageSEOAnalysis():
                 self.keywords[word] = cnt
 
     def save_analysis_to_db(self):
-        self.page.raw_html = self.raw_html
-        self.page.description = self.description
-        self.page.content_hash = self.content_hash
-
-        self.page.keywords = json.dumps(self.keywords)
-        self.page.warnings = json.dumps(self.warnings)
-        self.page.links = json.dumps(self.links)
-        self.page.content = self.content
-        self.page.internal_links = self.internal_links
-        self.page.external_links = self.external_links
+        page_analysis, created = PageAnalysis.objects.get_or_create(page=self.page)
+        
+        page_analysis.description = self.description
+        page_analysis.content_hash = self.content_hash
+        page_analysis.warnings = json.dumps(self.warnings)
+        page_analysis.links = json.dumps(self.links)
+        page_analysis.content = self.content
+        page_analysis.internal_links = self.internal_links
+        page_analysis.external_links = self.external_links
+        
         structured_data = {
             "total_word_count": self.total_word_count,
             "wordcount": dict(self.wordcount),
@@ -390,6 +390,10 @@ class PageSEOAnalysis():
             "headings": self.headings,
             "additional_info": self.additional_info,
         }
-        self.page.structured_data = json.dumps(structured_data)
         
+        page_analysis.structured_data = json.dumps(structured_data)
+        page_analysis.save()
+        
+        # Keep raw_html in the Page model since it's not moved
+        self.page.raw_html = self.raw_html
         self.page.save()

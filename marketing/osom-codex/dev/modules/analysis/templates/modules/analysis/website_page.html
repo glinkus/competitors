@@ -7,93 +7,198 @@
 <div class="analyze-heading">
   <h2 class="analyze-heading">Select website page from the list to see analysis below</h2>
 </div>
+
 <div class="container p-5">
-  <div class="mb-4">
-    <label for="pageDropdown" class="form-label">Select Page:</label>
-    <select id="pageDropdown" class="form-select">
-      <option value="">-- Select a page --</option>
-      {% for page in pages %}
-      <option value="{{ page.id }}">{{ page.url }}</option>
-      {% endfor %}
-    </select>
-  </div>
+  <label for="pageDropdown" class="form-label">Select Page:</label>
+  <select id="pageDropdown" class="form-select">
+    <option value="">-- Select a page --</option>
+    {% for label, group_pages in label_groups.items %}
+      <optgroup label="{{ label }}">
+        {% for page in group_pages %}
+          <option value="{{ page.id }}">{{ page.url }}</option>
+        {% endfor %}
+      </optgroup>
+    {% endfor %}
+  </select>
+  
+  
 
-  <!-- SEO Details -->
   <div id="seoDetails" class="d-none">
-    <div class="mb-4">
-      <h5 class="table-title">SEO Score</h4>
-        <div class="progress">
-          <div id="seoScoreBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
-        </div>
-    </div>
-
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <h5 class="table-title">Warnings</h5>
-        <ul id="warningList" class="list-group"></ul>
-      </div>
-      <div class="col-md-6">
-        <h5 class="table-title">Linking Analysis</h5>
-        <pre id="linkingAnalysis" class="bg-light custom-p-3 rounded border"></pre>
+    <!-- Mode Switch -->
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+      <div>
+        <p class="data pt-2">Analyzing:</p>
+        <select id="analysisMode" class="form-select d-inline-block w-auto">
+          <option value="competitor" selected>Competitor</option>
+          <option value="own">My Site</option>
+        </select>
       </div>
     </div>
 
-    <div class="mb-4">
-      <h5 class="table-title">SEO Score Details</h5>
-      <pre id="seoScoreDetails" class="seo-score-box"></pre>
+    <!-- Metadata -->
+    <div class="text-center">
+      <h4 class="table-title mb-0">Metadata</h4>
+    </div>
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <p class="data"><strong>Title:</strong> <span id="metaTitle">-</span></p>
+        <p class="data"><strong>Description:</strong> <span id="metaDescription">-</span></p>
+      </div>
     </div>
 
-    <!-- Keywords Section -->
-    <h5 class="table-title">Page keywords</h5>
-    <div id="keywordsDisplay" class="mb-5">
-      <ul id="keywordList" class="list-group"></ul>
-    </div>
-
-    <div class="mb-4">
-      <h5 class="table-title">Page Load Metrics</h5>
-      <div class="row g-3">
-        <div class="col-md-3">
-          <div class="card text-center shadow-sm">
-            <div class="card-body">
-              <h6 class="card-title">Time to First Byte</h6>
-              <p class="card-text"><span id="ttfbValue">-</span> ms</p>
-            </div>
-          </div>
+    <!-- Linking & CTA Section -->
+    <div class="mt-5">
+      <div class="d-flex justify-content-between align-items-center pb-3">
+        <h4 class="table-title mb-0">Linking & CTA Analysis</h4>
+        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#linkingCtaContent">Toggle</button>
+      </div>
+      <div id="linkingCtaContent" class="collapse show">
+        <div class="mb-4">
+          <pre id="linkingAnalysis" class="bg-light custom-p-3 rounded border"></pre>
         </div>
-        <div class="col-md-3">
-          <div class="card text-center shadow-sm">
-            <div class="card-body">
-              <h6 class="card-title">Firt Contentful Paint (FCP)</h6>
-              <p class="card-text"><span id="fcpValue">-</span> ms</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card text-center shadow-sm">
-            <div class="card-body">
-              <h6 class="card-title">Largest Contentful Paint (LCP)</h6>
-              <p class="card-text"><span id="lcpValue">-</span> ms</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card text-center shadow-sm">
-            <div class="card-body">
-              <h6 class="card-title">Fully Loaded</h6>
-              <p class="card-text"><span id="loadedValue">-</span> ms</p>
-            </div>
-          </div>
+        <div class="mb-4">
+          <h5 class="table-title">CTA Analysis</h5>
+          <div id="ctaAnalysisBox" class="bg-light custom-p-3 rounded border"></div>
         </div>
       </div>
     </div>
 
+    <!-- SEO Analysis -->
+    <div class="mt-5">
+      <div class="d-flex justify-content-between align-items-center pb-3">
+        <h4 class="table-title mb-0">📈 SEO Analysis</h4>
+        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#seoAnalysisContent">Toggle</button>
+      </div>
+      <div id="seoAnalysisContent" class="collapse show">
+        <div class="mb-4">
+          <h5 class="table-title">SEO Score</h5>
+          <div class="progress">
+            <div id="seoScoreBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+          </div>
+        </div>
 
-    <div class="mb-4">
-      <h5 class="table-title">Recommendations</h5>
+        <!-- Warnings (collapsible) -->
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="table-title mb-0">Warnings</h5>
+            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#warningListContent">Toggle</button>
+          </div>
+          <div id="warningListContent" class="collapse show">
+            <ul id="warningList" class="list-group mt-2"></ul>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h5 class="table-title">SEO Score Details</h5>
+          <pre id="seoScoreDetails" class="seo-score-box"></pre>
+        </div>
+
+        <div class="mb-4">
+          <h5 class="table-title">Page Keywords</h5>
+          <div id="keywordsDisplay" class="mb-3">
+            <ul id="keywordList" class="list-group"></ul>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h5 class="table-title">Page Load Metrics</h5>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <div class="card text-center shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title">Time to First Byte</h6>
+                  <p class="card-text"><span id="ttfbValue">-</span> ms</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card text-center shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title">First Contentful Paint (FCP)</h6>
+                  <p class="card-text"><span id="fcpValue">-</span> ms</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card text-center shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title">Largest Contentful Paint (LCP)</h6>
+                  <p class="card-text"><span id="lcpValue">-</span> ms</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card text-center shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title">Fully Loaded</h6>
+                  <p class="card-text"><span id="loadedValue">-</span> ms</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Text Analysis (collapsible) -->
+    <div class="mt-5">
+      <div class="d-flex justify-content-between align-items-center pb-3">
+        <h4 class="table-title mb-0">Page Text Analysis</h4>
+        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#textAnalysisContent">Toggle</button>
+      </div>
+      <div id="textAnalysisContent" class="collapse show">
+        <div class="stats-container mb-4 row">
+          <div class="stat-circle readability">
+            <strong id="readabilityScore">-</strong>
+            <span>Avg. Readability</span>
+            <div class="tooltip-box">
+              <table>
+                <tr><td>90–100</td><td>Very Easy</td></tr>
+                <tr><td>80–89</td><td>Easy</td></tr>
+                <tr><td>70–79</td><td>Fairly Easy</td></tr>
+                <tr><td>60–69</td><td>Standard</td></tr>
+                <tr><td>50–59</td><td>Fairly Difficult</td></tr>
+                <tr><td>30–49</td><td>Difficult</td></tr>
+                <tr><td>0–29</td><td>Very Confusing</td></tr>
+                <tr><td>N/A</td><td>Text too short</td></tr>
+              </table>
+            </div>
+          </div>
+          <div class="stat-circle reading-time">
+            <strong id="readingTime">-</strong>
+            <span>Reading Time</span>
+          </div>
+        </div>
+
+        <!-- Tone Chart -->
+        <h5 class="table-title d-flex justify-content-center pb-2 pt-5">Text Type Scores</h5>
+        <div id="toneChartContainer" class="d-flex justify-content-center d-none">
+          <div style="width: 100%; max-width: 500px; min-height: 300px;" class="chart-container">
+            <canvas id="toneChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Positioning Chart -->
+        <h5 class="table-title d-flex justify-content-center pb-2 pt-5">Positioning Classification</h5>
+        <div id="positioningChartContainer" class="d-flex justify-content-center d-none">
+          <div style="width: 100%; max-width: 500px; min-height: 400px;" class="chart-container">
+            <canvas id="positioningChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div id="recommendationsSection" class="mb-4 d-none">
+      <div class="text-center p-5">
+        <h4 class="table-title mb-0">Overall Recommendations</h4>
+      </div>
       <div id="recommendationsContainer"></div>
     </div>
   </div>
 </div>
+
+
 
 <script>
   const keywordsByPage = {{ keywords_by_page| safe }};
@@ -109,15 +214,86 @@
   const seoScoreDetails = document.getElementById("seoScoreDetails");
   const recommendationsContainer = document.getElementById("recommendationsContainer");
 
+  function renderSeoScoreDetails(details, mode) {
+    let html = "";
+
+    if (!Object.keys(details).length) {
+      return "<p class='text-muted'>No SEO score details available.</p>";
+    }
+
+    if (details.strengths?.length) {
+      html += `
+        <div class="mb-3 mb-custom">
+          <h6 class="text-success">Strengths</h6>
+          <ul class="list-group list-group-flush">
+            ${details.strengths.map(item => `<li class="list-group-item text-success">${item}</li>`).join("")}
+          </ul>
+        </div>
+      `;
+    }
+
+    if (details.weaknesses?.length) {
+      html += `
+        <div class="mb-3 mb-custom">
+          <h6 class="text-danger">Weaknesses</h6>
+          <ul class="list-group list-group-flush">
+            ${details.weaknesses.map(item => `<li class="list-group-item text-danger">${item}</li>`).join("")}
+          </ul>
+        </div>
+      `;
+    }
+
+    if (mode === "own" && details.recommendations?.length) {
+      html += `
+        <div class="mb-3 mb-custom">
+          <h6 class="text-primary">Recommendations</h6>
+          <ul class="list-group list-group-flush">
+            ${details.recommendations.map(item => `<li class="list-group-item">${item}</li>`).join("")}
+          </ul>
+        </div>
+      `;
+    }
+
+    return html;
+  }
+
+  document.getElementById("analysisMode").addEventListener("change", function () {
+    const selectedId = dropdown.value;
+    const mode = this.value;
+
+    if (selectedId) {
+      renderLinkingAnalysis(selectedId);
+      const page = pageData[selectedId];
+      const details = page?.seo_score_details || {};
+      seoScoreDetails.innerHTML = renderSeoScoreDetails(details, mode);
+      renderRecommendations(selectedId, mode);
+    }
+  });
+
+
   dropdown.addEventListener("change", function () {
     const selectedId = this.value;
     const page = pageData[selectedId];
 
+    document.getElementById("metaTitle").textContent = page.meta_title ?? "N/A";
+    document.getElementById("metaDescription").textContent = page.meta_description ?? "N/A";
     document.getElementById("ttfbValue").textContent = page.time_to_first_byte ?? "-";
-    console.log(page.time_to_first_byte)
     document.getElementById("fcpValue").textContent = page.first_contentful_paint ?? "-";
     document.getElementById("lcpValue").textContent = page.largest_contentful_paint ?? "-";
     document.getElementById("loadedValue").textContent = page.fully_loaded ?? "-";
+    document.getElementById("readabilityScore").textContent = page.text_readability ?? "N/A";
+    document.getElementById("readingTime").textContent = page.text_reading_time ?? "10s";
+    
+    window.tpyeLabels = page.tone_labels || [];
+    window.toneData = page.tone_data || [];
+    renderToneChart(window.tpyeLabels, window.toneData);
+    
+    window.positioningLabels = [...(page.positioning_labels || [])];
+    window.positioningData = [...(page.positioning_data || [])];
+
+    renderPositioningChart(window.positioningLabels, window.positioningData);
+    console.log("Positioning Labels:", window.positioningLabels);
+    console.log("Positioning Data:", window.positioningData);
 
     keywordList.innerHTML = "";
     warningList.innerHTML = "";
@@ -162,102 +338,47 @@
       warningList.appendChild(li);
     });
 
-
-    // Linking Analysis
-    const linking = data.linking_analysis || {};
-    let html = "";
-
-    if (Object.keys(linking).length === 0) {
-      html = "<p class='text-muted'>No linking data available.</p>";
-    } else {
-      html += `
-          <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <strong>Internal Linking Score</strong>
-              <span class="badge bg-primary rounded-pill">${linking.internal_linking_score ?? 'N/A'}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <strong>External Linking Score</strong>
-              <span class="badge bg-primary rounded-pill">${linking.external_linking_score ?? 'N/A'}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <strong>Anchor Text Score</strong>
-              <span class="badge bg-primary rounded-pill">${linking.anchor_text_score ?? 'N/A'}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <strong>Overall Linking Score</strong>
-              <span class="badge bg-primary rounded-pill">${linking.overall_linking_score ?? 'N/A'}</span>
-            </li>
-          </ul>
-        `;
-
-      if (Array.isArray(linking.linking_recommendations) && linking.linking_recommendations.length > 0) {
-        html += `<h6 class="table-title">Recommendations:</h6><ul class="list-group">`;
-        linking.linking_recommendations.forEach(rec => {
-          html += `<li class="list-group-item">${rec}</li>`;
-        });
-        html += `</ul>`;
-      }
-    }
-
-    linkingAnalysis.innerHTML = html;
-
-
     // Score Details
+    const analysisMode = document.getElementById("analysisMode").value;
     const details = data.seo_score_details || {};
-    let seoHtml = "";
+    seoScoreDetails.innerHTML = renderSeoScoreDetails(details, analysisMode);
+    
+    // Cta Analysis
+    const ctaBox = document.getElementById("ctaAnalysisBox");
+    const ctaData = data.cta_analysis;
 
-    if (!Object.keys(details).length) {
-      seoHtml = "<p class='text-muted'>No SEO score details available.</p>";
+    if (!ctaData || Object.keys(ctaData).length === 0) {
+      ctaBox.innerHTML = "<p class='text-muted'>No CTA analysis available.</p>";
     } else {
-      if (details.strengths?.length) {
-        seoHtml += `
-            <div class="mb-3 mb-custom">
-              <h6 class="text-success">Strengths</h6>
-              <ul class="list-group list-group-flush">
-                ${details.strengths.map(item => `<li class="list-group-item text-success">${item}</li>`).join("")}
-              </ul>
+      const score = ctaData.cta_score ?? 0;
+      const scoreClass = score >= 70 ? "bg-success" : score >= 40 ? "bg-warning" : "bg-danger";
+
+      let ctaHtml = `
+        <div class="mb-3 pt-2">
+          <strong>CTA Score:</strong>
+          <div class="progress mt-2" style="height: 24px;">
+            <div class="progress-bar ${scoreClass}" role="progressbar" style="width: ${score}%;">
+              ${score}%
             </div>
-          `;
-      }
-
-      if (details.weaknesses?.length) {
-        seoHtml += `
-            <div class="mb-3 mb-custom">
-              <h6 class="text-danger">Weaknesses</h6>
-              <ul class="list-group list-group-flush">
-                ${details.weaknesses.map(item => `<li class="list-group-item text-danger">${item}</li>`).join("")}
-              </ul>
-            </div>
-          `;
-      }
-
-      if (details.recommendations?.length) {
-        seoHtml += `
-            <div class="mb-3 mb-custom">
-              <h6 class="text-primary">Recommendations</h6>
-              <ul class="list-group list-group-flush">
-                ${details.recommendations.map(item => `<li class="list-group-item">${item}</li>`).join("")}
-              </ul>
-            </div>
-          `;
-      }
-    }
-
-    seoScoreDetails.innerHTML = seoHtml;
-
-    const recs = recommendations[selectedId] || [];
-    recs.forEach(rec => {
-      const card = document.createElement("div");
-      card.className = "card mb-3";
-      card.innerHTML = `
-          <div class="card-body">
-            <h6 class="card-title text-primary">${rec.category.replace(/_/g, ' ')}</h6>
-            <ul class="mb-0">${(rec.actions || []).map(action => `<li>${action}</li>`).join('')}</ul>
           </div>
-        `;
-      recommendationsContainer.appendChild(card);
-    });
+        </div>
+        <div class="mb-3">
+          <strong>CTA Summary:</strong>
+          <p class="conclusion">${ctaData.summary ?? 'N/A'}</p>
+        </div>
+        <div>
+          <strong>CTAs:</strong>
+          <ul class="list-group mt-2">
+            ${Object.entries(ctaData.cta).map(([url, text]) => `
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>${text}</span>
+                <a href="${url}" target="_blank" class="btn btn-sm btn-outline-secondary">Visit</a>
+              </li>`).join("")}
+          </ul>
+        </div>
+      `;
+      ctaBox.innerHTML = ctaHtml;
+    }
 
     // Keywords
     const keywords = (keywordsByPage[selectedId] || []).slice(0, 10);
@@ -274,7 +395,204 @@
       li.classList.add("list-group-item", "text-muted");
       keywordList.appendChild(li);
     }
+    renderLinkingAnalysis(selectedId);
   });
 </script>
+<script>
+  function renderRecommendations(pageId, mode) {
+  const recs = recommendations[pageId] || [];
+  const recsSection = document.getElementById("recommendationsSection");
+  recommendationsContainer.innerHTML = "";
+  recsSection.classList.add("d-none");
+
+  if (mode === "own" && recs.length > 0) {
+    recsSection.classList.remove("d-none");
+    recs.forEach(rec => {
+      const card = document.createElement("div");
+      card.className = "card mb-3";
+      card.innerHTML = `
+        <div class="card-body">
+          <h6 class="card-title text-primary">${rec.category.replace(/_/g, ' ')}</h6>
+          <ul class="mb-0">${(rec.actions || []).map(action => `<li class="pb-1">${action}</li>`).join('')}</ul>
+        </div>
+      `;
+      recommendationsContainer.appendChild(card);
+    });
+  }
+}
+
+</script>
+<script>
+  function renderLinkingAnalysis(pageId) {
+    const data = pageData[pageId];
+    const linking = data.linking_analysis || {};
+    const analysisMode = document.getElementById("analysisMode").value;
+
+    let html = "";
+
+    if (Object.keys(linking).length === 0) {
+      html = "<p class='text-muted'>No linking data available.</p>";
+    } else {
+      html += `
+        <ul class="list-group mb-3">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>Internal Linking Score</strong>
+            <span class="badge bg-primary rounded-pill">${linking.internal_linking_score ?? 'N/A'}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>External Linking Score</strong>
+            <span class="badge bg-primary rounded-pill">${linking.external_linking_score ?? 'N/A'}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>Anchor Text Score</strong>
+            <span class="badge bg-primary rounded-pill">${linking.anchor_text_score ?? 'N/A'}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>Overall Linking Score</strong>
+            <span class="badge bg-primary rounded-pill">${linking.overall_linking_score ?? 'N/A'}</span>
+          </li>
+        </ul>
+
+        <ul class="list-group mb-3">
+          <li class="list-group-item"><strong>Internal Link Targets Summary:</strong><br>${linking.internal_link_targets_summary ?? 'N/A'}</li>
+          <li class="list-group-item"><strong>External Link Targets Summary:</strong><br>${linking.external_link_targets_summary ?? 'N/A'}</li>
+          <li class="list-group-item"><strong>Linking Strategy Observation:</strong><br>${linking.linking_strategy_observation ?? 'N/A'}</li>
+        </ul>
+      `;
+
+      if (Array.isArray(linking.competitor_weaknesses) && linking.competitor_weaknesses.length > 0) {
+        html += `<h6 class="table-title">Weaknesses</h6><ul class="list-group">`;
+        linking.competitor_weaknesses.forEach(weakness => {
+          html += `<li class="list-group-item">${weakness}</li>`;
+        });
+        html += `</ul>`;
+      }
+
+      if (analysisMode === "own") {
+        if (Array.isArray(linking.linking_recommendations) && linking.linking_recommendations.length > 0) {
+          html += `<h6 class="table-title pb-2 pt-4">Recommendations (My Site)</h6><ul class="list-group">`;
+          linking.linking_recommendations.forEach(rec => {
+            html += `<li class="list-group-item">${rec}</li>`;
+          });
+          html += `</ul>`;
+        }
+      } else {
+        if (Array.isArray(linking.exploitation_opportunities) && linking.exploitation_opportunities.length > 0) {
+          html += `<h6 class="table-title pb-2 pt-4">Exploitation Opportunities</h6><ul class="list-group">`;
+          linking.exploitation_opportunities.forEach(op => {
+            html += `<li class="list-group-item">${op}</li>`;
+          });
+          html += `</ul>`;
+        }
+      }
+    }
+
+    linkingAnalysis.innerHTML = html;
+  }
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let toneChartInstance = null;
+
+  function renderToneChart(labels, data) {
+    const canvas = document.getElementById("toneChart");
+    const chartContainer = document.getElementById("toneChartContainer");
+
+    if (!canvas || !chartContainer || !Array.isArray(labels) || !Array.isArray(data) || labels.length === 0 || data.length === 0) {
+      chartContainer?.classList.add("d-none");
+      return;
+    }
+
+    chartContainer.classList.remove("d-none");
+
+    const existing = Chart.getChart(canvas);
+    if (existing) existing.destroy();
+
+    const ctx = canvas.getContext("2d");
+    toneChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Tone Score (%)',
+          data,
+          backgroundColor: 'rgba(255, 203, 119, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+  }
+</script>
+
+<script>
+  let positioningChartInstance = null;
+
+  function renderPositioningChart(labels, data) {
+    const canvas = document.getElementById("positioningChart");
+    const chartContainer = document.getElementById("positioningChartContainer");
+
+    if (!canvas || !chartContainer || !Array.isArray(labels) || !Array.isArray(data) || labels.length === 0 || data.length === 0) {
+      chartContainer?.classList.add("d-none");
+      return;
+    }
+
+    chartContainer.classList.remove("d-none");
+
+    const existing = Chart.getChart(canvas);
+    if (existing) existing.destroy();
+
+    const ctx = canvas.getContext("2d");
+    positioningChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Positioning Score (%)',
+          data,
+          backgroundColor: 'rgba(153, 102, 255, 0.8)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+  }
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new TomSelect('#pageDropdown', {
+      placeholder: 'Search or select a page...',
+      allowEmptyOption: true,
+      maxOptions: 500,
+      sortField: {
+        field: "text",
+        direction: "asc"
+      }
+    });
+  });
+</script>
+
+
 
 {% endblock %}

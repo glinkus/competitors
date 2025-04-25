@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from modules.analysis.models import Page, Website, ExtractedKeyword, LoadingTime
+from modules.analysis.models import Page, Website, ExtractedKeyword, LoadingTime, OverallAnalysis, PageAnalysis
 from statistics import median, mean
 from collections import Counter
 import google.generativeai as genai
@@ -10,21 +10,43 @@ import json
 from modules.analysis.utils.page_seo_analysis import PageSEOAnalysis
 from modules.analysis.tasks import generate_website_insight
 from django.http import JsonResponse
-from modules.analysis.tasks import generate_target_audience
+from modules.analysis.tasks import generate_target_audience, positioning_insights, analyze_top_keywords_trends
+import ast
+
 
 def website_insight_status(request, website_id):
     website = Website.objects.filter(id=website_id).first()
-    if website and website.insight_text:
+    overall_analysis = OverallAnalysis.objects.filter(website=website).first()
+
+    if website and overall_analysis:
+        try:
+            tech_data = overall_analysis.technology if overall_analysis.technology else {}
+        except Exception as e:
+            return JsonResponse({"ready": False, "error": str(e)})
+
         return JsonResponse({
             "ready": True,
-            "insight": website.insight_text
+            "technology": tech_data,
+            "technology_summary": overall_analysis.technology_summary,
+            "backend_stack": overall_analysis.backend_stack,
         })
+
     return JsonResponse({"ready": False})
 
 def target_audience_status(request, website_id):
     website = Website.objects.filter(id=website_id).first()
     if website and website.target_audience:
         return JsonResponse({"ready": True, "audience": website.target_audience})
+    return JsonResponse({"ready": False})
+
+def technology_status(request, website_id):
+    website = Website.objects.get(id=website_id)
+    if hasattr(website, "overall_analysis") and website.overall_analysis.technology:
+        try:
+            tech = json.loads(website.overall_analysis.technology)
+            return JsonResponse({"ready": True, "technology": tech})
+        except Exception:
+            return JsonResponse({"ready": False})
     return JsonResponse({"ready": False})
 
 class OverviewView(TemplateView):
@@ -35,19 +57,23 @@ class OverviewView(TemplateView):
         website_id = kwargs.get('website_id')
         website = get_object_or_404(Website, id=website_id)
 
-        pages = Page.objects.filter(website_id=website_id).exclude(text_types__isnull=True)
-        median_tones, most_technical_url, least_technical_url = self.calculate_median_tones(pages)
+        pages = Page.objects.filter(website_id=website_id, analysis__isnull=False).select_related("analysis")
+        page_analyses = [page.analysis for page in pages if page.analysis]
 
-        pages_stats = Page.objects.filter(website_id=website_id).exclude(text_reading_time__isnull=True, text_readability__isnull=True)
+        median_tones = self.calculate_median_tones(page_analyses)
+
+        pages_stats = [a for a in page_analyses if a.text_reading_time is not None and a.text_readability is not None]
         stats = self.average(pages_stats)
-        reading_labels = [page.url for page in pages_stats]
-        reading_values = [round(page.text_reading_time * 60, 1) for page in pages_stats]
-        readability_values = [round(page.text_readability, 2) for page in pages_stats]
+        reading_labels = [a.page.url for a in pages_stats]
+        reading_values = [round(a.text_reading_time * 60, 1) for a in pages_stats]
+        readability_values = [round(a.text_readability, 2) for a in pages_stats]
+        seo_score = self.calculate_seo_score(website_id=website_id)
 
         keywords = ExtractedKeyword.objects.filter(page__website=website)
         
         keyword_counter = Counter()
         keyword_scores = {}
+        
 
         for kw in keywords:
             keyword_counter[kw.keyword] += 1
@@ -78,41 +104,75 @@ class OverviewView(TemplateView):
                 'trend_values': json.dumps(trend_values),
                 'interest_by_region': trend_obj.interest_by_region if trend_obj else {},
                 'trend_score': trend_obj.trend_score if trend_obj else 0,
+                # 'trends_analyzed': trend_obj.trends_analyzed if trend_obj else False,
             })
-
-
-        context["keyword_summary"] = sorted(
+        top_keywords = sorted(
             keyword_summary, key=lambda x: (-x["count"], -x["avg_score"])
         )[:10]
 
+        # if any(not kw.get("trends_analyzed", True) for kw in top_keywords):
+        #     print()# analyze_top_keywords_trends.delay(website.id)
+
+        context["keyword_summary"] = top_keywords
+
         per_page_tones = []
-        for page in pages_stats:
+        for a in pages_stats:
             tone_data = {
-                "technical": page.text_types.get("technical", 0),
-                "emotional": page.text_types.get("emotional", 0),
-                "neutral": page.text_types.get("neutral", 0)
+                "technical": a.text_types.get("technical", 0),
+                "emotional": a.text_types.get("emotional", 0),
+                "neutral": a.text_types.get("neutral", 0)
             }
             per_page_tones.append(tone_data)
 
-        if website.insight_text is None:
+        insights = OverallAnalysis.objects.filter(website=website).first()
+        if (
+            insights is None or
+            not insights.partners or
+            not insights.positioning_weaknesses or
+            not insights.recommendations or
+            not insights.seo or
+            not insights.social_media or
+            not insights.technology or
+            not insights.usp
+        ):
             generate_website_insight.delay(website_id)
-
+        if website.positioning_insights is None:
+            positioning_insights.delay(website_id)
         target_audience = website.target_audience
         if target_audience is None:
             generate_target_audience.apply_async(args=[website_id], countdown=10)
 
-        
         pages = Page.objects.filter(website_id=website_id)
-
         speed_metrics, avg_metrics = self.get_loading_time(website_id)
+
+        overall_analysis = OverallAnalysis.objects.filter(website=website).first()
+
+        partners = []
+        if overall_analysis and overall_analysis.partners:
+            try:
+                parsed = ast.literal_eval(overall_analysis.partners)
+                if isinstance(parsed, list):
+                    partners = [p.strip("'\"") for p in parsed if isinstance(p, str)]
+            except (ValueError, SyntaxError):
+                partners = []
+        
+        social_links = []
+        if overall_analysis and overall_analysis.social_media:
+            try:
+                parsed = ast.literal_eval(overall_analysis.social_media)
+                if isinstance(parsed, dict):
+                    social_links = [link.strip() for link in parsed.values() if isinstance(link, str)]
+                elif isinstance(parsed, list):
+                    social_links = [link.strip() for link in parsed if isinstance(link, str)]
+            except (ValueError, SyntaxError):
+                social_links = []
+        starting_page = pages.filter(url=website.start_url).first()
 
         context.update({
             "website": website,
             "median_tones": median_tones,
             "tone_labels": list(median_tones.keys()),
             "tone_data": list(median_tones.values()),
-            "most_technical_url": most_technical_url,
-            "least_technical_url": least_technical_url,
             **stats,
             "target_audience": target_audience,
             "reading_labels": reading_labels,
@@ -124,9 +184,30 @@ class OverviewView(TemplateView):
             "load_fcp": speed_metrics["fcp"],
             "load_lcp": speed_metrics["lcp"],
             "load_loaded": speed_metrics["loaded"],
+            "overall_analysis": overall_analysis,
+            "seo_score": seo_score,
+            "positioning_insights": website.positioning_insights,
+            "partners": partners,
+            "usp": overall_analysis.usp,
+            "seo_details": overall_analysis.seo,
+            "positioning_weaknesses": overall_analysis.positioning_weaknesses,
+            "social_links": social_links,
+            "recommendations": overall_analysis.recommendations,
+            "meta_title": starting_page.page_title,
+            "meta_description": starting_page.analysis.description,
             **avg_metrics
         })
         return context
+
+
+    def calculate_seo_score(self, website_id):
+        all_pages = Page.objects.filter(website_id=website_id).select_related("analysis")
+        pages = [page.analysis for page in all_pages if page.analysis.seo_score is not None]
+        total_score = 0
+        for page in pages:
+            if page.seo_score is not None:
+                total_score += page.seo_score
+        return round(total_score / len(pages), 0) if pages else 0
 
     def format_time(self, mins):
         total_seconds = int(round(mins * 60))
@@ -171,8 +252,8 @@ class OverviewView(TemplateView):
         reading_times = []
 
         for page in pages:
-            readability_scores.append((page.text_readability, page.url))
-            reading_times.append((page.text_reading_time, page.url))
+            readability_scores.append((page.text_readability, page.page.url))
+            reading_times.append((page.text_reading_time, page.page.url))
 
         avg_readability = round(mean(score for score, _ in readability_scores), 2)
 
@@ -207,21 +288,14 @@ class OverviewView(TemplateView):
 
             technical_score = page.text_types.get("technical")
             if technical_score is not None:
-                technical_scores.append((technical_score, page.url))
+                technical_scores.append((technical_score, page.page.url))
 
         median_tones = {
             tone: round(median(scores), 2)
             for tone, scores in tone_scores.items()
         }
 
-        most_technical_url = None
-        least_technical_url = None
-
-        if technical_scores:
-            most_technical_url = max(technical_scores, key=lambda x: x[0])[1]
-            least_technical_url = min(technical_scores, key=lambda x: x[0])[1]
-
-        return median_tones, most_technical_url, least_technical_url
+        return median_tones
     
 
 

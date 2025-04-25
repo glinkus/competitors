@@ -24,7 +24,7 @@
       </form>
     </div>
   </div>
-  </form>
+  
   <div class="container my-5">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       {% for website in websites %}
@@ -33,15 +33,16 @@
           <div class="form-check position-absolute top-0 end-0 m-2 d-none compare-check">
             <input class="form-check-input" type="checkbox" value="{{ website.id }}">
           </div>
-  
+
           {% if website.favicon_url %}
           <div class="d-flex justify-content-center align-items-center">
-            <img src="{{ website.favicon_url }}" class="card-img-top p-3" alt="Favicon" style="width: 48px; height: 48px; object-fit: contain;">
+            <img src="{{ website.favicon_url }}" class="card-img-top p-3" alt="Favicon"
+              style="width: 48px; height: 48px; object-fit: contain;">
           </div>
           {% else %}
           <div class="p-3 text-center text-muted">No Icon</div>
           {% endif %}
-  
+
           <div class="card-body d-flex flex-column">
             <h6 class="card-title text-truncate" title="{{ website.start_url }}">
               <a href="{{ website.start_url }}" class="text-decoration-none" target="_blank">
@@ -50,24 +51,32 @@
             </h6>
             <p class="mb-1 visited-count"><strong>Pages:</strong> {{ website.visited_count }}</p>
             <p class="mb-2"><strong>Last Visited:</strong> {{ website.last_visited }}</p>
-  
+
             {% if website.crawling_finished %}
             <span class="badge bg-success mb-3 status">🟢 Finished</span>
             <div class="mt-auto d-grid gap-2 action">
-              <a href="{% url 'modules.analysis:website_page' website.id %}" class="btn btn-outline-primary btn-sm">Pages overview</a>
-              <a href="{% url 'modules.analysis:overview' website.id %}" class="btn btn-outline-dark btn-sm">Website overview</a>
+              <a href="{% url 'modules.analysis:website_page' website.id %}"
+                class="btn btn-outline-primary btn-sm">Pages overview</a>
+              <a href="{% url 'modules.analysis:overview' website.id %}" 
+                class="btn btn-outline-dark btn-sm">Website overview</a>
             </div>
-            {% elif website.crawling_in_progress and not website.crawling_finished %}
-            <span class="badge bg-warning text-dark mb-3 status">🟡 In Progress</span>
-            <button id="stop-btn-{{ website.id }}" onclick="stopScraping({{ website.id }})" class="btn btn-danger btn-sm mb-2">Stop Scraping</button>
-            <p id="scraping-stopped-{{ website.id }}" class="text-danger d-none">Scraping was stopped.</p>
+
             {% elif website.scraping_stopped %}
             <span class="badge bg-danger text-dark mb-3 status">🔴 Stopped</span>
-            <button onclick="continueScraping({{ website.id }})" class="btn btn-primary btn-sm mb-2">Continue Scraping</button>
+            <button onclick="continueScraping({{ website.id }})" class="btn btn-primary btn-sm mb-2">Continue
+              Scraping</button>
             <p id="scraping-stopped-{{ website.id }}" class="text-danger">Scraping was stopped.</p>
+
+            {% elif website.crawling_in_progress and not website.crawling_finished %}
+            <span class="badge bg-warning text-dark mb-3 status">🟡 In Progress</span>
+            <button id="stop-btn-{{ website.id }}" onclick="stopScraping({{ website.id }})"
+              class="btn btn-danger btn-sm mb-2">Stop Scraping</button>
+            <p id="scraping-stopped-{{ website.id }}" class="text-danger d-none">Scraping was stopped.</p>
+
             {% else %}
             <span class="badge bg-danger mb-3 status">🔴 Not Started</span>
             {% endif %}
+            
           </div>
         </div>
       </div>
@@ -77,54 +86,57 @@
     </div>
   </div>
   <form class="compare" id="compare-form" action="{% url 'modules.analysis:compare' %}" method="get">
-    <button
-      id="start-compare-btn"
-      type="button"
-      class="button-logout m-2"
-    >Select websites to compare</button>
-  
-    <button
-      id="compare-btn"
-      type="submit"
-      class="compare-selected m-2"
-      hidden
-    >Compare</button>
+    <button id="start-compare-btn" type="button" class="button-logout m-2">Select websites to compare</button>
+
+    <button id="compare-btn" type="submit" class="compare-selected m-2" hidden>Compare</button>
     <input type="hidden" name="ids" id="compare-ids" value="">
 </div>
 <script>
-  function checkScrapingStatus(websiteId) {
-    fetch(`/analysis/analyse/?website_id=${websiteId}`, {
-      headers: { 'X-Requested-With': 'XMLHttpRequest' }
-    })
+    function checkScrapingStatus(websiteId) {
+      fetch(`/analysis/analyse/?website_id=${websiteId}`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
       .then(response => response.json())
       .then(data => {
-        const card = document.getElementById(`website-row-${websiteId}`);
-        if (!card) return;
-
-        const visitedEl = card.querySelector('.visited-count');
-        const statusEl = card.querySelector('.status');
-        const actionEl = card.querySelector('.action');
+        const card       = document.getElementById(`website-row-${websiteId}`);
+        const visitedEl  = card.querySelector('.visited-count');
+        const statusEl   = card.querySelector('.status');
+        const actionEl   = card.querySelector('.action');
+        const stopBtn    = card.querySelector(`#stop-btn-${websiteId}`);
+        const stoppedMsg = card.querySelector(`#scraping-stopped-${websiteId}`);
 
         if (visitedEl) {
           visitedEl.innerHTML = `<strong>Pages:</strong> ${data.visited_count}`;
         }
 
         if (data.crawling_finished) {
-          statusEl.innerHTML = '🟢 Finished';
-          statusEl.className = 'badge bg-success mb-3 status';
-        } 
+          statusEl.innerHTML   = '🟢 Finished';
+          statusEl.className   = 'badge bg-success mb-3 status';
+
+          if (stopBtn)    stopBtn.remove();
+          if (stoppedMsg) stoppedMsg.classList.add('d-none');
+
+          actionEl.innerHTML = `
+            <a href="/analysis/website_page/${websiteId}/" class="btn btn-outline-primary btn-sm">
+              Pages overview
+            </a>
+            <a href="/analysis/overview/${websiteId}/" class="btn btn-outline-dark btn-sm">
+              Website overview
+            </a>
+          `;
+        }
+
         else if (data.crawling_in_progress) {
           statusEl.innerHTML = '🟡 In Progress';
           statusEl.className = 'badge bg-warning text-dark mb-3 status';
           setTimeout(() => checkScrapingStatus(websiteId), 2000);
         }
       })
-      .catch(error => {
-        console.error("Error checking status for website " + websiteId, error);
-      });
-  }
+      .catch(error => console.error("Error checking status for website " + websiteId, error));
+    }
 
-    function stopScraping(websiteId) {
+
+  function stopScraping(websiteId) {
     fetch(`/analysis/stop-scraping/${websiteId}/`, {
       method: 'POST',
       headers: {
@@ -132,32 +144,32 @@
         'X-Requested-With': 'XMLHttpRequest'
       }
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.stopped) {
-        const card = document.getElementById(`website-row-${websiteId}`);
-        const stopMsg = document.getElementById(`scraping-stopped-${websiteId}`);
-        const stopBtn = document.getElementById(`stop-btn-${websiteId}`);
-        const statusEl = card.querySelector('.status');
+      .then(response => response.json())
+      .then(data => {
+        if (data.stopped) {
+          const card = document.getElementById(`website-row-${websiteId}`);
+          const stopMsg = document.getElementById(`scraping-stopped-${websiteId}`);
+          const stopBtn = document.getElementById(`stop-btn-${websiteId}`);
+          const statusEl = card.querySelector('.status');
 
-        if (statusEl) {
-          statusEl.innerHTML = '🔴 Stopped';
-          statusEl.className = 'badge bg-danger text-dark mb-3 status';
+          if (statusEl) {
+            statusEl.innerHTML = '🔴 Stopped';
+            statusEl.className = 'badge bg-danger text-dark mb-3 status';
+          }
+
+          if (stopBtn) stopBtn.remove();
+          if (stopMsg) stopMsg.classList.remove("d-none");
+
+          const continueBtn = document.createElement("button");
+          continueBtn.textContent = "Continue Scraping";
+          continueBtn.className = "btn btn-primary btn-sm mb-2";
+          continueBtn.onclick = () => continueScraping(websiteId);
+          card.querySelector(".card-body").appendChild(continueBtn);
         }
-
-        if (stopBtn) stopBtn.remove();
-        if (stopMsg) stopMsg.classList.remove("d-none");
-
-        const continueBtn = document.createElement("button");
-        continueBtn.textContent = "Continue Scraping";
-        continueBtn.className = "btn btn-primary btn-sm mb-2";
-        continueBtn.onclick = () => continueScraping(websiteId);
-        card.querySelector(".card-body").appendChild(continueBtn);
-      }
-    })
-    .catch(error => {
-      console.error("Failed to stop scraping:", error);
-    });
+      })
+      .catch(error => {
+        console.error("Failed to stop scraping:", error);
+      });
   }
 
 
@@ -177,23 +189,23 @@
   }
 
   function continueScraping(websiteId) {
-  fetch(`/analysis/continue-scraping/${websiteId}/`, {
-    method: 'POST',
-    headers: {
-      'X-CSRFToken': getCookie('csrftoken'),
-      'X-Requested-With': 'XMLHttpRequest'
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.continued) {
-      location.reload();
-    }
-  })
-  .catch(error => {
-    console.error("Failed to continue scraping:", error);
-  });
-}
+    fetch(`/analysis/continue-scraping/${websiteId}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.continued) {
+          location.reload();
+        }
+      })
+      .catch(error => {
+        console.error("Failed to continue scraping:", error);
+      });
+  }
 
   document.addEventListener('DOMContentLoaded', () => {
     const websiteCards = document.querySelectorAll('[id^="website-row-"]');

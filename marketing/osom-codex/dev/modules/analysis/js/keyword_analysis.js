@@ -95,5 +95,4 @@ export default class KeywordAnalysis {
         const modal = new bootstrap.Modal(modalElement);
         modal.show();
     }
-
 }

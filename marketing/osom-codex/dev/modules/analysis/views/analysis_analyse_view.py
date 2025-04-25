@@ -16,6 +16,9 @@ from modules.analysis.tasks import run_one_page_spider
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+import google.generativeai as genai
+
+genai.configure(api_key="AIzaSyCzvpa1Lb9dzp7-13T3C2HpDG9V7MVVsZM")
 
 @require_POST
 def stop_scraping(request, website_id):

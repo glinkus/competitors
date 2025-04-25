@@ -70,6 +70,14 @@ export default class UniversalMetricChart {
             options: {
                 responsive: true,
                 scales: {
+                    x: {
+                        ticks: {
+                            display: false
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
                     y: {
                         beginAtZero: true,
                         title: {
@@ -79,6 +87,7 @@ export default class UniversalMetricChart {
                     }
                 }
             }
+            
         });
     }
 }

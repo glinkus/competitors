@@ -151,3 +151,28 @@
         }
     }
 }
+.toc-container {
+    h3 {
+        padding-bottom: 0.5rem;
+        font-family: Figtree, "Figtree Fallback";
+        font-size: 1.7rem !important;
+        font-weight: 600 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    a {
+        display: inline-block !important;
+        text-decoration: none !important;
+        font-family: Figtree, "Figtree Fallback";
+        font-size: 18px !important;
+        font-weight: 400 !important;
+    }
+    a:hover {
+        transform: scale(1.05) !important;
+        transition: transform 0.2s ease;
+    }
+    li {
+        padding-bottom: 0.5rem;
+    }
+}

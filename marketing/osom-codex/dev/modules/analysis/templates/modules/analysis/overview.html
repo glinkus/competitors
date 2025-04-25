@@ -9,259 +9,359 @@
     <div class="analyze-heading pb-5">
         <h2 class="analyze-heading">{{ website.start_url }}</h1>
     </div>
-    
-    <div class="d-flex justify-content-center">
-        <h4 class="table-title p-5">Detailed analysis</h4>
-    </div>
-    <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 300px;">
-            <h5 class="table-title">Median Text Type Scores</h5>
-            <div style="width: 100%; max-width: 500px;" class="chart-container">
-                <canvas id="toneChart"></canvas>
-            </div>
-        </div>
 
-        <div class="stats-container">
-            <div class="stat-circle readability">
-                <strong>{{ avg_readability }}</strong>
-                <span>Avg. Readability</span>
-                <div class="tooltip-box">
-                    <table>
-                        <tr>
-                            <td>90–100</td>
-                            <td>Very Easy</td>
-                        </tr>
-                        <tr>
-                            <td>80–89</td>
-                            <td>Easy</td>
-                        </tr>
-                        <tr>
-                            <td>70–79</td>
-                            <td>Fairly Easy</td>
-                        </tr>
-                        <tr>
-                            <td>60–69</td>
-                            <td>Standard</td>
-                        </tr>
-                        <tr>
-                            <td>50–59</td>
-                            <td>Fairly Difficult</td>
-                        </tr>
-                        <tr>
-                            <td>30–49</td>
-                            <td>Difficult</td>
-                        </tr>
-                        <tr>
-                            <td>0–29</td>
-                            <td>Very Confusing</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-            <div class="stat-circle reading-time">
-                <strong>{{ avg_reading_time }}</strong>
-                <span>Avg. Reading Time</span>
-            </div>
-        </div>
-
-    </div>
-    <div class="mt-10 mb-4">
-        <h5 class="table-title pt-5 pb-3">Text Type Score Per Page</h5>
-
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: end;" class="mb-4">
-            <div>
-                <label for="tonePageType" class="block mb-1 font-semibold">Text Type</label>
-                <select id="tonePageType" class="form-select">
-                    <option value="technical">Technical</option>
-                    <option value="emotional">Emotional</option>
-                    <option value="neutral">Neutral</option>
-                </select>
-            </div>
-            <div>
-                <label for="tonePageChartType" class="block mb-1 font-semibold">Chart Style</label>
-                <select id="tonePageChartType" class="form-select">
-                    <option value="line">Line</option>
-                    <option value="bar">Bar</option>
-                </select>
-            </div>
-            <button id="renderTonePageChart" class="button-analyze">Generate</button>
-        </div>
-
-        <canvas id="tonePageChart" height="120" class="chart-container"></canvas>
-    </div>
-
-    <div class="mt-10 p-3">
-        <h5 class="table-title">Reading Time per Page</h5>
-        <canvas id="readingTimeChart" height="150" class="chart-container"></canvas>
-    </div>
-
-    <div class="mt-10 p-3">
-        <h5 class="table-title">Readability Score per Page</h5>
-        <canvas id="readabilityChart" height="150" class="chart-container"></canvas>
-    </div>
-    
-    <div class="mt-5">
-        <h5 class="table-title pb-2">Top Keywords</h5>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-            {% for item in keyword_summary %}
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h6 class="card-title">
-                            <a href="#" class="text-decoration-none text-primary" data-keyword-index="{{ forloop.counter0 }}">
-                                {{ item.keyword }}
-                            </a>
-                        </h6>
-                        <p class="mb-2"><strong>Appeared in </strong> {{ item.count }} pages</p>
-                        <p class="mb-2"><strong>Google Trends score: </strong>{{ item.trend_score }}</p>
-                        <div id="trend-container-{{ forloop.counter }}" class="d-none">
-                            <canvas id="trendChart{{ forloop.counter }}" height="120"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="mt-5">
-        <h5 class="table-title">Average Page Load Metrics</h5>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">⏱️ Time to First Byte: <strong>{{ avg_ttfb }} ms</strong></li>
-          <li class="list-group-item">🌸 First Contentful Paint: <strong>{{ avg_fcp }} ms</strong></li>
-          <li class="list-group-item">🏔️ Largest Contentful Paint: <strong>{{ avg_lcp }} ms</strong></li>
-          <li class="list-group-item">✅ Fully Loaded: <strong>{{ avg_loaded }} ms</strong></li>
+    <div class="mb-2 bg-white p-2 shadow-sm rounded toc-container" style="z-index: 10;">
+        <h3>Jump to Section</h3>
+        <ul class="list-unstyled">
+            <li><a href="#technology-section" class="section-link">🔧 Technology</a></li>
+            <li><a href="#seo-section" class="section-link">📈 SEO analysis</a></li>
+            <li><a href="#page-stats-section" class="section-link">📊 Page Stats</a></li>
+            <li><a href="#usp-section" class="section-link">💡 Key Offerings / USP</a></li>
+            <li><a href="#social-media-section" class="section-link">🌐 Social Media & Contacts</a></li>
         </ul>
     </div>
-
-    <div class="mt-5 mb-4">
-        <h5 class="table-title">Page Load Speed per Page</h5>
-        <div class="d-flex gap-3 align-items-end flex-wrap mb-3">
-            <div>
-                <label for="metricTypeSelect" class="form-label">Metric</label>
-                <select id="metricTypeSelect" class="form-select">
-                    <option value="ttfb">Time To First Byte</option>
-                    <option value="fcp">First Contentful Paint</option>
-                    <option value="lcp">Largest Contentful Paint</option>
-                    <option value="loaded">Fully Loaded</option>
-                </select>
-            </div>
-            <div>
-                <label for="metricChartStyleSelect" class="form-label">Chart Type</label>
-                <select id="metricChartStyleSelect" class="form-select">
-                    <option value="line">Line</option>
-                    <option value="bar">Bar</option>
-                </select>
-            </div>
-            <button id="renderSpeedChartBtn" class="button-analyze">Generate</button>
+    <div class="text-center">
+        <h4 class="table-title mb-0 pt-5 pb-2">Metadata</h4>
+      </div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <p class="data"><strong>Title:</strong> {{ meta_title }}</p>
+          <p class="data"><strong>Description:</strong> {{ meta_description }}</p>
         </div>
-        <canvas id="loadingMetricChart" height="120" class="chart-container"></canvas>
+      </div>
+    <div class="mt-5" id="technology-section">
+        <div class="d-flex justify-content-between align-items-center mt-5 pb-5 pt-5" id="technology-section">
+            <div class="flex-grow-1 text-center">
+                <h4 class="table-title mb-0">🔧 Technology Portfolio</h4>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse"
+                    data-bs-target="#technologyContent" aria-expanded="true">Toggle</button>
+            </div>
+        </div>
+        <div id="technology-loading" class="text-center my-4">
+            <div class="spinner-border text-secondary" role="status"></div>
+            <p class="mt-2">Analyzing technology stack...</p>
+        </div>
+
+        <div id="technologyContent" class="collapse show mt-2">
+            <h5 class="table-title">Technologies company provides for clients</h5>
+            <ul id="technology-list" class="space-y-3 d-none"></ul>
+            <div class="p-3">
+                <h5 class="table-title">Technologies of the website</h5>
+                <ul id="backend-stack-list" class="space-y-3 d-none"></ul>
+            </div>
+        </div>
     </div>
 
-    <h5 class="table-title pb-2 pr-2 pt-5">Target audience of company</h5>
-    <div id="target-audience-loading" class="text-center my-4">
-        <div class="spinner-border text-secondary" role="status"></div>
-        <p class="mt-2">Detecting target audience...</p>
-    </div>
-
-    <ul id="target-audience-list" class="space-y-3 d-none"></ul>
-
-    <div class="d-flex justify-content-center">
-        <h4 class="table-title">Summary</h4>
-    </div>
-    <div id="executive-summary-loading" class="text-center my-5">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p class="mt-3">Generating executive summary...</p>
-    </div>
-
-    <div id="executive-summary" class="d-none bg-white shadow rounded p-4 prose">
-        <p id="executive-summary-text" style="white-space: pre-line;"></p>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-        window.loadLabels = {{ load_labels|safe }};
-        window.loadTTFB = {{ load_ttfb|safe }};
-        window.loadFCP = {{ load_fcp|safe }};
-        window.loadLCP = {{ load_lcp|safe }};
-        window.loadFullyLoaded = {{ load_loaded|safe }};
-        window.toneData = {{ tone_data | safe }};
-        window.tpyeLabels = {{ tone_labels | safe }};
-        window.typeData = {{ tone_data | safe }};
-
-        window.speedMetrics = [
-            { key: "ttfb", values: {{ load_ttfb|safe }} },
-            { key: "fcp", values: {{ load_fcp|safe }} },
-            { key: "lcp", values: {{ load_lcp|safe }} },
-            { key: "loaded", values: {{ load_loaded|safe }} }
-        ];
-        window.pageUrls = {{ load_labels|safe }};
-
-        window.toneLabels = {{ reading_labels | safe }};
-        const perPageTones = {{ per_page_tones | safe }};
-
-        window.toneMetrics = ["technical", "emotional", "neutral"].map(type => ({
-            key: type,
-            values: perPageTones.map(p => p[type] ?? 0)
-        }));
-
-        window.readingLabels = {{ reading_labels | safe }};
-        window.perPageTones = {{ per_page_tones | safe }};
-        window.readingValues = {{ reading_values | safe }};
-        window.readabilityValues = {{ readability_values | safe }};
-
-        window.keywordData = {{ keyword_summary|safe }};
-
-        const checkInsightReady = () => {
-            fetch("{% url 'modules.analysis:website-insight-status' website.id %}")
-                .then(res => res.json())
-                .then(data => {
-                    if (data.ready) {
-                        document.getElementById("executive-summary-loading").classList.add("d-none");
-                        document.getElementById("executive-summary").classList.remove("d-none");
-
-                        const html = marked.parse(data.insight);
-                        document.getElementById("executive-summary-text").innerHTML = html;
-                    } else {
-                        setTimeout(checkInsightReady, 3000);
-                    }
-                });
-        };
-
-        checkInsightReady();
-
-
-        const checkAudienceReady = () => {
-            fetch("{% url 'modules.analysis:target_audience_status' website.id %}")
-                .then(res => res.json())
-                .then(data => {
-                    if (data.ready) {
-                        const listEl = document.getElementById("target-audience-list");
-                        const loadingEl = document.getElementById("target-audience-loading");
-                        loadingEl.classList.add("d-none");
-                        listEl.classList.remove("d-none");
-
-                        const audience = data.audience;
-                        listEl.innerHTML = "";
-
-                        for (const [segment, explanation] of Object.entries(audience)) {
-                            const li = document.createElement("li");
-                            li.className = "bg-white shadow rounded p-3 m-2";
-                            li.innerHTML = `<strong>${segment}:</strong> <span class="text-muted">${explanation}</span>`;
-                            listEl.appendChild(li);
-                        }
-                    } else {
-                        setTimeout(checkAudienceReady, 3000);
-                    }
-                });
-        };
-
-        checkAudienceReady();
-
+    <div class="mt-5" id="seo-section">
+        <div class="d-flex justify-content-between align-items-center mt-5 pb-5 pt-5" id="seo-section">
+            <div class="flex-grow-1 text-center">
+                <h4 class="table-title mb-0">📈 SEO Analysis</h4>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#seoContent"
+                    aria-expanded="true">Toggle</button>
+            </div>
+        </div>
         
-    </script>
+        <div id="seoContent" class="collapse show mt-3">
+            <div class="mb-4">
+                <h5 class="table-title">SEO Score</h5>
+                <div class="progress">
+                    <div id="seoScoreOverviewBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+                </div>
+            </div>
+            <h5 class="table-title pb-2">Seo details</h5>
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <p class="data">{{ seo_details }}</p>
+                    </div>
+                </div>
+            <div class="mt-5">
+                <h5 class="table-title pb-2">Top Keywords</h5>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+                    {% for item in keyword_summary %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <a href="#" class="text-decoration-none text-primary"
+                                        data-keyword-index="{{ forloop.counter0 }}">
+                                        {{ item.keyword }}
+                                    </a>
+                                </h6>
+                                <p class="mb-2"><strong>Appeared in </strong> {{ item.count }} pages</p>
+                                <p class="mb-2"><strong>Google Trends score: </strong>{{ item.trend_score }}</p>
+                                <div id="trend-container-{{ forloop.counter }}" class="d-none">
+                                    <canvas id="trendChart{{ forloop.counter }}" height="120"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mt-5">
+                <h5 class="table-title">Average Page Load Metrics</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">⏱️ Time to First Byte: <strong>{{ avg_ttfb }} ms</strong></li>
+                    <li class="list-group-item">🌸 First Contentful Paint: <strong>{{ avg_fcp }} ms</strong></li>
+                    <li class="list-group-item">🏔️ Largest Contentful Paint: <strong>{{ avg_lcp }} ms</strong></li>
+                    <li class="list-group-item">✅ Fully Loaded: <strong>{{ avg_loaded }} ms</strong></li>
+                </ul>
+            </div>
+            <h5 class="table-title pt-4 pb-0">Seo Recommendations</h5>
+            <p>Useful for upgrading your own site</p>
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <p class="data">{{ recommendations }}</p>
+                    </div>
+                </div>
+        </div>
+
+    </div>
+
+    <div class="mt-5" id="page-stats-section">
+        <div class="d-flex justify-content-between align-items-center pb-4 pt-4">
+            <div class="flex-grow-1 text-center">
+                <h4 class="table-title mb-0">📊 Page Stats</h4>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#pageStatsContent" aria-expanded="true">Toggle</button>
+            </div>
+        </div>
+        <div id="pageStatsContent" style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
+            <div id="pageStatsContent" style="flex: 1; min-width: 300px;">
+                <h5 class="table-title">Median Text Type Scores</h5>
+                <div style="width: 100%; max-width: 500px;" class="chart-container">
+                    <canvas id="toneChart"></canvas>
+                </div>
+            </div>
     
+            <div id="pageStatsContent" class="stats-container">
+                <div class="stat-circle readability">
+                    <strong>{{ avg_readability }}</strong>
+                    <span>Avg. Readability</span>
+                    <div class="tooltip-box">
+                        <table>
+                            <tr>
+                                <td>90–100</td>
+                                <td>Very Easy</td>
+                            </tr>
+                            <tr>
+                                <td>80–89</td>
+                                <td>Easy</td>
+                            </tr>
+                            <tr>
+                                <td>70–79</td>
+                                <td>Fairly Easy</td>
+                            </tr>
+                            <tr>
+                                <td>60–69</td>
+                                <td>Standard</td>
+                            </tr>
+                            <tr>
+                                <td>50–59</td>
+                                <td>Fairly Difficult</td>
+                            </tr>
+                            <tr>
+                                <td>30–49</td>
+                                <td>Difficult</td>
+                            </tr>
+                            <tr>
+                                <td>0–29</td>
+                                <td>Very Confusing</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+    
+                <div class="stat-circle reading-time">
+                    <strong>{{ avg_reading_time }}</strong>
+                    <span>Avg. Reading Time</span>
+                </div>
+            </div>
+    
+        </div>
+        <div id="pageStatsContent" class="mt-10 mb-4">
+            <h5 class="table-title pt-5 pb-3">Text Type Score Per Page</h5>
+    
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: end;" class="mb-4">
+                <div>
+                    <label for="tonePageType" class="block mb-1 font-semibold">Text Type</label>
+                    <select id="tonePageType" class="form-select">
+                        <option value="technical">Technical</option>
+                        <option value="emotional">Emotional</option>
+                        <option value="neutral">Neutral</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="tonePageChartType" class="block mb-1 font-semibold">Chart Style</label>
+                    <select id="tonePageChartType" class="form-select">
+                        <option value="line">Line</option>
+                        <option value="bar">Bar</option>
+                    </select>
+                </div>
+                <button id="renderTonePageChart" class="button-analyze">Generate</button>
+            </div>
+    
+            <canvas id="tonePageChart" height="120" class="chart-container"></canvas>
+        </div>
+    
+        <div id="pageStatsContent" class="mt-10 p-3">
+            <h5 class="table-title">Reading Time per Page</h5>
+            <canvas id="readingTimeChart" height="150" class="chart-container"></canvas>
+        </div>
+    
+        <div id="pageStatsContent" class="mt-10 p-3">
+            <h5 class="table-title">Readability Score per Page</h5>
+            <canvas id="readabilityChart" height="150" class="chart-container"></canvas>
+        </div>
+    
+        <div id="pageStatsContent" class="mt-5 mb-4">
+            <h5 class="table-title">Page Load Speed per Page</h5>
+            <div class="d-flex gap-3 align-items-end flex-wrap mb-3">
+                <div>
+                    <label for="metricTypeSelect" class="form-label">Metric</label>
+                    <select id="metricTypeSelect" class="form-select">
+                        <option value="ttfb">Time To First Byte</option>
+                        <option value="fcp">First Contentful Paint</option>
+                        <option value="lcp">Largest Contentful Paint</option>
+                        <option value="loaded">Fully Loaded</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="metricChartStyleSelect" class="form-label">Chart Type</label>
+                    <select id="metricChartStyleSelect" class="form-select">
+                        <option value="line">Line</option>
+                        <option value="bar">Bar</option>
+                    </select>
+                </div>
+                <button id="renderSpeedChartBtn" class="button-analyze">Generate</button>
+            </div>
+            <canvas id="loadingMetricChart" height="120" class="chart-container"></canvas>
+        </div>
+    
+    </div>
+
+    <div class="mt-5" id="usp-section">
+        <div class="d-flex justify-content-between align-items-center pb-4 pt-4">
+            <div class="flex-grow-1 text-center">
+                <h4 class="table-title mb-0">💡 Key Offerings / USP</h4>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#uspContent" aria-expanded="true">Toggle</button>
+            </div>
+        </div>
+    
+        <div id="uspContent" class="collapse show">
+            <h5 class="table-title pt-5 pb-2">Unique Selling Proposition</h5>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <p class="data">{{ usp }}</p>
+                </div>
+            </div>
+            <h5 class="table-title pb-2 pr-2 pt-5">Target audience of company</h5>
+            <div id="target-audience-loading" class="text-center my-4">
+                <div class="spinner-border text-secondary" role="status"></div>
+                <p class="mt-2">Detecting target audience...</p>
+            </div>
+            <ul id="target-audience-list" class="space-y-3 d-none"></ul>
+            
+            <h5 class="table-title pt-5 pb-2">Positioning insights</h5>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <p class="data">{{ positioning_insights }}</p>
+                </div>
+            </div>
+            <h5 class="table-title pt-5 pb-2">Positioning weaknesses</h5>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <p class="data">{{ positioning_weaknesses }}</p>
+                </div>
+            </div>
+            <h5 class="table-title pt-5 pb-2">Partners & Collaborators</h5>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                    {% for partner in partners %}
+                    <li class="list-group-item">{{ partner }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="mt-5" id="social-media-section">
+        <div class="d-flex justify-content-between align-items-center pb-4 pt-4">
+            <div class="flex-grow-1 text-center">
+                <h4 class="table-title mb-0">🌐 Social Media & Contacts</h4>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#socialContent" aria-expanded="true">Toggle</button>
+            </div>
+        </div>
+        <div id="socialContent" class="collapse show">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+              {% for link in social_links %}
+              <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                  <div class="card-body d-flex align-items-center gap-3">
+                    {% if "linkedin.com" in link %}
+                      <i class="bi bi-linkedin fs-3 text-primary"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">LinkedIn</a>
+                    {% elif "facebook.com" in link %}
+                      <i class="bi bi-facebook fs-3 text-primary"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">Facebook</a>
+                    {% elif "twitter.com" in link %}
+                      <i class="bi bi-twitter-x fs-3 text-primary"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">X (Twitter)</a>
+                    {% elif "instagram.com" in link %}
+                      <i class="bi bi-instagram fs-3 text-primary"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">Instagram</a>
+                    {% elif "youtube.com" in link %}        
+                      <i class="bi bi-youtube fs-3 text-danger"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">YouTube</a>
+                    {% elif "github.com" in link %}
+                      <i class="bi bi-github fs-3 text-secondary"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">GitHub</a>
+                    {% elif "pinterest.com" in link %}
+                      <i class="bi bi-pinterest fs-3 text-danger"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">Pinterest</a>
+                    {% elif "tiktok.com" in link %}
+                      <i class="bi bi-tiktok fs-3 text-primary"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">TikTok</a>
+                    {% elif "x.com" in link %}
+                        <i class="bi bi-x fs-3 text-primary"></i>
+                        <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">X</a>
+                    {% elif "whatsapp.com" in link %}
+                      <i class="bi bi-whatsapp fs-3 text-success"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">WhatsApp</a>
+                    {% elif "telegram.org" in link %}
+                      <i class="bi bi-telegram fs-3 text-info"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">Telegram</a>
+                    {% elif "mailto:" in link %}
+                      <i class="bi bi-envelope-fill fs-4 text-secondary"></i>
+                      <a href="{{ link }}" class="text-decoration-none fw-semibold">Email</a>
+                    {% else %}
+                      <i class="bi bi-globe fs-4 text-muted"></i>
+                      <a href="{{ link }}" target="_blank" class="text-decoration-none fw-semibold">{{ link }}</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% empty %}
+              <p class="text-muted">No social links available.</p>
+              {% endfor %}
+            </div>
+          </div>
+          
+    </div>
+
+
     <div class="modal fade" id="keywordTrendModal" tabindex="-1" aria-labelledby="keywordTrendModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered limited-width">
@@ -279,4 +379,179 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+        const configureMinimalXAxis = (chartId) => {
+            const canvas = document.getElementById(chartId);
+            if (!canvas) return;
+            const chartInstance = Chart.getChart(canvas);
+            if (!chartInstance) return;
+
+            chartInstance.options.scales.x = {
+                ticks: {
+                    display: false
+                },
+                grid: {
+                    display: false
+                }
+            };
+
+            chartInstance.update();
+        };
+
+        ["tonePageChart", "readingTimeChart", "readabilityChart", "loadingMetricChart"].forEach(configureMinimalXAxis);
+    });
+</script>
+<script>
+    window.loadLabels = {{ load_labels | safe }};
+    window.loadTTFB = {{ load_ttfb | safe }};
+    window.loadFCP = {{ load_fcp | safe }};
+    window.loadLCP = {{ load_lcp | safe }};
+    window.loadFullyLoaded = {{ load_loaded | safe }};
+    window.toneData = {{ tone_data | safe }};
+    window.tpyeLabels = {{ tone_labels | safe }};
+    window.typeData = {{ tone_data | safe }};
+
+    window.speedMetrics = [
+        { key: "ttfb", values: {{ load_ttfb| safe }} },
+        { key: "fcp", values: {{ load_fcp| safe }} },
+        { key: "lcp", values: {{ load_lcp| safe }} },
+        { key: "loaded", values: {{ load_loaded| safe }} }
+    ];
+    window.pageUrls = {{ load_labels | safe }};
+
+    window.toneLabels = {{ reading_labels | safe }};
+    const perPageTones = {{ per_page_tones | safe }};
+
+    window.toneMetrics = ["technical", "emotional", "neutral"].map(type => ({
+        key: type,
+        values: perPageTones.map(p => p[type] ?? 0)
+    }));
+
+    window.readingLabels = {{ reading_labels | safe }};
+    window.perPageTones = {{ per_page_tones | safe }};
+    window.readingValues = {{ reading_values | safe }};
+    window.readabilityValues = {{ readability_values | safe }};
+
+    window.keywordData = {{ keyword_summary | safe }};
+
+    const checkAudienceReady = () => {
+        fetch("{% url 'modules.analysis:target_audience_status' website.id %}")
+            .then(res => res.json())
+            .then(data => {
+                if (data.ready) {
+                    const listEl = document.getElementById("target-audience-list");
+                    const loadingEl = document.getElementById("target-audience-loading");
+                    loadingEl.classList.add("d-none");
+                    listEl.classList.remove("d-none");
+
+                    const audience = data.audience;
+                    listEl.innerHTML = "";
+
+                    for (const [segment, explanation] of Object.entries(audience)) {
+                        const li = document.createElement("li");
+                        li.className = "bg-white shadow rounded p-3 m-2";
+                        li.innerHTML = `<strong>${segment}:</strong> <span class="text-muted">${explanation}</span>`;
+                        listEl.appendChild(li);
+                    }
+                } else {
+                    setTimeout(checkAudienceReady, 3000);
+                }
+            });
+    };
+
+    checkAudienceReady();
+</script>
+<script>
+    const checkTechnologyReady = () => {
+        fetch("{% url 'modules.analysis:website-insight-status' website.id %}")
+            .then(res => res.json())
+            .then(data => {
+                if (data.ready && data.technology) {
+                    const loadingEl = document.getElementById("technology-loading");
+                    const listEl = document.getElementById("technology-list");
+                    const backendEl = document.getElementById("backend-stack-list");
+
+                    loadingEl.classList.add("d-none");
+                    listEl.classList.remove("d-none");
+                    backendEl.classList.remove("d-none");
+
+                    listEl.innerHTML = "";
+                    backendEl.innerHTML = "";
+
+                    const tech = data.technology;
+                    const backend = data.backend_stack || {};
+
+                    for (const [techName, description] of Object.entries(tech)) {
+                        const li = document.createElement("li");
+                        li.className = "bg-white shadow rounded p-3 m-2";
+                        li.innerHTML = `<strong>${techName}:</strong> <span class="text-muted">${description}</span>`;
+                        listEl.appendChild(li);
+                    }
+
+                    if (data.technology_summary) {
+                        const summary = document.createElement("p");
+                        summary.className = "mt-3 summary";
+                        summary.innerText = data.technology_summary;
+                        listEl.appendChild(summary);
+                    }
+                    else {
+                        const summary = document.createElement("p");
+                        summary.className = "mt-3 summary";
+                        summary.innerText = "No technology stack detected.";
+                        listEl.appendChild(summary);
+                    }
+
+                    for (const [backendTech, desc] of Object.entries(backend)) {
+                        const li = document.createElement("li");
+                        li.className = "bg-white shadow rounded p-3 m-2";
+                        li.innerHTML = `<strong>${backendTech}:</strong> <span class="text-muted">${desc}</span>`;
+                        backendEl.appendChild(li);
+                    }
+
+                } else {
+                    setTimeout(checkTechnologyReady, 3000);
+                }
+            })
+            .catch(err => {
+                console.error("Error loading technology data:", err);
+            });
+    };
+
+    checkTechnologyReady();
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const score = {{ seo_score }};
+    const bar = document.getElementById("seoScoreOverviewBar");
+
+    if (bar) {
+        bar.style.width = score + "%";
+        bar.textContent = score + "%";
+
+        bar.classList.remove("bg-success", "bg-warning", "bg-danger");
+        bar.classList.add(
+            score >= 70 ? "bg-success" :
+                score >= 40 ? "bg-warning" :
+                    "bg-danger"
+        );
+    }
+        });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const keywordModal = document.getElementById('keywordTrendModal');
+        keywordModal.addEventListener('hidden.bs.modal', function () {
+            document.body.classList.remove('modal-open');
+            document.body.style = ''; // reset any overflow
+            const modalBackdrop = document.querySelector('.modal-backdrop');
+            if (modalBackdrop) modalBackdrop.remove();
+        });
+    });
+</script>
+
+
+
 {% endblock %}
