@@ -149,3 +149,11 @@ LOGGING = {
 SCRAPY_PROJECT_PATH = os.path.join(BASE_DIR, 'modules', 'competitors_scraper')
 sys.path.append(SCRAPY_PROJECT_PATH)
 os.environ.setdefault('SCRAPY_SETTINGS_MODULE', 'competitors_scraper.settings')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "competitorsanalysisbak@gmail.com"
+EMAIL_HOST_PASSWORD = "xyyk eqor tbqq qwtl"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "Competitors analysis <competitorsanalysisbak@gmail.com>"

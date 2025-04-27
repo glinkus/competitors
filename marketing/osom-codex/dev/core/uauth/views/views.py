@@ -1,74 +1,36 @@
-# Import necessary modules and models
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from core.uauth.models import *
+from core.uauth.views.login_view import LoginView
+from core.uauth.views.register_view import RegisterView
+from core.uauth.views.email_verification_view import EmailVerificationView, VerificationSentView
+from core.uauth.views.logout_view import LogoutView
 
-# Define a view function for the home page
+login_view_instance = LoginView()
+register_view_instance = RegisterView()
+email_verification_instance = EmailVerificationView()
+verification_sent_instance = VerificationSentView()
 
+def logout_view(request):
+    return LogoutView.as_view()(request)
 
-# Define a view function for the login page
 def login_page(request):
-    # Check if the HTTP request method is POST (form submission)
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        # Check if a user with the provided username exists
-        if not User.objects.filter(username=username).exists():
-            # Display an error message if the username does not exist
-            messages.error(request, 'Invalid Username')
-            return redirect('/login/')
-        
-        # Authenticate the user with the provided username and password
-        user = authenticate(username=username, password=password)
-        
-        if user is None:
-            # Display an error message if authentication fails (invalid password)
-            messages.error(request, "Invalid Password")
-            return redirect('/login/')
-        else:
-            # Log in the user and redirect to the analysis page upon successful login
-            login(request, user)
-            # Redirect to the analysis page
-            return redirect('/analysis/')
-    
-    # Render the login page template (GET request)
-    return render(request, 'core/uauth/login.html')
+        return login_view_instance.post(request)
+    return login_view_instance.get(request)
 
-# Define a view function for the registration page
 def register_page(request):
-    # Check if the HTTP request method is POST (form submission)
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        # Check if a user with the provided username already exists
-        user = User.objects.filter(username=username)
-        
-        if user.exists():
-            # Display an information message if the username is taken
-            messages.info(request, "Username already taken!")
-            return redirect('/register/')
-        
-        # Create a new User object with the provided information
-        user = User.objects.create_user(
-            first_name=first_name,
-            last_name=last_name,
-            username=username
-        )
-        
-        # Set the user's password and save the user object
-        user.set_password(password)
-        user.save()
-        
-        # Display an information message indicating successful account creation
-        messages.info(request, "Account created Successfully!")
-        return redirect('/register/')
-    
-    # Render the registration page template (GET request)
-    return render(request, 'core/uauth/register.html')
+        return register_view_instance.post(request)
+    return register_view_instance.get(request)
+
+def send_verification_email(request, user, profile):
+    return email_verification_instance.send_verification_email(request, user, profile)
+
+def verification_sent(request, token):
+    return verification_sent_instance.get(request, token)
+
+def verify_email(request, token):
+    return email_verification_instance.get(request, token)

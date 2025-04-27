@@ -17,6 +17,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 import google.generativeai as genai
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 genai.configure(api_key="AIzaSyCzvpa1Lb9dzp7-13T3C2HpDG9V7MVVsZM")
 
@@ -41,7 +42,7 @@ def continue_scraping(request, website_id):
         return JsonResponse({'continued': True})
     return JsonResponse({'error': 'Unable to continue'}, status=400)
 
-class AnalyseView(TemplateView):
+class AnalyseView(LoginRequiredMixin, TemplateView):
     template_name = "modules/analysis/analyse.html"
 
     @method_decorator(csrf_exempt)
@@ -49,6 +50,15 @@ class AnalyseView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        if request.POST.get("delete_website_id"):
+            website_id = request.POST.get("delete_website_id")
+            try:
+                website = Website.objects.get(id=website_id)
+                website.delete()
+                return JsonResponse({'deleted': True})
+            except Website.DoesNotExist:
+                return JsonResponse({'error': 'Website not found'}, status=404)
+
         u = request.POST.get("url")
         url = self.normalize_url(u)
         print("Entered URL: ", url)

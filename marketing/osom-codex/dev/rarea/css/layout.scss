@@ -82,7 +82,7 @@ ul.nav {
     overflow-x: auto;
 
     box-sizing: border-box;
-    padding: 40px 45px 40px 45px;
+    padding: 30px 45px 10px 45px;
     color: var(--c-on-secondary);
     background-color: var(--c-secondary);
     background: transparent url(img/desktop-5.svg) center center no-repeat;
@@ -100,6 +100,12 @@ ul.nav {
 
     h2 {
         font-size: 1.05rem;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    h2.landing {
+        font-size: 1.2rem;
         font-weight: bold;
         margin-top: 20px;
         margin-bottom: 10px;

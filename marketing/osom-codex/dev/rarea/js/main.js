@@ -8,7 +8,6 @@
 import Analysis from '../../modules/analysis/js/main';
 import Chart from '../../modules/analysis/js/tone_chart';
 import Demo from '../../modules/demo/js/main';
-import DemoCad from './cad';
 import UniversalMetricChart from '../../modules/analysis/js/universal_chart';
 import ReadingCharts from '../../modules/analysis/js/reading_charts';
 import KeywordAnalysis from '../../modules/analysis/js/keyword_analysis';
@@ -19,7 +18,6 @@ export default class RAreaMain {
     constructor() {
         new Demo();
         new Analysis();
-        new DemoCad();
         new Chart('toneChart').init();
 
         if (document.getElementById('tonePageChart')) {

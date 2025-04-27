@@ -50,3 +50,54 @@
 .gap {
     gap: 20px;
 }
+
+.button_login {
+    border:none;
+    background-color:#c6e9af;
+    color:#282828;
+    font-size: 1rem; 
+    font-weight:bold;
+    text-decoration:none;
+    border-radius:15px;
+    padding:10px 40px 10px 40px;
+}
+.button_login:active {
+    border:none;
+    background-color:#383e35;
+    color:#282828;
+    font-size: 1rem; 
+    font-weight:bold;
+    text-decoration:none;
+    border-radius:15px;
+    padding:10px 40px 10px 40px;
+    transition: all 0.1s ease-in-out;
+    transform: scale(1.05);
+}
+.button_login:hover {
+    border:none;
+    background-color:#779662;
+    color:#282828;
+    font-size: 1rem; 
+    font-weight:bold;
+    text-decoration:none;
+    border-radius:15px;
+    padding:10px 40px 10px 40px;
+    transition: all 0.1s ease-in-out;
+    transform: scale(1.05);
+}
+h1.analyze-heading {
+    font-family: Figtree, "Figtree Fallback";
+    font-size: 60px !important;
+    font-weight: 650 !important;
+    width: 100%;
+    text-align: center;
+}
+
+h2.analyze-heading {
+    font-family: Moderat, "Moderat Fallback";
+    font-size: 1.5rem !important;
+    font-weight: 400 !important;
+    width: 60%;
+    text-align: center;
+    color: #726F6C;
+}

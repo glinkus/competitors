@@ -12,6 +12,7 @@ from modules.analysis.tasks import generate_website_insight
 from django.http import JsonResponse
 from modules.analysis.tasks import generate_target_audience, positioning_insights, analyze_top_keywords_trends
 import ast
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def website_insight_status(request, website_id):
@@ -49,7 +50,7 @@ def technology_status(request, website_id):
             return JsonResponse({"ready": False})
     return JsonResponse({"ready": False})
 
-class OverviewView(TemplateView):
+class OverviewView(LoginRequiredMixin, TemplateView):
     template_name = "modules/analysis/overview.html"
 
     def get_context_data(self, **kwargs):
@@ -207,7 +208,7 @@ class OverviewView(TemplateView):
         for page in pages:
             if page.seo_score is not None:
                 total_score += page.seo_score
-        return round(total_score / len(pages), 0) if pages else 0
+        return int(total_score / len(pages)) if pages else 0
 
     def format_time(self, mins):
         total_seconds = int(round(mins * 60))
@@ -296,6 +297,6 @@ class OverviewView(TemplateView):
         }
 
         return median_tones
-    
+
 
 

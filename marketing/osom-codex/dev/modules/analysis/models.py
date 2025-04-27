@@ -87,6 +87,8 @@ class SEORecommendation(models.Model):
 
 
 class ExtractedKeyword(models.Model):
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='extracted_keywords')
+    
     keyword = models.CharField(max_length=100)
     score = models.FloatField()
     trend_score = models.IntegerField(null=True, blank=True)
@@ -94,7 +96,6 @@ class ExtractedKeyword(models.Model):
     interest_by_region = JSONField(null=True, blank=True)
     related_terms = JSONField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='extracted_keywords')
     trends_analyzed = models.BooleanField(default=False)
 
     def __str__(self):

@@ -7,7 +7,7 @@ form {
     padding:25px;
     background-color: transparent;
     border-radius:10px;
-    font-size:0.8rem;
+    font-size:1rem;
 
     h2 { 
         font-size:1.05rem;
@@ -40,7 +40,7 @@ form {
 
         span.error { 
             display:block;
-            font-size:0.7rem;
+            font-size:1rem;
             color:#ff0000;
             margin-top:3px;
         }
@@ -50,11 +50,35 @@ form {
             border:none;
             background-color:#c6e9af;
             color:#282828;
-            font-size: 15px; 
+            font-size: 1rem; 
             font-weight:bold;
             text-decoration:none;
             border-radius:15px;
             padding:10px 40px 10px 40px;
+        }
+        input[type=submit]:hover {
+            border:none;
+            background-color:#779662;
+            color:#282828;
+            font-size: 1rem; 
+            font-weight:bold;
+            text-decoration:none;
+            border-radius:15px;
+            padding:10px 40px 10px 40px;
+            transition: all 0.1s ease-in-out;
+            transform: scale(1.05);
+        }
+        input[type=submit]:active {
+            border:none;
+            background-color:#383e35;
+            color:#282828;
+            font-size: 1rem; 
+            font-weight:bold;
+            text-decoration:none;
+            border-radius:15px;
+            padding:10px 40px 10px 40px;
+            transition: all 0.1s ease-in-out;
+            transform: scale(1.05);
         }
     }
 }

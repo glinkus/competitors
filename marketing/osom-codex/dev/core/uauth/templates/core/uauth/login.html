@@ -1,61 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <title>Login Form</title>
-</head>
-<body>
-    <div class="container mt-5">
-        <form class="col-6 mx-auto card p-3 shadow-lg" method="post" name="login_form">
-            {% csrf_token %}
-            <h3 class="text-center">Login</h3>
-            <hr>
+{% extends 'parea/layout.html' %}
 
-            {% if messages %}
-            <div class="alert alert-primary" role="alert">
-                {% for message in messages %}
-                  {{ message }}
-                {% endfor %}
-            </div>
-            {% endif %}
+{% block content %}
+<div class="analyze-heading d-flex justify-content-center pt-4">
+  <h1 class="analyze-heading">Analyze your competitors</h1>
+</div>
+<div class="analyze-heading d-flex justify-content-center">
+  <h2 class="analyze-heading">Please, login or register...</h2>
+</div>
+<div class="container mt-5">
+  <form class="col-6 mx-auto card p-3 shadow-lg" method="post" name="login_form">
+    {% csrf_token %}
+    <h3 class="text-center">Login</h3>
+    <hr>
 
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input
-                  type="text"
-                  name="username"
-                  id="username"
-                  class="form-control"
-                  placeholder="Enter username"
-                  required
-                />
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  class="form-control"
-                  placeholder="Enter password"
-                  required
-                />
-            </div>
-
-            <p>
-              <input type="submit" class="btn btn-primary" name="login" value="Login"/>
-            </p>
-            <p>
-              Don't have an account?
-              <a href="{% url 'core.uauth:register' %}">Register</a>
-            </p>
-        </form>
+    {% if messages %}
+    <div class="alert alert-primary" role="alert">
+      {% for message in messages %}
+      {{ message }}
+      {% endfor %}
     </div>
-</body>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="username">Username or Email:</label>
+      <input type="text" name="username" id="username" class="form-control" placeholder="Enter username or email"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required />
+    </div>
+
+    <p>
+      <input type="submit" class="button_login" name="login" value="Login" />
+    </p>
+    <p>
+      Don't have an account?
+      <a href="{% url 'core.uauth:register' %}">Register</a>
+    </p>
+  </form>
+</div>
+
 </html>
+{% endblock %}

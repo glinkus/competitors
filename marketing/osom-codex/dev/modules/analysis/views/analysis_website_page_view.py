@@ -3,8 +3,9 @@ from django.shortcuts import get_object_or_404
 from modules.analysis.models import Website, Page, ExtractedKeyword, SEORecommendation, PageAnalysis
 from collections import defaultdict
 import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class URLView(TemplateView):
+class URLView(LoginRequiredMixin, TemplateView):
     template_name = "modules/analysis/website_page.html"
 
     def get_context_data(self, **kwargs):

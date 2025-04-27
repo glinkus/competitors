@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Email Verification</h3>
+                </div>
+                <div class="card-body">
+                    <h4>Hello {{ user.first_name }},</h4>
+                    <p class="lead">
+                        We couldn't send you a verification email automatically. 
+                        Please click the link below to verify your email address:
+                    </p>
+                    
+                    <div class="text-center my-4">
+                        <a href="{{ verification_link }}" class="btn btn-primary btn-lg">Verify Email Address</a>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <p>Or copy and paste this URL into your browser:</p>
+                        <p class="text-break"><small>{{ verification_link }}</small></p>
+                    </div>
+                    
+                    <p>This link will expire in 24 hours.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

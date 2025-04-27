@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>Pages Crawled</td>{% for row in comparison %}<td>{{ row.pages_crawled }}</td>{% endfor %}</tr>
+      <tr><td>Pages</td>{% for row in comparison %}<td>{{ row.pages_crawled }}</td>{% endfor %}</tr>
       <tr><td>Avg. TTFB (ms)</td>{% for row in comparison %}<td>{{ row.avg_ttfb|floatformat:0 }}</td>{% endfor %}</tr>
       <tr><td>Avg. FCP (ms)</td>{% for row in comparison %}<td>{{ row.avg_fcp|floatformat:0 }}</td>{% endfor %}</tr>
       <tr><td>Avg. Fully Loaded (ms)</td>{% for row in comparison %}<td>{{ row.avg_loaded|floatformat:0 }}</td>{% endfor %}</tr>

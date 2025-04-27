@@ -1,0 +1,140 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Website Overview - {{ website_url }}</title>
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1, h2, h3, h4, h5 {
+      page-break-after: avoid;
+      page-break-before: auto;
+    }
+    ul, ol, p {
+      page-break-inside: avoid;
+    }
+    .section {
+      margin-top: 40px;
+    }
+    .section-break {
+      page-break-before: always;
+      margin-top: 40px;
+    }
+    h3, h4 {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5 overview-container">
+    <h1>Website Overview</h1>
+    <h2>{{ website_url }}</h2>
+
+    <div class="section">
+      <h3>Metadata</h3>
+      <p><strong>Title:</strong> {{ meta_title }}</p>
+      <p><strong>Description:</strong> {{ meta_description }}</p>
+    </div>
+
+    <div class="section">
+      <h3>SEO Score</h3>
+      <p><strong>{{ seo_score }}%</strong></p>
+    </div>
+
+    <div class="section">
+      <h3>Top 10 Keywords</h3>
+      <ul>
+        {% for item in keyword_summary|slice:":10" %}
+          <li>{{ item.keyword }}</li>
+        {% empty %}
+          <li>No keywords available.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="section-break">
+      <h3>Target Audience</h3>
+      {% if target_audience %}
+        <ul>
+          {% for segment, description in target_audience.items %}
+            <li><strong>{{ segment }}:</strong> {{ description }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No target audience detected yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="section">
+      <h3>Speed Metrics</h3>
+      <ul>
+        <li>Avg TTFB: <strong>{{ avg_ttfb }} ms</strong></li>
+        <li>Avg FCP: <strong>{{ avg_fcp }} ms</strong></li>
+        <li>Avg LCP: <strong>{{ avg_lcp }} ms</strong></li>
+        <li>Avg Fully Loaded: <strong>{{ avg_loaded }} ms</strong></li>
+      </ul>
+    </div>
+
+    <div class="section-break">
+      <h3>Positioning Insights</h3>
+      <p>{{ positioning_insights }}</p>
+    </div>
+
+    <div class="section">
+      <h3>Partners</h3>
+      {% if partners %}
+        <ul>
+          {% for partner in partners %}
+            <li>{{ partner }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No partners detected.</p>
+      {% endif %}
+    </div>
+
+    <div class="section">
+      <h3>Unique Selling Proposition (USP)</h3>
+      <p>{{ usp }}</p>
+    </div>
+
+    <div class="section">
+      <h3>SEO Details</h3>
+      <p>{{ seo_details }}</p>
+    </div>
+
+    <div class="section">
+      <h3>Positioning Weaknesses</h3>
+      <p>{{ positioning_weaknesses }}</p>
+    </div>
+
+    <div class="section">
+      <h3>Social Media & Contacts</h3>
+      {% if social_links %}
+        <ul>
+          {% for link in social_links %}
+            <li>{{ link }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No social links available.</p>
+      {% endif %}
+    </div>
+
+    <div class="section">
+      <h3>Recommendations</h3>
+      <p>{{ recommendations }}</p>
+    </div>
+
+    <div class="text-end small text-muted mt-5">
+      <p>Generated on: {{ now|date:"F j, Y, g:i a" }}</p>
+    </div>
+  </div>
+</body>
+</html>

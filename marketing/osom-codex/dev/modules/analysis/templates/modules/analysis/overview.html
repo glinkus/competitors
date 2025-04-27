@@ -18,6 +18,7 @@
             <li><a href="#page-stats-section" class="section-link">📊 Page Stats</a></li>
             <li><a href="#usp-section" class="section-link">💡 Key Offerings / USP</a></li>
             <li><a href="#social-media-section" class="section-link">🌐 Social Media & Contacts</a></li>
+            <li><a href="#report_section" class="section-link">📄 Generate PDF Report</a></li>
         </ul>
     </div>
     <div class="text-center">
@@ -358,9 +359,14 @@
               {% endfor %}
             </div>
           </div>
-          
     </div>
-
+    <div class="mt-5 d-flex justify-content-center" id="report_section">
+        <a href="{% url 'modules.analysis:generate_pdf' website.id %}" 
+            style="width: 50%; text-decoration: none;" 
+            class="button-analyze d-flex justify-content-center">
+            📄 Download PDF Report
+        </a>
+    </div>
 
     <div class="modal fade" id="keywordTrendModal" tabindex="-1" aria-labelledby="keywordTrendModalLabel"
         aria-hidden="true">

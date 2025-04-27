@@ -6,6 +6,7 @@ from .views.analysis_page_keywords_view import PageKeywordsView
 from .views.analysis_overview_view import OverviewView, website_insight_status, target_audience_status, technology_status
 from .views.analysis_landing_view import LandingView
 from .views.analysis_compare_view import CompareView
+from .views.analysis_generate_pdf_view import GeneratePDFView
 
 app_name = "modules.analysis" 
 
@@ -20,6 +21,5 @@ urlpatterns = [
     path('continue-scraping/<int:website_id>/', continue_scraping, name='continue-scraping'),
     path('analyse/compare/', CompareView.as_view(), name='compare'),
     path("api/technology-status/<int:website_id>/", technology_status, name="technology_status"),
-
-
+    path('analyse/overview/pdf/<int:website_id>/', GeneratePDFView.as_view(), name='generate_pdf'),
 ]
