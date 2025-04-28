@@ -1,6 +1,5 @@
 {% extends 'rarea/layout.html' %}
 {% load static %}
-
 {% block content %}
 <div class="container py-5 overview-container">
     <div class="analyze-heading">
@@ -384,180 +383,46 @@
             </div>
         </div>
     </div>
+    <div class="d-flex justify-content-between pt-5">
+        <a href="{% url 'modules.analysis:website_page' website.id %}" class="button-logout">← Page Analysis</a>
+        <a href="{% url 'modules.analysis:analyse' %}" class="button-logout">Analyse →</a>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-    window.addEventListener("DOMContentLoaded", function () {
-        const configureMinimalXAxis = (chartId) => {
-            const canvas = document.getElementById(chartId);
-            if (!canvas) return;
-            const chartInstance = Chart.getChart(canvas);
-            if (!chartInstance) return;
-
-            chartInstance.options.scales.x = {
-                ticks: {
-                    display: false
-                },
-                grid: {
-                    display: false
-                }
-            };
-
-            chartInstance.update();
-        };
-
-        ["tonePageChart", "readingTimeChart", "readabilityChart", "loadingMetricChart"].forEach(configureMinimalXAxis);
-    });
+  window.loadLabels = {{ load_labels|safe }};
+  window.loadTTFB = {{ load_ttfb|safe }};
+  window.loadFCP = {{ load_fcp|safe }};
+  window.loadLCP = {{ load_lcp|safe }};
+  window.loadFullyLoaded = {{ load_loaded|safe }};
+  window.toneData = {{ tone_data|safe }};
+  window.tpyeLabels = {{ tone_labels|safe }};
+  window.typeData = {{ tone_data|safe }};
+  window.speedMetrics = [
+      { key: "ttfb", values: {{ load_ttfb|safe }} },
+      { key: "fcp", values: {{ load_fcp|safe }} },
+      { key: "lcp", values: {{ load_lcp|safe }} },
+      { key: "loaded", values: {{ load_loaded|safe }} }
+  ];
+  window.pageUrls = {{ load_labels|safe }};
+  window.toneLabels = {{ reading_labels|safe }};
+  window.perPageTones = {{ per_page_tones|safe }};
+  window.toneMetrics = ["technical", "emotional", "neutral"].map(type => ({
+      key: type,
+      values: window.perPageTones.map(p => p[type] ?? 0)
+  }));
+  window.readingLabels = {{ reading_labels|safe }};
+  window.readingValues = {{ reading_values|safe }};
+  window.readabilityValues = {{ readability_values|safe }};
+  window.keywordData = {{ keyword_summary|safe }};
+  window.seoScore = {{ seo_score }};
+  window.audienceStatusUrl = "{% url 'modules.analysis:target_audience_status' website.id %}";
+  window.technologyStatusUrl = "{% url 'modules.analysis:website-insight-status' website.id %}";
 </script>
-<script>
-    window.loadLabels = {{ load_labels | safe }};
-    window.loadTTFB = {{ load_ttfb | safe }};
-    window.loadFCP = {{ load_fcp | safe }};
-    window.loadLCP = {{ load_lcp | safe }};
-    window.loadFullyLoaded = {{ load_loaded | safe }};
-    window.toneData = {{ tone_data | safe }};
-    window.tpyeLabels = {{ tone_labels | safe }};
-    window.typeData = {{ tone_data | safe }};
-
-    window.speedMetrics = [
-        { key: "ttfb", values: {{ load_ttfb| safe }} },
-        { key: "fcp", values: {{ load_fcp| safe }} },
-        { key: "lcp", values: {{ load_lcp| safe }} },
-        { key: "loaded", values: {{ load_loaded| safe }} }
-    ];
-    window.pageUrls = {{ load_labels | safe }};
-
-    window.toneLabels = {{ reading_labels | safe }};
-    const perPageTones = {{ per_page_tones | safe }};
-
-    window.toneMetrics = ["technical", "emotional", "neutral"].map(type => ({
-        key: type,
-        values: perPageTones.map(p => p[type] ?? 0)
-    }));
-
-    window.readingLabels = {{ reading_labels | safe }};
-    window.perPageTones = {{ per_page_tones | safe }};
-    window.readingValues = {{ reading_values | safe }};
-    window.readabilityValues = {{ readability_values | safe }};
-
-    window.keywordData = {{ keyword_summary | safe }};
-
-    const checkAudienceReady = () => {
-        fetch("{% url 'modules.analysis:target_audience_status' website.id %}")
-            .then(res => res.json())
-            .then(data => {
-                if (data.ready) {
-                    const listEl = document.getElementById("target-audience-list");
-                    const loadingEl = document.getElementById("target-audience-loading");
-                    loadingEl.classList.add("d-none");
-                    listEl.classList.remove("d-none");
-
-                    const audience = data.audience;
-                    listEl.innerHTML = "";
-
-                    for (const [segment, explanation] of Object.entries(audience)) {
-                        const li = document.createElement("li");
-                        li.className = "bg-white shadow rounded p-3 m-2";
-                        li.innerHTML = `<strong>${segment}:</strong> <span class="text-muted">${explanation}</span>`;
-                        listEl.appendChild(li);
-                    }
-                } else {
-                    setTimeout(checkAudienceReady, 3000);
-                }
-            });
-    };
-
-    checkAudienceReady();
-</script>
-<script>
-    const checkTechnologyReady = () => {
-        fetch("{% url 'modules.analysis:website-insight-status' website.id %}")
-            .then(res => res.json())
-            .then(data => {
-                if (data.ready && data.technology) {
-                    const loadingEl = document.getElementById("technology-loading");
-                    const listEl = document.getElementById("technology-list");
-                    const backendEl = document.getElementById("backend-stack-list");
-
-                    loadingEl.classList.add("d-none");
-                    listEl.classList.remove("d-none");
-                    backendEl.classList.remove("d-none");
-
-                    listEl.innerHTML = "";
-                    backendEl.innerHTML = "";
-
-                    const tech = data.technology;
-                    const backend = data.backend_stack || {};
-
-                    for (const [techName, description] of Object.entries(tech)) {
-                        const li = document.createElement("li");
-                        li.className = "bg-white shadow rounded p-3 m-2";
-                        li.innerHTML = `<strong>${techName}:</strong> <span class="text-muted">${description}</span>`;
-                        listEl.appendChild(li);
-                    }
-
-                    if (data.technology_summary) {
-                        const summary = document.createElement("p");
-                        summary.className = "mt-3 summary";
-                        summary.innerText = data.technology_summary;
-                        listEl.appendChild(summary);
-                    }
-                    else {
-                        const summary = document.createElement("p");
-                        summary.className = "mt-3 summary";
-                        summary.innerText = "No technology stack detected.";
-                        listEl.appendChild(summary);
-                    }
-
-                    for (const [backendTech, desc] of Object.entries(backend)) {
-                        const li = document.createElement("li");
-                        li.className = "bg-white shadow rounded p-3 m-2";
-                        li.innerHTML = `<strong>${backendTech}:</strong> <span class="text-muted">${desc}</span>`;
-                        backendEl.appendChild(li);
-                    }
-
-                } else {
-                    setTimeout(checkTechnologyReady, 3000);
-                }
-            })
-            .catch(err => {
-                console.error("Error loading technology data:", err);
-            });
-    };
-
-    checkTechnologyReady();
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const score = {{ seo_score }};
-    const bar = document.getElementById("seoScoreOverviewBar");
-
-    if (bar) {
-        bar.style.width = score + "%";
-        bar.textContent = score + "%";
-
-        bar.classList.remove("bg-success", "bg-warning", "bg-danger");
-        bar.classList.add(
-            score >= 70 ? "bg-success" :
-                score >= 40 ? "bg-warning" :
-                    "bg-danger"
-        );
-    }
-        });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const keywordModal = document.getElementById('keywordTrendModal');
-        keywordModal.addEventListener('hidden.bs.modal', function () {
-            document.body.classList.remove('modal-open');
-            document.body.style = ''; // reset any overflow
-            const modalBackdrop = document.querySelector('.modal-backdrop');
-            if (modalBackdrop) modalBackdrop.remove();
-        });
-    });
-</script>
-
-
-
+<script src="{% static 'analysis/js/overview_globals.js' %}"></script>
+<script src="{% static 'analysis/js/overview_audience.js' %}"></script>
+<script src="{% static 'analysis/js/overview_technology.js' %}"></script>
+<script src="{% static 'analysis/js/overview_seo_bar.js' %}"></script>
+<script src="{% static 'analysis/js/overview_modal_cleanup.js' %}"></script>
 {% endblock %}

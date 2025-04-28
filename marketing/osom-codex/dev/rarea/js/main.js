@@ -11,6 +11,13 @@ import Demo from '../../modules/demo/js/main';
 import UniversalMetricChart from '../../modules/analysis/js/universal_chart';
 import ReadingCharts from '../../modules/analysis/js/reading_charts';
 import KeywordAnalysis from '../../modules/analysis/js/keyword_analysis';
+import AnalyseStatus from '../../modules/analysis/js/analyse_status';
+import AnalyseCompare from '../../modules/analysis/js/analyse_compare';
+import AnalyseFilter from '../../modules/analysis/js/analyse_filter';
+import '../../modules/analysis/js/overview_audience';
+import '../../modules/analysis/js/overview_technology';
+import '../../modules/analysis/js/overview_seo_bar';
+import '../../modules/analysis/js/overview_modal_cleanup';
 
 window.KeywordAnalysis = KeywordAnalysis;
 
@@ -56,6 +63,12 @@ export default class RAreaMain {
 
         if (window.keywordData && document.querySelectorAll('[data-keyword-index]').length) {
             new KeywordAnalysis(window.keywordData).init();
+        }
+
+        if (document.body.classList.contains('analyse-page')) {
+            new AnalyseStatus();
+            new AnalyseCompare();
+            new AnalyseFilter();
         }
 
         console.info('[RAreaMain] initialized.');

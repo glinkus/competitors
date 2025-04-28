@@ -393,7 +393,6 @@ class PageSEOAnalysis():
         
         page_analysis.structured_data = json.dumps(structured_data)
         page_analysis.save()
-        
-        # Keep raw_html in the Page model since it's not moved
+
         self.page.raw_html = self.raw_html
         self.page.save()

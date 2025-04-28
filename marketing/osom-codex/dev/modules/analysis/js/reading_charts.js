@@ -30,6 +30,9 @@ export default class ReadingCharts {
                     options: {
                         responsive: true,
                         scales: {
+                            x: { 
+                                display: false 
+                            },
                             y: { beginAtZero: true }
                         }
                     }
@@ -56,6 +59,9 @@ export default class ReadingCharts {
                     options: {
                         responsive: true,
                         scales: {
+                            x: { 
+                                display: false 
+                            },
                             y: { beginAtZero: true, max: 100 }
                         }
                     }

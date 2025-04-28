@@ -17,8 +17,8 @@
       <tr><td>Avg. FCP (ms)</td>{% for row in comparison %}<td>{{ row.avg_fcp|floatformat:0 }}</td>{% endfor %}</tr>
       <tr><td>Avg. Fully Loaded (ms)</td>{% for row in comparison %}<td>{{ row.avg_loaded|floatformat:0 }}</td>{% endfor %}</tr>
       <tr><td>Avg. SEO Score</td>{% for row in comparison %}<td>{{ row.seo_score|floatformat:1 }}</td>{% endfor %}</tr>
-      <tr><td>Avg. Readability</td>{% for row in comparison %}<td>{{ row.avg_readability|floatformat:1 }}</td>{% endfor %}</tr>
-      <tr><td>Avg. Reading Time</td>{% for row in comparison %}<td>{{ row.avg_reading_time|floatformat:1 }}</td>{% endfor %}</tr>
+      <tr><td>Avg. Readability</td>{% for row in comparison %}<td>{{ row.avg_readability }}</td>{% endfor %}</tr>
+      <tr><td>Avg. Reading Time</td>{% for row in comparison %}<td>{{ row.avg_reading_time}}</td>{% endfor %}</tr>
       <tr>
         <td>Top Keywords</td>
         {% for row in comparison %}

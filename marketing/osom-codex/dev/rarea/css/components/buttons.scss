@@ -87,6 +87,7 @@ a.transparent-white-link:active {
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+    text-decoration: none !important;
 }
 
 .button-logout:hover {

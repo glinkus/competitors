@@ -4,6 +4,7 @@ from modules.analysis.models import Page, ExtractedKeyword, Website, OverallAnal
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Avg, Count
 import ast
+from statistics import mean
 
 class CompareView(LoginRequiredMixin, TemplateView):
     template_name = "modules/analysis/compare.html"
@@ -25,8 +26,7 @@ class CompareView(LoginRequiredMixin, TemplateView):
             )
 
             seo_score = page_analyses.aggregate(avg_score=Avg('seo_score'))['avg_score'] or 0
-            readability = page_analyses.aggregate(avg_readability=Avg('text_readability'))['avg_readability'] or 0
-            reading_time = page_analyses.aggregate(avg_reading_time=Avg('text_reading_time'))['avg_reading_time'] or 0
+            readability, reading_time = self.average(page_analyses)
 
             # Keywords summary
             keywords = ExtractedKeyword.objects.filter(page__website=site)
@@ -34,9 +34,8 @@ class CompareView(LoginRequiredMixin, TemplateView):
                 count=Count('id'),
                 avg_score=Avg('score'),
                 trend_score=Avg('trend_score')
-            ).order_by('-count', '-avg_score')[:5]  # limit to top 5 for UI simplicity
+            ).order_by('-count', '-avg_score')[:5]
 
-            # OverallAnalysis details
             overall = getattr(site, 'overall_analysis', None)
             technology = list((overall.technology or {}).keys()) if overall else []
             backend_stack = list((overall.backend_stack or {}).keys()) if overall else []
@@ -78,3 +77,29 @@ class CompareView(LoginRequiredMixin, TemplateView):
         return self.render_to_response({
             'comparison': comparison
         })
+    def average(self, pages):
+        readability_scores = []
+        reading_times = []
+
+        for page in pages:
+            if not page.text_readability or not page.text_reading_time:
+                continue
+
+            readability_scores.append((page.text_readability, page.page.url))
+            reading_times.append((page.text_reading_time, page.page.url))
+
+        avg_readability = round(mean(score for score, _ in readability_scores), 2)
+
+        avg_reading_time_val = mean(time for time, _ in reading_times)
+        avg_reading_time = self.format_time(avg_reading_time_val)
+
+        return avg_readability, avg_reading_time
+    
+    def format_time(self, mins):
+        total_seconds = int(round(mins * 60))
+        if mins >= 1:
+            minutes = int(mins // 1)
+            total_seconds = int(total_seconds % 60)
+            return f"{minutes}min {total_seconds}s"
+        else:
+            return f"{round(mins * 60, 1)}s"

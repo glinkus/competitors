@@ -10,6 +10,17 @@
         </a>
     </div>
     <div class="logout">
+        {% if user.is_authenticated %}
+        <span class="user-welcome">
+            Hello, 
+            {% if user.first_name %}
+                {{ user.first_name }}
+            {% else %}
+                {{ user.username }}
+            {% endif %}
+            
+        </span>
+        {% endif %}
         <form class="nav-button" method="post" action="{% url 'core/uauth:logout' %}">
             {% csrf_token %}
             <button class="button-logout" type="submit"> Logout </button>
