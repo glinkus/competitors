@@ -1,3 +1,11 @@
+// ensure test sees a string URL
+window.technologyStatusUrl = window.technologyStatusUrl || '';
+
+// Polyfill fetch for test env
+if (typeof fetch !== 'function') {
+    window.fetch = () => Promise.resolve({ json: () => Promise.resolve({}) });
+}
+
 const checkTechnologyReady = () => {
     fetch(window.technologyStatusUrl)
         .then(res => res.json())
@@ -52,7 +60,6 @@ const checkTechnologyReady = () => {
             console.error("Error loading technology data:", err);
         });
 };
-
 document.addEventListener("DOMContentLoaded", function () {
     checkTechnologyReady();
 });

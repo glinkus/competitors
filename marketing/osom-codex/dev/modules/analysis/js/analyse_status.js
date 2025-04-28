@@ -11,18 +11,23 @@ export default class AnalyseStatus {
         websiteCards.forEach(card => {
             const websiteId = card.id.replace('website-row-', '');
             const statusEl = card.querySelector('.status');
-            if (statusEl && statusEl.innerText.includes("In Progress")) {
+            // use textContent and guard against missing element
+            if (statusEl && statusEl.textContent.includes("In Progress")) {
                 this.checkScrapingStatus(websiteId);
             }
         });
     }
 
     checkScrapingStatus(websiteId) {
-        fetch(`/analysis/analyse/?website_id=${websiteId}`, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        .then(response => response.json())
-        .then(data => {
+        return this._doCheck(websiteId);
+    }
+
+    async _doCheck(websiteId) {
+        try {
+            const response = await fetch(`/analysis/analyse/?website_id=${websiteId}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const data = await response.json();
             const card = document.getElementById(`website-row-${websiteId}`);
             const visitedEl = card.querySelector('.visited-count');
             const statusEl = card.querySelector('.status');
@@ -31,7 +36,7 @@ export default class AnalyseStatus {
             const stoppedMsg = card.querySelector(`#scraping-stopped-${websiteId}`);
 
             if (visitedEl) {
-                visitedEl.innerHTML = `<strong>Pages:</strong> ${data.visited_count}`;
+                visitedEl.innerHTML = `<strong>Pages:</strong> ${data.visited_count || 0}`;
             }
 
             if (data.crawling_finished) {
@@ -50,10 +55,12 @@ export default class AnalyseStatus {
             } else if (data.crawling_in_progress) {
                 statusEl.innerHTML = '🟡 In Progress';
                 statusEl.className = 'badge bg-warning text-dark mb-3 status';
+                // recursive call goes through public method (so spy fires)
                 setTimeout(() => this.checkScrapingStatus(websiteId), 2000);
             }
-        })
-        .catch(error => console.error("Error checking status for website " + websiteId, error));
+        } catch (error) {
+            return console.error(`Error checking status for website ${websiteId}:`, error);
+        }
     }
 
     static getCookie(name) {
@@ -72,7 +79,7 @@ export default class AnalyseStatus {
     }
 
     static stopScraping(websiteId) {
-        fetch(`/analysis/stop-scraping/${websiteId}/`, {
+        return fetch(`/analysis/stop-scraping/${websiteId}/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': AnalyseStatus.getCookie('csrftoken'),
@@ -91,7 +98,7 @@ export default class AnalyseStatus {
     }
 
     static continueScraping(websiteId) {
-        fetch(`/analysis/continue-scraping/${websiteId}/`, {
+        return fetch(`/analysis/continue-scraping/${websiteId}/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': AnalyseStatus.getCookie('csrftoken'),
@@ -112,9 +119,10 @@ export default class AnalyseStatus {
     initDelete() {
         window.deleteWebsite = function(websiteId) {
             if (!confirm("Are you sure you want to delete this website?")) {
-                return;
+                return Promise.resolve();
             }
-            fetch("/analysis/analyse/", {
+            // return the promise so tests can await
+            return fetch("/analysis/analyse/", {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': AnalyseStatus.getCookie('csrftoken'),

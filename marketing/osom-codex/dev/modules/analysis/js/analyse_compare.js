@@ -29,16 +29,8 @@ export default class AnalyseCompare {
 
                 checkWrapper.classList.toggle('d-none', !compareMode);
                 checkbox.checked = false;
-
-                if (compareMode) {
-                    if (badge.innerText.includes('Finished') || badge.innerText.includes('🟢')) {
-                        checkbox.disabled = false;
-                    } else {
-                        checkbox.disabled = true;
-                    }
-                } else {
-                    checkbox.disabled = false;
-                }
+                // enable all when comparing, disable when not
+                checkbox.disabled = !compareMode;
             });
 
             compareBtn.hidden = !compareMode;
@@ -48,7 +40,7 @@ export default class AnalyseCompare {
 
         cards.forEach(card => {
             const checkbox = card.querySelector('.compare-check input');
-            checkbox.addEventListener('change', () => {
+            checkbox.addEventListener('click', () => {
                 const checked = [...document.querySelectorAll('.compare-check input:checked')];
                 if (checked.length > 2) {
                     checkbox.checked = false;

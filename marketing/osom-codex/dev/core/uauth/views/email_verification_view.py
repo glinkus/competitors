@@ -30,11 +30,10 @@ class EmailVerificationView(View):
                 html_message=html_message,
                 fail_silently=False,
             )
-            return True  # Email sent successfully
+            return True
         except Exception as e:
             print(f"Email sending failed: {e}")
-            # Don't redirect here - let the calling view handle redirects
-            return False  # Email sending failed
+            return False
 
     def get(self, request, token):
         try:
