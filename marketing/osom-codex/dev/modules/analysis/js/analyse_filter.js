@@ -28,7 +28,7 @@ export default class AnalyseFilter {
                 if (selectedStatus && badge) {
                     const badgeText = badge.innerText || '';
                     if (selectedStatus === 'finished' && !(badgeText.includes('Finished') || badgeText.includes('🟢'))) show = false;
-                    if (selectedStatus === 'stopped' && !(badgeText.includes('Stopped') || badgeText.includes('🔴 Stopped'))) show = false;
+                    if (selectedStatus === 'stopped' && !(badgeText.includes('Stopped') || badgeText.includes('🔴'))) show = false;
                     if (selectedStatus === 'in_progress' && !(badgeText.includes('In Progress') || badgeText.includes('🟡'))) show = false;
                 }
 
@@ -44,8 +44,10 @@ export default class AnalyseFilter {
             visibleCards.sort((a, b) => {
                 const aEl = a.querySelector('.card-body p.mb-2');
                 const bEl = b.querySelector('.card-body p.mb-2');
-                const aDate = aEl ? new Date(aEl.innerText.replace('Last Visited:', '').trim()) : new Date(0);
-                const bDate = bEl ? new Date(bEl.innerText.replace('Last Visited:', '').trim()) : new Date(0);
+                const aText = aEl && aEl.innerText ? aEl.innerText.replace('Last Visited:', '').trim() : '';
+                const bText = bEl && bEl.innerText ? bEl.innerText.replace('Last Visited:', '').trim() : '';
+                const aDate = aText ? new Date(aText) : new Date(0);
+                const bDate = bText ? new Date(bText) : new Date(0);
                 return sortOrder === 'asc' ? aDate - bDate : bDate - aDate;
             });
 

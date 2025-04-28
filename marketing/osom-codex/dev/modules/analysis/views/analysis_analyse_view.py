@@ -125,10 +125,12 @@ class AnalyseView(LoginRequiredMixin, TemplateView):
             return render(request, self.template_name, context)
         
     def normalize_url(self, url):
+        if not urlparse(url).scheme:
+            url = 'https://' + url
         parsed = urlparse(url)
         scheme = 'https'
         netloc = parsed.netloc.lower()
         path = parsed.path.rstrip('/') or '/'
-        return urlunparse((scheme, netloc, path, '', '', ''))
+        return urlunparse((scheme, netloc, path, '', '', '')) 
 
 

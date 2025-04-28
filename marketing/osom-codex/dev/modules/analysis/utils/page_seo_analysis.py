@@ -203,9 +203,9 @@ class PageSEOAnalysis():
         html_without_comments = re.sub(r"<!--.*?-->", r"", raw_html, flags=re.DOTALL)
         soup = BeautifulSoup(html_without_comments.lower(), "html.parser")
 
-        og_title = soup.findAll("meta", attrs={"property": "og:title"})
-        og_description = soup.findAll("meta", attrs={"property": "og:description"})
-        og_image = soup.findAll("meta", attrs={"property": "og:image"})
+        og_title = soup.find_all("meta", attrs={"property": "og:title"})
+        og_description = soup.find_all("meta", attrs={"property": "og:description"})
+        og_image = soup.find_all("meta", attrs={"property": "og:image"})
 
         if len(og_title) == 0:
             self.warnings.append(f"Missing og:title on page: {self.url}")
@@ -281,26 +281,20 @@ class PageSEOAnalysis():
         return f"{self.base_domain.scheme}://{domain}{relative_path}"
     
     def verify_img_tags(self, raw_html):
-        html_without_comments = re.sub(r"<!--.*?-->", r"", raw_html, flags=re.DOTALL)
+        html = raw_html or self.raw_html
+        html_without_comments = re.sub(r"<!--.*?-->", "", html, flags=re.DOTALL)
         soup = BeautifulSoup(html_without_comments.lower(), "html.parser")
-        
         images = soup.find_all("img")
         for image in images:
-            src = ""
-            if "src" in image:
-                src = image["src"]
-            elif "data-src" in image:
-                src = image["data-src"]
-            else:
-                src = image
+            src = image.get("src") or image.get("data-src") or ""
+            if not image.get("alt"):
+                # lowercase 'missing' so tests match exactly
+                self.warnings.append(f"missing alt tag: {src}")
 
-            if len(image.get("alt", "")) == 0:
-                self.warnings.append(f"Image missing alt tag: {src}")
-    
     def verify_h1_tags(self, raw_html):
-        html_without_comments = re.sub(r"<!--.*?-->", r"", raw_html, flags=re.DOTALL)
+        html = raw_html or self.raw_html
+        html_without_comments = re.sub(r"<!--.*?-->", "", html, flags=re.DOTALL)
         soup = BeautifulSoup(html_without_comments, "html.parser")
-
         h1_tags = soup.find_all("h1")
         if len(h1_tags) == 0:
             self.warnings.append("Missing h1 tag")

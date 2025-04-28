@@ -35,13 +35,13 @@ const checkTechnologyReady = () => {
                 if (data.technology_summary) {
                     const summary = document.createElement("p");
                     summary.className = "mt-3 summary";
-                    summary.innerText = data.technology_summary;
+                    summary.textContent = data.technology_summary;
                     listEl.appendChild(summary);
                 }
                 else {
                     const summary = document.createElement("p");
                     summary.className = "mt-3 summary";
-                    summary.innerText = "No technology stack detected.";
+                    summary.textContent = "No technology stack detected.";
                     listEl.appendChild(summary);
                 }
 

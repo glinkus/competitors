@@ -200,3 +200,155 @@
 2025-04-28 14:45:44 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://www.indeform.com/> (referer: None) ['playwright']
 [32mINFO    [0m [34m--- Crawling URL --- https://www.indeform.com/[0m
 2025-04-28 14:45:44 [one_page_spider] INFO: --- Crawling URL --- https://www.indeform.com/
+[32mINFO    [0m [34mPerformance metrics: {'time_to_first_byte': 389.29999999701977, 'first_contentful_paint': 568, 'largest_contentful_paint': 1060, 'fully_loaded': 1534.5}[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Performance metrics: {'time_to_first_byte': 389.29999999701977, 'first_contentful_paint': 568, 'largest_contentful_paint': 1060, 'fully_loaded': 1534.5}
+[32mINFO    [0m [34mFound 8 links on the page.[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Found 8 links on the page.
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Checking link: https://www.indeform.com/
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Checking link: https://www.indeform.com/
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/news[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Checking link: https://www.indeform.com/news
+[32mINFO    [0m [34mFound internal link: https://www.indeform.com/news[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Found internal link: https://www.indeform.com/news
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/company[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Checking link: https://www.indeform.com/company
+[32mINFO    [0m [34mFound internal link: https://www.indeform.com/company[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Found internal link: https://www.indeform.com/company
+[32mINFO    [0m [34mChecking link: https://www.indeform.com/contact-us[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Checking link: https://www.indeform.com/contact-us
+[32mINFO    [0m [34mFound internal link: https://www.indeform.com/contact-us[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Found internal link: https://www.indeform.com/contact-us
+[32mINFO    [0m [34mChecking link: https://www.indeformtechnologies.com/[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Checking link: https://www.indeformtechnologies.com/
+[32mINFO    [0m [34mChecking link: https://www.indeforminteractive.com/[0m
+2025-04-28 14:45:47 [one_page_spider] INFO: Checking link: https://www.indeforminteractive.com/
+[32mINFO    [0m [34mChecking link: https://www.indeformdigital.com/[0m
+2025-04-28 14:45:48 [one_page_spider] INFO: Checking link: https://www.indeformdigital.com/
+[32mINFO    [0m [34mFinished processing single page. Closing spider.[0m
+2025-04-28 14:45:48 [one_page_spider] INFO: Finished processing single page. Closing spider.
+[32mINFO    [0m [34mClosing spider (finished)[0m
+2025-04-28 14:45:48 [scrapy.core.engine] INFO: Closing spider (finished)
+[32mINFO    [0m [34mDumping Scrapy stats:
+{'downloader/request_bytes': 452,
+ 'downloader/request_count': 2,
+ 'downloader/request_method_count/GET': 2,
+ 'downloader/response_bytes': 12165,
+ 'downloader/response_count': 2,
+ 'downloader/response_status_count/200': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 11.505446,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2025, 4, 28, 11, 45, 48, 5351, tzinfo=datetime.timezone.utc),
+ 'items_per_minute': None,
+ 'log_count/DEBUG': 53,
+ 'log_count/INFO': 30,
+ 'memusage/max': 630054912,
+ 'memusage/startup': 630054912,
+ 'playwright/browser_count': 1,
+ 'playwright/context_count': 1,
+ 'playwright/context_count/max_concurrent': 1,
+ 'playwright/context_count/persistent/False': 1,
+ 'playwright/context_count/remote/False': 1,
+ 'playwright/page_count': 1,
+ 'playwright/page_count/max_concurrent': 1,
+ 'playwright/request_count': 14,
+ 'playwright/request_count/method/GET': 13,
+ 'playwright/request_count/method/POST': 1,
+ 'playwright/request_count/navigation': 1,
+ 'playwright/request_count/resource_type/document': 1,
+ 'playwright/request_count/resource_type/fetch': 1,
+ 'playwright/request_count/resource_type/font': 1,
+ 'playwright/request_count/resource_type/image': 7,
+ 'playwright/request_count/resource_type/script': 3,
+ 'playwright/request_count/resource_type/stylesheet': 1,
+ 'playwright/response_count': 14,
+ 'playwright/response_count/method/GET': 13,
+ 'playwright/response_count/method/POST': 1,
+ 'playwright/response_count/resource_type/document': 1,
+ 'playwright/response_count/resource_type/fetch': 1,
+ 'playwright/response_count/resource_type/font': 1,
+ 'playwright/response_count/resource_type/image': 7,
+ 'playwright/response_count/resource_type/script': 3,
+ 'playwright/response_count/resource_type/stylesheet': 1,
+ 'response_received_count': 2,
+ 'responses_per_minute': None,
+ 'robotstxt/request_count': 1,
+ 'robotstxt/response_count': 1,
+ 'robotstxt/response_status_count/404': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2025, 4, 28, 11, 45, 36, 499905, tzinfo=datetime.timezone.utc)}[0m
+2025-04-28 14:45:48 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 452,
+ 'downloader/request_count': 2,
+ 'downloader/request_method_count/GET': 2,
+ 'downloader/response_bytes': 12165,
+ 'downloader/response_count': 2,
+ 'downloader/response_status_count/200': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 11.505446,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2025, 4, 28, 11, 45, 48, 5351, tzinfo=datetime.timezone.utc),
+ 'items_per_minute': None,
+ 'log_count/DEBUG': 53,
+ 'log_count/INFO': 30,
+ 'memusage/max': 630054912,
+ 'memusage/startup': 630054912,
+ 'playwright/browser_count': 1,
+ 'playwright/context_count': 1,
+ 'playwright/context_count/max_concurrent': 1,
+ 'playwright/context_count/persistent/False': 1,
+ 'playwright/context_count/remote/False': 1,
+ 'playwright/page_count': 1,
+ 'playwright/page_count/max_concurrent': 1,
+ 'playwright/request_count': 14,
+ 'playwright/request_count/method/GET': 13,
+ 'playwright/request_count/method/POST': 1,
+ 'playwright/request_count/navigation': 1,
+ 'playwright/request_count/resource_type/document': 1,
+ 'playwright/request_count/resource_type/fetch': 1,
+ 'playwright/request_count/resource_type/font': 1,
+ 'playwright/request_count/resource_type/image': 7,
+ 'playwright/request_count/resource_type/script': 3,
+ 'playwright/request_count/resource_type/stylesheet': 1,
+ 'playwright/response_count': 14,
+ 'playwright/response_count/method/GET': 13,
+ 'playwright/response_count/method/POST': 1,
+ 'playwright/response_count/resource_type/document': 1,
+ 'playwright/response_count/resource_type/fetch': 1,
+ 'playwright/response_count/resource_type/font': 1,
+ 'playwright/response_count/resource_type/image': 7,
+ 'playwright/response_count/resource_type/script': 3,
+ 'playwright/response_count/resource_type/stylesheet': 1,
+ 'response_received_count': 2,
+ 'responses_per_minute': None,
+ 'robotstxt/request_count': 1,
+ 'robotstxt/response_count': 1,
+ 'robotstxt/response_status_count/404': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2025, 4, 28, 11, 45, 36, 499905, tzinfo=datetime.timezone.utc)}
+[32mINFO    [0m [34mSpider closed (finished)[0m
+2025-04-28 14:45:48 [scrapy.core.engine] INFO: Spider closed (finished)
+[32mINFO    [0m [34mClosing download handler[0m
+2025-04-28 14:45:48 [scrapy-playwright] INFO: Closing download handler
+[32mINFO    [0m [34mClosing download handler[0m
+2025-04-28 14:45:48 [scrapy-playwright] INFO: Closing download handler
+[32mINFO    [0m [34mSaved LoadingTime for https://www.indeform.com/[0m
+2025-04-28 14:45:48 [one_page_spider] INFO: Saved LoadingTime for https://www.indeform.com/
+[37mDEBUG   [0m [34mBrowser context closed: 'default' (persistent=False, remote=False)[0m
+2025-04-28 14:45:48 [scrapy-playwright] DEBUG: Browser context closed: 'default' (persistent=False, remote=False)
+[32mINFO    [0m [34mClosing browser[0m
+2025-04-28 14:45:48 [scrapy-playwright] INFO: Closing browser
+[37mDEBUG   [0m [34mBrowser disconnected[0m
+2025-04-28 14:45:48 [scrapy-playwright] DEBUG: Browser disconnected
+[33mWARNING [0m [34msys:1: RuntimeWarning: coroutine 'SyncToAsync.__call__' was never awaited
+[0m
+2025-04-28 14:45:48 [py.warnings] WARNING: sys:1: RuntimeWarning: coroutine 'SyncToAsync.__call__' was never awaited
+

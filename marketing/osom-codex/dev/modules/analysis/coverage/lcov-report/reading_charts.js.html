@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -137,23 +137,19 @@
 <a name='L72'></a><a href='#L72'>72</a>
 <a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -176,9 +172,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -212,16 +212,16 @@
         console.info('[ReadingCharts] initialized.');
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    in</span>it() {
-<span class="cstat-no" title="statement not covered" >        document.addEventListener("DOMContentLoaded", <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-            const ChartJS = <span class="cstat-no" title="statement not covered" >window.Chart;</span>
-            const labels = <span class="cstat-no" title="statement not covered" >window.readingLabels || [];</span>
-            const readingValues = <span class="cstat-no" title="statement not covered" >window.readingValues || [];</span>
-            const readabilityValues = <span class="cstat-no" title="statement not covered" >window.readabilityValues || [];</span>
+    init() {
+        document.addEventListener("DOMContentLoaded", () =&gt; {
+            const ChartJS = window.Chart;
+            const labels = window.readingLabels || [];
+            const readingValues = window.readingValues || [];
+            const readabilityValues = window.readabilityValues || [];
 &nbsp;
-            const timeCanvas = <span class="cstat-no" title="statement not covered" >document.getElementById("readingTimeChart");</span>
-<span class="cstat-no" title="statement not covered" >            if (timeCanvas) {</span>
-<span class="cstat-no" title="statement not covered" >                new ChartJS(timeCanvas, {</span>
+            const timeCanvas = document.getElementById("readingTimeChart");
+            if (timeCanvas) {
+                new ChartJS(timeCanvas, {
                     type: 'line',
                     data: {
                         labels: labels,
@@ -248,9 +248,9 @@
                 });
             }
 &nbsp;
-            const readabilityCanvas = <span class="cstat-no" title="statement not covered" >document.getElementById("readabilityChart");</span>
-<span class="cstat-no" title="statement not covered" >            if (readabilityCanvas) {</span>
-<span class="cstat-no" title="statement not covered" >                new ChartJS(readabilityCanvas, {</span>
+            const readabilityCanvas = document.getElementById("readabilityChart");
+            if (readabilityCanvas) {
+                new ChartJS(readabilityCanvas, {
                     type: 'line',
                     data: {
                         labels: labels,
@@ -286,7 +286,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-28T11:03:07.827Z
+                at 2025-04-28T13:09:12.788Z
             </div>
         <script src="prettify.js"></script>
         <script>

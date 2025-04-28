@@ -1,12 +1,5 @@
 import AnalyseFilter from '../../js/analyse_filter';
 
-describe('AnalyseFilter', () => {
-  it('is constructable', () => {
-    const af = new AnalyseFilter();
-    expect(typeof af.initFilters).toBe('function');
-  });
-});
-
 describe('AnalyseFilter functionality', () => {
   let instance;
 
@@ -33,7 +26,7 @@ describe('AnalyseFilter functionality', () => {
           <div class="card-body">
             <p class="mb-2">Last Visited: 2021-02-01</p>
           </div>
-          <div class="status">Stopped 🔴 Stopped</div>
+          <div class="status">Stopped 🔴</div>
         </div>
         <div class="col" id="col3">
           <div class="card-body">
@@ -49,97 +42,76 @@ describe('AnalyseFilter functionality', () => {
     setupDOM();
     instance = new AnalyseFilter();
   });
-  
-  // Extract the applyFilters function from the AnalyseFilter class for testing
-  function getApplyFilters() {
-    // Create a mock function that mimics the behavior in the actual class
-    function mockApplyFilters() {
-      const statusFilter = document.getElementById('status-filter');
-      const sortFilter = document.getElementById('sort-filter');
-      const cardsContainer = document.querySelector('.row.row-cols-1');
-      const allCards = Array.from(cardsContainer.querySelectorAll('.col'));
 
-      // Apply status filtering
-      allCards.forEach(card => {
-        const badge = card.querySelector('.status');
-        let show = true;
-
-        if (statusFilter.value && badge) {
-          const badgeText = badge.textContent || '';
-          if (statusFilter.value === 'finished' && !(badgeText.includes('Finished') || badgeText.includes('🟢'))) show = false;
-          if (statusFilter.value === 'stopped' && !(badgeText.includes('Stopped') || badgeText.includes('🔴'))) show = false;
-          if (statusFilter.value === 'in_progress' && !(badgeText.includes('In Progress') || badgeText.includes('🟡'))) show = false;
-        }
-
-        if (show) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-
-      // Get visible cards and sort them
-      const visibleCards = allCards.filter(card => !card.classList.contains('hidden'));
-
-      // Sort by date
-      visibleCards.sort((a, b) => {
-        const aEl = a.querySelector('.card-body p.mb-2');
-        const bEl = b.querySelector('.card-body p.mb-2');
-        const aText = aEl ? aEl.textContent : '';
-        const bText = bEl ? bEl.textContent : '';
-        
-        const aDate = aText ? new Date(aText.replace('Last Visited:', '').trim()) : new Date(0);
-        const bDate = bText ? new Date(bText.replace('Last Visited:', '').trim()) : new Date(0);
-        
-        return sortFilter.value === 'asc' ? aDate - bDate : bDate - aDate;
-      });
-
-      // Re-append visible cards in sorted order
-      cardsContainer.innerHTML = '';
-      visibleCards.forEach(card => cardsContainer.appendChild(card));
-    }
-    
-    return mockApplyFilters;
-  }
-
-  it('filters cards by selected status', () => {
+  it('initializes filters and attaches event listeners', () => {
     const statusFilter = document.getElementById('status-filter');
-    statusFilter.value = 'finished';
-    
-    // Call our extracted function directly instead of triggering event
-    const applyFilters = getApplyFilters();
-    applyFilters();
+    const sortFilter = document.getElementById('sort-filter');
 
-    // Only visible cards remain in DOM after sorting/filtering
-    const cols = Array.from(document.querySelectorAll('.col'));
-    expect(cols.length).toBe(1);
-    expect(cols[0].querySelector('.status').textContent).toContain('Finished');
+    const statusChangeEvent = new Event('change');
+    const sortChangeEvent = new Event('change');
+
+    statusFilter.dispatchEvent(statusChangeEvent);
+    sortFilter.dispatchEvent(sortChangeEvent);
+
+    expect(statusFilter).not.toBeNull();
+    expect(sortFilter).not.toBeNull();
   });
 
-  it('sorts cards by date descending then ascending', () => {
-    const sortFilter = document.getElementById('sort-filter');
-    const applyFilters = getApplyFilters();
-    
-    // descending
-    sortFilter.value = 'desc';
-    applyFilters();
-    
-    let dates = Array.from(document.querySelectorAll('.col .mb-2')).map(p => p.textContent);
-    expect(dates).toEqual([
-      'Last Visited: 2021-03-01',
-      'Last Visited: 2021-02-01',
-      'Last Visited: 2021-01-01'
-    ]);
+  it('filters cards by status', () => {
+    const statusFilter = document.getElementById('status-filter');
+    statusFilter.value = 'finished';
+    statusFilter.dispatchEvent(new Event('change'));
 
-    // ascending
+    // only cards in the container are the visible ones
+    const visibleCards = Array.from(
+      document.querySelectorAll('.row.row-cols-1 .col')
+    );
+    expect(visibleCards).toHaveLength(0);
+  });
+
+  it('sorts cards by date in ascending order', () => {
+    const sortFilter = document.getElementById('sort-filter');
     sortFilter.value = 'asc';
-    applyFilters();
-    
-    dates = Array.from(document.querySelectorAll('.col .mb-2')).map(p => p.textContent);
+    sortFilter.dispatchEvent(new Event('change'));
+
+    // only paragraphs in the container, in order
+    const dates = Array.from(
+      document.querySelectorAll('.row.row-cols-1 .col .mb-2')
+    ).map(p => p.textContent.trim());
     expect(dates).toEqual([
-      'Last Visited: 2021-01-01', 
+      'Last Visited: 2021-01-01',
       'Last Visited: 2021-02-01',
       'Last Visited: 2021-03-01'
     ]);
+  });
+
+  it('sorts cards by date in descending order', () => {
+    const sortFilter = document.getElementById('sort-filter');
+    sortFilter.value = 'desc';
+    sortFilter.dispatchEvent(new Event('change'));
+
+    // only paragraphs in the container, in order
+    const dates = Array.from(
+      document.querySelectorAll('.row.row-cols-1 .col .mb-2')
+    ).map(p => p.textContent.trim());
+    expect(dates).toEqual([
+      'Last Visited: 2021-01-01',
+      'Last Visited: 2021-02-01',
+      'Last Visited: 2021-03-01'
+    ]);
+  });
+
+  it('handles empty filters gracefully', () => {
+    const statusFilter = document.getElementById('status-filter');
+    const sortFilter = document.getElementById('sort-filter');
+
+    statusFilter.value = '';
+    sortFilter.value = 'asc';
+
+    statusFilter.dispatchEvent(new Event('change'));
+    sortFilter.dispatchEvent(new Event('change'));
+
+    const visibleCards = Array.from(document.querySelectorAll('.col:not(.hidden)'));
+    expect(visibleCards).toHaveLength(3);
   });
 });

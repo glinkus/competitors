@@ -2,7 +2,6 @@ from django.urls import path
 
 from .views.analysis_analyse_view import AnalyseView, stop_scraping, continue_scraping
 from .views.analysis_website_page_view import URLView
-from .views.analysis_page_keywords_view import PageKeywordsView
 from .views.analysis_overview_view import OverviewView, website_insight_status, target_audience_status, technology_status
 from .views.analysis_landing_view import LandingView
 from .views.analysis_compare_view import CompareView

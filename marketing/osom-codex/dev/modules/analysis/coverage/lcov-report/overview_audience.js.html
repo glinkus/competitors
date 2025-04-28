@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.78% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/19</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.78% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/19</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -94,65 +94,65 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// ensure test sees a string URL
-window.audienceStatusUrl = window.audienceStatusUrl || '';
+window.audienceStatusUrl = window.audienceStatusUrl || <span class="branch-1 cbranch-no" title="branch not covered" >'';</span>
 &nbsp;
-const checkAudienceReady = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >    fetch(window.audienceStatusUrl)</span>
-        .then(<span class="fstat-no" title="function not covered" >re</span>s =&gt; <span class="cstat-no" title="statement not covered" >res.json())</span>
-        .then(<span class="fstat-no" title="function not covered" >da</span>ta =&gt; {
-<span class="cstat-no" title="statement not covered" >            if (data.ready) {</span>
-                const listEl = <span class="cstat-no" title="statement not covered" >document.getElementById("target-audience-list");</span>
-                const loadingEl = <span class="cstat-no" title="statement not covered" >document.getElementById("target-audience-loading");</span>
-<span class="cstat-no" title="statement not covered" >                loadingEl.classList.add("d-none");</span>
-<span class="cstat-no" title="statement not covered" >                listEl.classList.remove("d-none");</span>
+const checkAudienceReady = () =&gt; {
+    fetch(window.audienceStatusUrl)
+        .then(res =&gt; res.json())
+        .then(data =&gt; {
+            if (data.ready) {
+                const listEl = document.getElementById("target-audience-list");
+                const loadingEl = document.getElementById("target-audience-loading");
+                loadingEl.classList.add("d-none");
+                listEl.classList.remove("d-none");
 &nbsp;
-                const audience = <span class="cstat-no" title="statement not covered" >data.audience;</span>
-<span class="cstat-no" title="statement not covered" >                listEl.innerHTML = "";</span>
+                const audience = data.audience;
+                listEl.innerHTML = "";
 &nbsp;
-<span class="cstat-no" title="statement not covered" >                for (const [segment, explanation] of Object.entries(audience)) {</span>
-                    const li = <span class="cstat-no" title="statement not covered" >document.createElement("li");</span>
-<span class="cstat-no" title="statement not covered" >                    li.className = "bg-white shadow rounded p-3 m-2";</span>
-<span class="cstat-no" title="statement not covered" >                    li.innerHTML = `&lt;strong&gt;${segment}:&lt;/strong&gt; &lt;span class="text-muted"&gt;${explanation}&lt;/span&gt;`;</span>
-<span class="cstat-no" title="statement not covered" >                    listEl.appendChild(li);</span>
+                for (const [segment, explanation] of Object.entries(audience)) {
+                    const li = document.createElement("li");
+                    li.className = "bg-white shadow rounded p-3 m-2";
+                    li.innerHTML = `&lt;strong&gt;${segment}:&lt;/strong&gt; &lt;span class="text-muted"&gt;${explanation}&lt;/span&gt;`;
+                    listEl.appendChild(li);
                 }
             } else {
-<span class="cstat-no" title="statement not covered" >                setTimeout(checkAudienceReady, 3000);</span>
+                setTimeout(checkAudienceReady, 3000);
             }
         });
 };
 &nbsp;
-document.addEventListener("DOMContentLoaded", <span class="fstat-no" title="function not covered" >fu</span>nction () {
-<span class="cstat-no" title="statement not covered" >    checkAudienceReady();</span>
+document.addEventListener("DOMContentLoaded", function () {
+    checkAudienceReady();
 });</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", <span class="fstat-no" title="func
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-28T11:03:07.827Z
+                at 2025-04-28T13:09:12.788Z
             </div>
         <script src="prettify.js"></script>
         <script>

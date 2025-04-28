@@ -72,7 +72,12 @@ class KeywordExtraction:
                     texts.append(preprocessed_text)
                     tag_weights.append(self.IMPORTANCE_WEIGHTS.get(tag, 1.0))
 
-        tfidf_keywords_list = self.extract_keywords_tfidf(texts, top_n=top_n)
+        try:
+            tfidf_keywords_list = self.extract_keywords_tfidf(texts, top_n=top_n)
+        except Exception as e:
+            print(f"Error in keywords extraction: {e}")
+            tfidf_keywords_list = []
+            
         keyword_scores = defaultdict(float)
 
         for keywords, weight in zip(tfidf_keywords_list, tag_weights, strict=False):
