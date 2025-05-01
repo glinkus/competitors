@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745845752803" clover="3.2.0">
-  <project timestamp="1745845752803" name="All files">
+<coverage generated="1745913052100" clover="3.2.0">
+  <project timestamp="1745913052100" name="All files">
     <metrics statements="290" coveredstatements="269" conditionals="163" coveredconditionals="117" methods="76" coveredmethods="66" elements="529" coveredelements="452" complexity="0" loc="290" ncloc="290" packages="1" files="12" classes="12"/>
     <file name="analyse_compare.js" path="/home/gustas/indeform_praktika/marketing/osom-codex/dev/modules/analysis/js/analyse_compare.js">
       <metrics statements="32" coveredstatements="31" conditionals="4" coveredconditionals="4" methods="9" coveredmethods="8"/>

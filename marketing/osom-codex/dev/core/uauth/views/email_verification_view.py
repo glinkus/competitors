@@ -46,7 +46,7 @@ class EmailVerificationView(View):
                 messages.info(request, "Your email has already been verified.")
             return redirect('/login/')
         except UserProfile.DoesNotExist:
-            messages.error(request, "Invalid verification link.")
+            messages.error(request, "Invalid verification link. Try new one.")
             return redirect('/register/')
 
 class VerificationSentView(View):
