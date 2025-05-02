@@ -107,8 +107,8 @@ class PageSEOAnalysis():
 
         self.content_hash = hashlib.sha1(raw_html.encode("utf-8")).hexdigest()
         # if self.page.content_hash == self.content_hash:
-        #     print("No changes detected in the content.")
-        #     return False
+        #      print("No changes detected in the content.")
+        #      return False
 
         metadata = trafilatura.extract_metadata(
             filecontent=raw_html,

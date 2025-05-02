@@ -58,8 +58,8 @@ def run_one_page_spider(website_id, website_name):
                 w.scraping_stopped = False
                 w.save()
                 analyze_top_keywords_trends.delay(website_id)
-                positioning_insights.apply_async(args=[website_id], countdown=0)
-                generate_target_audience.apply_async(args=[website_id], countdown=30)
+                generate_target_audience.apply_async(args=[website_id], countdown=0)
+                positioning_insights.apply_async(args=[website_id], countdown=15)
                 generate_website_insight.apply_async(args=[website_id], countdown=60)
             else:
                 raise Exception(f"Website with id {website_id} not found.")
@@ -124,6 +124,9 @@ def run_seo_analysis(page_url):
             seo_insights.run_analysis()
         except Exception as e:
             print(f"Error running SEO Insights analysis: {e}")
+    else:
+        print(f"No analysis data found for page: {page.url}")
+        return {"error": "No analysis data found."}
 
 @shared_task
 def analyze_keywords(page_url):
@@ -169,7 +172,11 @@ def analyze_top_keywords_trends(website_id, top_n=10):
     if not top_keywords:
         return {"message": "No keywords to enrich."}
 
-    pytrends = TrendReq()
+    try:
+        pytrends = TrendReq()
+    except Exception as e:
+        print(f"Error initializing pytrends: {e}")
+        return {"message": "Failed to initialize pytrends."}
     # pytrends = TrendReq(hl='en-US', tz=360, timeout=(10,25), proxies=['https://172.167.161.8:8080'], retries=2, backoff_factor=0.1, requests_args={'verify':False})
 
     ExtractedKeyword.objects.filter(
@@ -300,11 +307,7 @@ def classify_page(page_url):
 
     page_analysis.save()
 
-    return {
-        "tone": page_analysis.text_types,
-        "positioning": page_analysis.positioning_classification,
-        "label": page_analysis.label
-    }
+    return f"{page.url} classified successfully."
 
 def get_icon(page_url, website_id):
     page = Page.objects.get(url=page_url)
