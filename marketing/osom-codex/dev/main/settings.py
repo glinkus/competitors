@@ -63,7 +63,7 @@ BASE_DIRECT = os.path.dirname(os.path.abspath(__file__))
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "osomcodex.db"),
+        "NAME": os.path.join(BASE_DIR, "competitors.db"),
     }
 }
 
