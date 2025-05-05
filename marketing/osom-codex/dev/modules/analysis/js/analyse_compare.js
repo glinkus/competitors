@@ -29,7 +29,6 @@ export default class AnalyseCompare {
 
                 checkWrapper.classList.toggle('d-none', !compareMode);
                 checkbox.checked = false;
-                // enable all when comparing, disable when not
                 checkbox.disabled = !compareMode;
             });
 

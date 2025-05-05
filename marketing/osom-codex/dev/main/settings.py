@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     "core.uauth",
     "parea",
     "rarea",
-    "modules.demo",
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

@@ -13,7 +13,6 @@ urlpatterns = [
     # Core.
     path("", include("core.uauth.urls", namespace="core/uauth")),
     # Modules.
-    path("demo/", include("modules.demo.urls", namespace="modules/demo")),
     path("analysis/", include("modules.analysis.urls", namespace="modules/analysis")),
 ]
 

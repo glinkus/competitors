@@ -21,78 +21,85 @@ export default class KeywordAnalysis {
         const modalElement = document.getElementById(this.modalId);
         const modalTitle = document.getElementById("keywordTrendModalLabel");
         modalTitle.textContent = `Keyword: ${data.keyword}`;
-
-        if (this.trendChartInstance) {
+      
+        modalElement.addEventListener('hidden.bs.modal', () => {
+          if (this.trendChartInstance) {
             this.trendChartInstance.destroy();
             this.trendChartInstance = null;
-        }
-        if (this.regionChartInstance) {
+          }
+          if (this.regionChartInstance) {
             this.regionChartInstance.destroy();
             this.regionChartInstance = null;
-        }
-
+          }
+        }, { once: true });
+      
         const onModalShown = () => {
-            const trendCtx = document.getElementById("trendChartModal").getContext("2d");
-            this.trendChartInstance = new Chart(trendCtx, {
-                type: 'line',
-                data: {
-                    labels: JSON.parse(data.trend_keys),
-                    datasets: [{
-                        label: 'Trend over time',
-                        data: JSON.parse(data.trend_values),
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 2,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: { ticks: { maxTicksLimit: 6 } },
-                        y: { beginAtZero: true }
-                    }
+          const trendCanvas = document.getElementById("trendChartModal");
+          Chart.getChart(trendCanvas)?.destroy();
+      
+          const regionCanvas = document.getElementById("regionChartModal");
+          Chart.getChart(regionCanvas)?.destroy();
+      
+          const trendCtx = trendCanvas.getContext("2d");
+          this.trendChartInstance = new Chart(trendCtx, {
+            type: 'line',
+            data: {
+              labels: JSON.parse(data.trend_keys),
+              datasets: [{
+                label: 'Trend over time',
+                data: JSON.parse(data.trend_values),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                tension: 0.3
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                x: { ticks: { maxTicksLimit: 6 } },
+                y: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 100
                 }
-            });
-
-            const regionData = data.interest_by_region || {};
-            const regionLabels = Object.keys(regionData);
-            const rawValues = Object.values(regionData);
-            const total = rawValues.reduce((sum, val) => sum + val, 0);
-            const regionValues = rawValues.map(val => ((val / total) * 100).toFixed(2));
-
-            const regionCtx = document.getElementById("regionChartModal").getContext("2d");
-            this.regionChartInstance = new Chart(regionCtx, {
-                type: 'pie',
-                data: {
-                    labels: regionLabels,
-                    datasets: [{
-                        data: regionValues,
-                        backgroundColor: regionLabels.map(() => `hsl(${Math.random() * 360}, 60%, 70%)`),
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'right' },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    const label = context.label || '';
-                                    const value = context.parsed;
-                                    return `${label}: ${value}%`;
-                                }
-                            }
-                        }
-                    }
+              }
+            }
+          });
+      
+          const regionData = data.interest_by_region || {};
+          const regionLabels = Object.keys(regionData);
+          const rawValues     = Object.values(regionData);
+          const total         = rawValues.reduce((sum, v) => sum + v, 0) || 1;
+          const regionValues  = rawValues.map(v => ((v / total) * 100).toFixed(2));
+      
+          const regionCtx = regionCanvas.getContext("2d");
+          this.regionChartInstance = new Chart(regionCtx, {
+            type: 'pie',
+            data: {
+              labels: regionLabels,
+              datasets: [{
+                data: regionValues,
+                backgroundColor: regionLabels.map(() =>
+                  `hsl(${Math.random() * 360}, 60%, 70%)`
+                ),
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: { position: 'right' },
+                tooltip: {
+                  callbacks: {
+                    label: ctx => `${ctx.label}: ${ctx.parsed}%`
+                  }
                 }
-            });
-
-            modalElement.removeEventListener('shown.bs.modal', onModalShown);
+              }
+            }
+          });
         };
-
-        modalElement.addEventListener('shown.bs.modal', onModalShown);
-
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-    }
+      
+        modalElement.addEventListener('shown.bs.modal', onModalShown, { once: true });
+      
+        new bootstrap.Modal(modalElement).show();
+      }
 }

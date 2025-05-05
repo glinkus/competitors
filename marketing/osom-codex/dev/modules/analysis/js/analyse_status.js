@@ -11,7 +11,7 @@ export default class AnalyseStatus {
         websiteCards.forEach(card => {
             const websiteId = card.id.replace('website-row-', '');
             const statusEl = card.querySelector('.status');
-            // use textContent and guard against missing element
+
             if (statusEl && statusEl.textContent.includes("In Progress")) {
                 this.checkScrapingStatus(websiteId);
             }

@@ -12,7 +12,6 @@ export default class AnalyseFilter {
         const sortFilter   = document.getElementById('sort-filter');
         const cardsContainer = document.querySelector('.row.row-cols-1');
 
-        // Guard: bail out if DOM not yet present
         if (!statusFilter || !sortFilter || !cardsContainer) return;
 
         const allCards = Array.from(cardsContainer.querySelectorAll('.col'));
