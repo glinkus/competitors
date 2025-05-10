@@ -2,28 +2,8 @@ import json
 import pytest
 from types import SimpleNamespace
 import pandas as pd
-
-from modules.analysis.tasks import (
-    preprocess_text,
-    clean_json_response,
-    build_prompt,
-    generate_target_audience,
-    positioning_insights,
-    analyze_keywords,
-    text_read_analysis,
-    classify_page,
-    analyze_top_keywords_trends,
-    get_icon,
-    generate_website_insight,
-)
-from modules.analysis.models import (
-    Website,
-    Page,
-    PageAnalysis,
-    ExtractedKeyword,
-    SEORecommendation,
-    OverallAnalysis,
-)
+from modules.analysis.tasks import preprocess_text, clean_json_response, build_prompt, generate_target_audience, positioning_insights, analyze_keywords, text_read_analysis, classify_page, analyze_top_keywords_trends, get_icon, generate_website_insight
+from modules.analysis.models import Website, Page, PageAnalysis, ExtractedKeyword, SEORecommendation, OverallAnalysis
 
 @pytest.mark.parametrize("raw, expected", [
     ("<p>Hello, World!</p>", "hello world"),
@@ -44,23 +24,19 @@ def test_build_prompt_contains_sections():
                   "linking_analysis":{},"warnings":[], "content":"c"}]
     recs = ["action1","action2"]
     prompt = build_prompt(summaries, recs)
-    # must contain JSON dumps and keys
     assert "Website Pages JSON" in prompt
     assert '"action1"' in prompt and '"action2"' in prompt
     assert "**Key_offerings_or_UVP**" in prompt
 
+# integration test
 @pytest.mark.django_db
 def test_generate_target_audience_creates_and_saves(monkeypatch):
-    # setup website, pages, analyses, and keywords
     site = Website.objects.create(start_url="http://x")
-    # create dummy pages and analyses
     p = Page.objects.create(website=site, url="u1")
     PageAnalysis.objects.create(page=p, content="AAA")
-    # add multiple keywords so top_keywords has items
     for kw,count in [("k1",3),("k2",2)]:
         for i in range(count):
             ExtractedKeyword.objects.create(page=p, keyword=kw, score=1.0)
-    # mock external GenAI model
     fake_text = json.dumps({"Company Target Audience":{
         "Seg1":"Desc1","Seg2":"Desc2","Seg3":"Desc3","Seg4":"Desc4"
     }})
@@ -69,36 +45,30 @@ def test_generate_target_audience_creates_and_saves(monkeypatch):
         def __init__(self, model): pass
         def generate_content(self, prompt): return fake_resp
     monkeypatch.setattr("modules.analysis.tasks.genai_model.GenerativeModel", FakeGen)
-    # run task
     generate_target_audience(site.id)
     site.refresh_from_db()
     assert isinstance(site.target_audience, dict)
     assert site.target_audience["Seg1"] == "Desc1"
     assert len(site.target_audience) >= 4
 
+# integration test
 @pytest.mark.django_db
 def test_positioning_insights_saves_text(monkeypatch):
-    # setup website with target audience and keywords
     site = Website.objects.create(start_url="http://y", target_audience={"A":"X"})
     p = Page.objects.create(website=site, url="u2", page_title="t1")
     pa = PageAnalysis.objects.create(page=p, description="d1")
-    # create some keywords
-    ek = ExtractedKeyword.objects.create(page=p, keyword="k", score=1.0,
-                                        interest_over_time={"2023-01-01":5},
-                                        interest_by_region={"US":5},
-                                        trend_score=5)
-    # mock external GenAI model
+    ek = ExtractedKeyword.objects.create(page=p, keyword="k", score=1.0, interest_over_time={"2023-01-01":5}, interest_by_region={"US":5}, trend_score=5)
     fake_text = "Positioning summary here."
     fake_resp = SimpleNamespace(text=fake_text)
     class FakeGen2:
         def __init__(self, model): pass
         def generate_content(self, prompt): return fake_resp
     monkeypatch.setattr("modules.analysis.tasks.genai_model.GenerativeModel", FakeGen2)
-    # run task
     positioning_insights(site.id)
     site.refresh_from_db()
     assert site.positioning_insights == fake_text
 
+# integration test
 @pytest.mark.django_db
 def test_analyze_keywords(monkeypatch):
     site = Website.objects.create(start_url="http://k")
@@ -113,14 +83,13 @@ def test_analyze_keywords(monkeypatch):
     kws = ExtractedKeyword.objects.filter(page=p)
     assert sorted([k.keyword for k in kws]) == ["kw1", "kw2"]
 
+# integration test
 @pytest.mark.django_db
 def test_text_read_analysis(monkeypatch):
     site = Website.objects.create(start_url="http://t")
     p = Page.objects.create(website=site, url="u", structured_text={"a": "b"})
-    # short text -> skip
     short = text_read_analysis("u")
     assert "skipped" in short
-    # normal text
     long_text = "word " * 100
     p.structured_text = {"a": long_text}
     p.save()
@@ -131,12 +100,12 @@ def test_text_read_analysis(monkeypatch):
     assert out["text_readability"] == 42.0
     assert out["reading_time"] == round(100/200, 2)
 
+# integration test
 @pytest.mark.django_db
 def test_classify_page(monkeypatch):
     site = Website.objects.create(start_url="http://c")
     text = "word " * 30
     p = Page.objects.create(website=site, url="u2", structured_text={"a": text})
-    # fake classifier
     class FakeClf:
         def __init__(self, *args, **kw): pass
         def __call__(self, full, labels, multi_label=False):
@@ -147,6 +116,7 @@ def test_classify_page(monkeypatch):
     pa = PageAnalysis.objects.get(page=p)
     assert pa.label in [l for l in res["positioning"] or res["tone"] or []] or isinstance(pa.label, str)
 
+# integration test
 @pytest.mark.django_db
 def test_analyze_top_keywords_trends_no_keywords():
     site = Website.objects.create(start_url="http://z")
@@ -157,9 +127,7 @@ def test_analyze_top_keywords_trends_no_keywords():
 def test_analyze_top_keywords_trends_with_keywords(monkeypatch):
     site = Website.objects.create(start_url="http://z2")
     p = Page.objects.create(website=site, url="u3")
-    # two keywords
     ek = ExtractedKeyword.objects.create(page=p, keyword="k", score=1.0)
-    # fake pytrends
     class FakeTrendReq:
         def build_payload(self, chunk, **kw): pass
         def interest_over_time(self):
@@ -173,7 +141,7 @@ def test_analyze_top_keywords_trends_with_keywords(monkeypatch):
     out = analyze_top_keywords_trends(site.id, top_n=1)
     assert out["top_keywords_enriched"] == ["k"]
     ek.refresh_from_db()
-    assert ek.trend_score == 7  # mean of [5,10]
+    assert ek.trend_score == 7
 
 def test_get_icon_sets_favicon(db):
     site = Website.objects.create(start_url="http://icon")
@@ -183,12 +151,12 @@ def test_get_icon_sets_favicon(db):
     site.refresh_from_db()
     assert site.favicon_url == "http://icon/fav.ico"
 
+# integration test
 @pytest.mark.django_db
 def test_generate_website_insight(monkeypatch):
     site = Website.objects.create(start_url="http://ins")
-    # no pages
     assert generate_website_insight(site.id) == "No pages to analyze."
-    # with pages
+
     p = Page.objects.create(website=site, url="u", page_title="t")
     pa = PageAnalysis.objects.create(
         page=p,
@@ -203,7 +171,6 @@ def test_generate_website_insight(monkeypatch):
     )
     ExtractedKeyword.objects.create(page=p, keyword="kw", score=1.0)
     SEORecommendation.objects.create(page=p, actions="act1")
-    # fake genai client
     class FakeModels:
         def count_tokens(self, **kw): return SimpleNamespace(total_tokens=1)
         def generate_content(self, **kw):

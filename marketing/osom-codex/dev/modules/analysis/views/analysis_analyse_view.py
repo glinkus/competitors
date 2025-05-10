@@ -18,8 +18,9 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 import google.generativeai as genai
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
 
-genai.configure(api_key="AIzaSyCzvpa1Lb9dzp7-13T3C2HpDG9V7MVVsZM")
+genai.configure(api_key=settings.GENAI_API_KEY)
 
 @require_POST
 def stop_scraping(request, website_id):

@@ -10,6 +10,7 @@ def test_register_get(client):
     assert response.status_code == 200
     assert b"Register" in response.content
 
+# integration test
 @pytest.mark.django_db
 def test_register_duplicate_username(client):
     User.objects.create_user(username="exists", email="a@b.com", password="pass1234")
@@ -19,6 +20,7 @@ def test_register_duplicate_username(client):
     assert response.status_code == 302
     assert b"Username already taken" in client.get(response.url).content
 
+# integration test
 @pytest.mark.django_db
 def test_register_success(client):
     url = reverse('core.uauth:register')

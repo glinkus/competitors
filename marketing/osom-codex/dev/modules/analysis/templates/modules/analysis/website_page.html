@@ -21,10 +21,7 @@
     {% endfor %}
   </select>
   
-  
-
   <div id="seoDetails" class="d-none">
-    <!-- Mode Switch -->
     <div class="mb-4 d-flex justify-content-between align-items-center">
       <div>
         <p class="data pt-2">Analyzing:</p>
@@ -35,7 +32,6 @@
       </div>
     </div>
 
-    <!-- Metadata -->
     <div class="text-center">
       <h4 class="table-title mb-0">Metadata</h4>
     </div>
@@ -62,7 +58,6 @@
       </div>
     </div>
 
-    <!-- SEO Analysis -->
     <div class="mt-5">
       <div class="d-flex justify-content-between align-items-center pb-3">
         <h4 class="table-title mb-0">📈 SEO Analysis</h4>
@@ -76,7 +71,6 @@
           </div>
         </div>
 
-        <!-- Warnings (collapsible) -->
         <div class="mb-4">
           <div class="d-flex justify-content-between align-items-center">
             <h5 class="table-title mb-0">Warnings</h5>
@@ -139,7 +133,6 @@
       </div>
     </div>
 
-    <!-- Page Text Analysis (collapsible) -->
     <div class="mt-5">
       <div class="d-flex justify-content-between align-items-center pb-3">
         <h4 class="table-title mb-0">Page Text Analysis</h4>
@@ -169,7 +162,6 @@
           </div>
         </div>
 
-        <!-- Tone Chart -->
         <h5 class="table-title d-flex justify-content-center pb-2 pt-5">Text Type Scores</h5>
         <div id="toneChartContainer" class="d-flex justify-content-center d-none">
           <div style="width: 100%; max-width: 500px; min-height: 300px;" class="chart-container">
@@ -177,7 +169,6 @@
           </div>
         </div>
 
-        <!-- Positioning Chart -->
         <h5 class="table-title d-flex justify-content-center pb-2 pt-5">Positioning Classification</h5>
         <div id="positioningChartContainer" class="d-flex justify-content-center d-none">
           <div style="width: 100%; max-width: 500px; min-height: 400px;" class="chart-container">
@@ -187,7 +178,6 @@
       </div>
     </div>
 
-    <!-- Recommendations -->
     <div id="recommendationsSection" class="mb-4 d-none">
       <div class="text-center p-5">
         <h4 class="table-title mb-0">Overall Recommendations</h4>
@@ -309,12 +299,10 @@
       return;
     }
 
-    // Show SEO details
     seoDetails.classList.remove("d-none");
 
     const data = pageData[selectedId];
 
-    // SEO Score
     const score = data.seo_score || 0;
     seoScoreBar.style.width = score + "%";
     seoScoreBar.innerText = score + "%";
@@ -341,12 +329,10 @@
       warningList.appendChild(li);
     });
 
-    // Score Details
     const analysisMode = document.getElementById("analysisMode").value;
     const details = data.seo_score_details || {};
     seoScoreDetails.innerHTML = renderSeoScoreDetails(details, analysisMode);
     
-    // Cta Analysis
     const ctaBox = document.getElementById("ctaAnalysisBox");
     const ctaData = data.cta_analysis;
 
@@ -383,7 +369,6 @@
       ctaBox.innerHTML = ctaHtml;
     }
 
-    // Keywords
     const keywords = (keywordsByPage[selectedId] || []).slice(0, 10);
     if (keywords.length) {
       keywords.forEach((kw, index) => {

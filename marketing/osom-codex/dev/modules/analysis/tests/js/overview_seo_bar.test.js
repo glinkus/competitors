@@ -2,7 +2,6 @@ import '../../js/overview_seo_bar';
 
 describe('overview_seo_bar.js', () => {
   beforeEach(() => {
-    // reset DOM and global score
     document.body.innerHTML = '';
     window.seoScore = undefined;
   });
@@ -13,7 +12,7 @@ describe('overview_seo_bar.js', () => {
       document.dispatchEvent(new Event('DOMContentLoaded'));
     }).not.toThrow();
   });
-
+//integration test
   it('applies bg-success when score >= 70', () => {
     window.seoScore = 75;
     const bar = document.createElement('div');
@@ -28,7 +27,7 @@ describe('overview_seo_bar.js', () => {
     expect(bar.classList.contains('bg-warning')).toBe(false);
     expect(bar.classList.contains('bg-danger')).toBe(false);
   });
-
+//integration test
   it('applies bg-warning when score >= 40 and < 70', () => {
     window.seoScore = 55;
     const bar = document.createElement('div');
@@ -43,7 +42,7 @@ describe('overview_seo_bar.js', () => {
     expect(bar.classList.contains('bg-warning')).toBe(true);
     expect(bar.classList.contains('bg-danger')).toBe(false);
   });
-
+//integration test
   it('applies bg-danger when score < 40', () => {
     window.seoScore = 30;
     const bar = document.createElement('div');

@@ -1,6 +1,6 @@
 /**
  * @overview Main entry point for UI components and tools initialization.
- * @author Indeform Ltd.
+ * @author Gustas Linkus.
  * @license Proprietary
  */
 

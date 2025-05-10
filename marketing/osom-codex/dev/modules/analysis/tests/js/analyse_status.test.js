@@ -1,21 +1,18 @@
 import AnalyseStatus from '../../js/analyse_status';
 
-// Set up global mocks
 global.fetch = jest.fn();
 global.confirm = jest.fn();
 global.alert = jest.fn();
 
-// Mock location.reload
 Object.defineProperty(window, 'location', {
   value: { reload: jest.fn() },
   writable: true
 });
 
 describe('AnalyseStatus', () => {
-  // Clear all mocks before each test
   beforeEach(() => {
     jest.clearAllMocks();
-    document.body.innerHTML = ''; // Clear DOM
+    document.body.innerHTML = '';
   });
 
   describe('getCookie', () => {
@@ -25,7 +22,6 @@ describe('AnalyseStatus', () => {
     });
 
     it('returns null if cookie not found', () => {
-      // Explicitly clear cookie by setting to empty and expired
       document.cookie = 'csrftoken=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
       expect(AnalyseStatus.getCookie('csrftoken')).toBeNull();
     });
@@ -33,17 +29,16 @@ describe('AnalyseStatus', () => {
 
   describe('initStatusCheck', () => {
     beforeEach(() => {
-      // Set up mock HTML with websites
       document.body.innerHTML = `
         <div id="website-row-1"><div class="status">🟡 In Progress</div></div>
         <div id="website-row-2"><div class="status">🟢 Finished</div></div>
       `;
     });
 
+    //integration test
     it('calls checkScrapingStatus for In Progress websites', () => {
       const instance = new AnalyseStatus();
       const spy = jest.spyOn(instance, 'checkScrapingStatus').mockImplementation(() => {});
-      // Patch: ensure .status is always a string
       document.querySelectorAll('.status').forEach(el => { if (!el.textContent) el.textContent = ''; });
       instance.initStatusCheck();
       expect(spy).toHaveBeenCalledWith('1');
@@ -51,7 +46,6 @@ describe('AnalyseStatus', () => {
     });
 
     it('does nothing if no In Progress', () => {
-      // Change status from In Progress to Finished
       document.querySelector('#website-row-1 .status').textContent = '🟢 Finished';
       const instance = new AnalyseStatus();
       const spy = jest.spyOn(instance, 'checkScrapingStatus').mockImplementation(() => {});
@@ -74,6 +68,7 @@ describe('AnalyseStatus', () => {
       `;
     });
 
+    //integration test
     it('handles crawling_in_progress properly', async () => {
       fetch.mockResolvedValueOnce({
         json: async () => ({ 
@@ -129,6 +124,7 @@ describe('AnalyseStatus', () => {
       window.location.reload = jest.fn();
     });
 
+    //integration test
     it('reloads page if scraping continued successfully', async () => {
       fetch.mockResolvedValueOnce({ json: async () => ({ continued: true }) });
       await AnalyseStatus.continueScraping(10);
@@ -148,20 +144,18 @@ describe('AnalyseStatus', () => {
     describe('deleteWebsite', () => {
       beforeEach(() => {
         document.body.innerHTML = `<div class="website-row" id="website-row-99"></div>`;
-        // Create a working instance to get window.deleteWebsite
         const instance = new AnalyseStatus();
         instance.initDelete();
       });
 
+      //integration test
       it('deletes website on confirmation and success', async () => {
         global.confirm.mockReturnValueOnce(true);
         fetch.mockResolvedValueOnce({ 
           json: async () => ({ deleted: true })
         });
-        // Mock fade-out animation
         jest.spyOn(window, 'setTimeout').mockImplementation(fn => fn());
         await window.deleteWebsite(99);
-        // Patch: simulate async removal
         await new Promise(resolve => setTimeout(resolve, 0));
         expect(document.getElementById('website-row-99')).toBeNull();
       });

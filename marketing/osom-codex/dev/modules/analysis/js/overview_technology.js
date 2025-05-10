@@ -1,7 +1,5 @@
-// ensure test sees a string URL
 window.technologyStatusUrl = window.technologyStatusUrl || '';
 
-// Polyfill fetch for test env
 if (typeof fetch !== 'function') {
     window.fetch = () => Promise.resolve({ json: () => Promise.resolve({}) });
 }

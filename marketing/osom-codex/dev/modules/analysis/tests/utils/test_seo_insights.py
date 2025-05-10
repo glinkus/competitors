@@ -29,9 +29,7 @@ class DummyPageAnalysis:
 
 @pytest.fixture(autouse=True)
 def patch_dependencies(monkeypatch):
-    # Stub the AI model
     monkeypatch.setattr(seo_module.genai, "GenerativeModel", DummyModel)
-    # Stub Page ORM manager
     class DummyQuerySet:
         def __init__(self, items):
             self._items = items
@@ -42,12 +40,10 @@ def patch_dependencies(monkeypatch):
         def filter(self, url):
             return DummyQuerySet([DummyPage(url)])
     monkeypatch.setattr(seo_module.Page, "objects", DummyPageManager())
-    # Stub PageAnalysis ORM manager
     class DummyPAObjects:
         def get_or_create(self, page):
             return (DummyPageAnalysis(), True)
     monkeypatch.setattr(seo_module.PageAnalysis, "objects", DummyPAObjects())
-    # Stub SEORecommendation ORM manager
     class DummyRecManager:
         def create(self, **kwargs):
             return None
@@ -100,10 +96,8 @@ def test_final_recommendations_prompt_structure():
 
 def test_analyze_ctas_parses_and_saves(monkeypatch):
     insights = seo_module.SEOInsights("", "http://test", {}, [], [], [], 0)
-    # prepare page_analysis links
     insights.page_analysis.internal_links = [{"url":"http://a","anchor":"Action"}]
     insights.page_analysis.external_links = []
-    # override model response
     class Response: text = '{"cta":{"http://a":"Action"},"cta_score":50,"summary":"ok"}'
     insights.model.generate_content = lambda prompt: Response()
     result = insights.analyze_ctas()

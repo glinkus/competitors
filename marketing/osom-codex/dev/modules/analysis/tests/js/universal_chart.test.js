@@ -68,6 +68,7 @@ describe('UniversalMetricChart', () => {
       };
     });
 
+    //integration test
     it('renders chart for object‐based datasets', () => {
       const chart = new UniversalMetricChart(cfg);
       chart.render();
@@ -87,9 +88,9 @@ describe('UniversalMetricChart', () => {
       );
     });
 
+    //integration test
     it('renders chart for array‐of‐objects datasets', () => {
       cfg.datasets = [{ key: 'x', values: [10] }, { key: 'y', values: [20] }];
-      // ensure select contains both options
       document.getElementById('m1').innerHTML =
         '<option value="x">x</option><option value="y">y</option>';
       document.getElementById('m1').value = 'y';
@@ -107,6 +108,7 @@ describe('UniversalMetricChart', () => {
       );
     });
 
+    //integration test
     it('renders chart for simple array datasets', () => {
       cfg.datasets = [1, 2, 3];
       const chart = new UniversalMetricChart(cfg);

@@ -1,5 +1,5 @@
 /**
- * @author Indeform Ltd.
+ * @author Gustas Linkus
  * @license Proprietary
  * @description Main restricted area class. Responsible for 
  * initialization of UI components and tools.

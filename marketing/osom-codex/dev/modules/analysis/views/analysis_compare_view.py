@@ -28,7 +28,7 @@ class CompareView(LoginRequiredMixin, TemplateView):
             seo_score = page_analyses.aggregate(avg_score=Avg('seo_score'))['avg_score'] or 0
             readability, reading_time = self.average(page_analyses)
 
-            # Keywords summary
+            # keywords summary
             keywords = ExtractedKeyword.objects.filter(page__website=site)
             keyword_data = keywords.values('keyword').annotate(
                 count=Count('id'),

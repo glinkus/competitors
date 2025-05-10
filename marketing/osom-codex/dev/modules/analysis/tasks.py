@@ -24,10 +24,11 @@ from statistics import mean
 from google import genai
 from google.genai import types
 import google.generativeai as genai_model
+from django.conf import settings
 
 nltk.download('stopwords')
 
-
+genai.configure(api_key=settings.GENAI_API_KEY)
 @shared_task
 def run_one_page_spider(website_id, website_name):
     env = os.environ.copy()
@@ -414,7 +415,7 @@ def generate_website_insight(website_id):
         "keywords": dict(keywords_by_page),
     })
     
-    client = genai.Client(api_key="AIzaSyCzvpa1Lb9dzp7-13T3C2HpDG9V7MVVsZM")
+    client = genai.Client(api_key=settings.GENAI_API_KEY)
 
     max_tokens = 200000
 

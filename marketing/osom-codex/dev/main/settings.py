@@ -56,8 +56,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "main.wsgi.application"
 ASGI_APPLICATION = "main.asgi.application"
 
-#os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
-# Database.
 
 BASE_DIRECT = os.path.dirname(os.path.abspath(__file__))
 DATABASES = {
@@ -149,6 +147,8 @@ LOGGING = {
 SCRAPY_PROJECT_PATH = os.path.join(BASE_DIR, 'modules', 'competitors_scraper')
 sys.path.append(SCRAPY_PROJECT_PATH)
 os.environ.setdefault('SCRAPY_SETTINGS_MODULE', 'competitors_scraper.settings')
+
+GENAI_API_KEY = os.getenv("GENAI_API_KEY")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.gmail.com"

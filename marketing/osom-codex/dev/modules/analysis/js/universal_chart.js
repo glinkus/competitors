@@ -35,15 +35,13 @@ export default class UniversalMetricChart {
 
     let data = [];
 
-    // array-of-objects
     if (Array.isArray(this.datasets) && typeof this.datasets[0] === 'object') {
       data = this.datasets.find(d => d.key === metric)?.values || [];
     }
-    // plain object (not array)
     else if (!Array.isArray(this.datasets) && typeof this.datasets === 'object' && this.datasets !== null) {
       data = this.datasets[metric] || [];
     }
-    // simple array
+
     else if (Array.isArray(this.datasets)) {
       if (typeof this.datasets[0] === 'object') {
         data = this.datasets.map(d => d[metric] ?? 0);

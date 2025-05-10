@@ -3,7 +3,6 @@ from modules.analysis.utils.keyword_extraction import KeywordExtraction
 
 @pytest.fixture(autouse=True)
 def patch_models(monkeypatch):
-    # avoid loading heavy models during tests
     monkeypatch.setattr('modules.analysis.utils.keyword_extraction.SentenceTransformer', lambda *args, **kwargs: None)
     monkeypatch.setattr('modules.analysis.utils.keyword_extraction.KeyBERT', lambda *args, **kwargs: None)
 
@@ -19,7 +18,7 @@ def test_preprocess_text():
     assert "hello" in cleaned
     assert "world" in cleaned
     assert "test" in cleaned
-    assert "this" not in cleaned  # 'this' is a stopword
+    assert "this" not in cleaned
     assert '<' not in cleaned and '>' not in cleaned and ',' not in cleaned
 
 def test_extract_keywords_tfidf():
@@ -28,7 +27,6 @@ def test_extract_keywords_tfidf():
     keywords = ke.extract_keywords_tfidf(docs, top_n=2)
     assert isinstance(keywords, list) and len(keywords) == 2
     assert all(isinstance(lst, list) and len(lst) == 2 for lst in keywords)
-    # ensure high-frequency terms are captured
     assert "beta" in keywords[0]
     assert "gamma" in keywords[1] or "beta" in keywords[1]
 

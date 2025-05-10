@@ -1,4 +1,3 @@
-// ensure test sees a string URL
 window.audienceStatusUrl = window.audienceStatusUrl || '';
 
 const checkAudienceReady = () => {

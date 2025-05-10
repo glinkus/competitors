@@ -2,7 +2,6 @@ import '../../js/overview_technology';
 
 describe('overview_technology.js', () => {
   beforeEach(() => {
-    // reset DOM
     document.body.innerHTML = `
       <div id="technology-loading"></div>
       <ul id="technology-list"></ul>
@@ -18,7 +17,7 @@ describe('overview_technology.js', () => {
     expect(typeof window.technologyStatusUrl).toBe('string');
     expect(typeof fetch).toBe('function');
   });
-
+//integration test
   it('renders lists and summary when ready=true with summary', async () => {
     window.fetch.mockResolvedValueOnce({
       json: () => Promise.resolve({
@@ -30,18 +29,16 @@ describe('overview_technology.js', () => {
     });
 
     document.dispatchEvent(new Event('DOMContentLoaded'));
-    // flush pending promise callbacks
     await new Promise(resolve => setTimeout(resolve, 0));
 
     const listEl = document.getElementById('technology-list');
-    // two tech <li> plus one <p.summary>
     expect(listEl.children.length).toBe(3);
     expect(listEl.textContent).toContain('React:');
     const summaryEl = listEl.querySelector('p.summary');
     expect(summaryEl).not.toBeNull();
     expect(summaryEl.textContent).toBe('All good');
   });
-
+//integration test
   it('renders fallback summary when technology_summary missing', async () => {
     window.fetch.mockResolvedValueOnce({
       json: () => Promise.resolve({
@@ -55,24 +52,22 @@ describe('overview_technology.js', () => {
     await new Promise(resolve => setTimeout(resolve, 0));
 
     const listEl = document.getElementById('technology-list');
-    expect(listEl.children.length).toBe(2); // one tech <li> + fallback <p.summary>
+    expect(listEl.children.length).toBe(2);
     const summaryEl = listEl.querySelector('p.summary');
     expect(summaryEl).not.toBeNull();
     expect(summaryEl.textContent).toBe('No technology stack detected.');
   });
-
+//integration test
   it('retries when ready=false', async () => {
     jest.useFakeTimers();
     window.fetch.mockResolvedValue({ json: () => Promise.resolve({ ready: false }) });
 
     document.dispatchEvent(new Event('DOMContentLoaded'));
-    // flush initial promise callbacks
     await Promise.resolve();
     await Promise.resolve();
     expect(fetch).toHaveBeenCalledTimes(1);
 
     jest.advanceTimersByTime(3000);
-    // allow the scheduled checkTechnologyReady() to run
     await Promise.resolve();
     expect(fetch).toHaveBeenCalledTimes(1);
   });
@@ -83,7 +78,6 @@ describe('overview_technology.js', () => {
     console.error = jest.fn();
 
     document.dispatchEvent(new Event('DOMContentLoaded'));
-    // flush pending promise callbacks
     await new Promise(resolve => setTimeout(resolve, 0));
 
     expect(console.error).toHaveBeenCalledWith('Error loading technology data:', err);

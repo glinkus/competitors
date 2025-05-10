@@ -20,29 +20,24 @@ describe('ToneChart', () => {
       delete window.toneData;
     });
 
+    //integration test
     it('creates chart when element present', () => {
-      // prepare DOM
       const canvas = document.createElement('canvas');
       canvas.id = 'chartId';
-      // stub getContext
       const fakeCtx = {};
       canvas.getContext = jest.fn().mockReturnValue(fakeCtx);
       document.body.appendChild(canvas);
 
-      // prepare globals
       window.tpyeLabels = ['x','y'];
       window.toneData = [10,20];
 
-      // mock Chart constructor
       const mockChart = jest.fn();
       window.Chart = mockChart;
 
-      // run
       const tc = new ToneChart('chartId');
       tc.init();
       document.dispatchEvent(new Event('DOMContentLoaded'));
 
-      // assertions
       expect(mockChart).toHaveBeenCalledTimes(1);
       expect(mockChart).toHaveBeenCalledWith(
         fakeCtx,

@@ -62,19 +62,18 @@ describe('AnalyseFilter functionality', () => {
     statusFilter.value = 'finished';
     statusFilter.dispatchEvent(new Event('change'));
 
-    // only cards in the container are the visible ones
     const visibleCards = Array.from(
       document.querySelectorAll('.row.row-cols-1 .col')
     );
     expect(visibleCards).toHaveLength(0);
   });
-
+//integration test
   it('sorts cards by date in ascending order', () => {
     const sortFilter = document.getElementById('sort-filter');
     sortFilter.value = 'asc';
     sortFilter.dispatchEvent(new Event('change'));
 
-    // only paragraphs in the container, in order
+
     const dates = Array.from(
       document.querySelectorAll('.row.row-cols-1 .col .mb-2')
     ).map(p => p.textContent.trim());
@@ -84,13 +83,12 @@ describe('AnalyseFilter functionality', () => {
       'Last Visited: 2021-03-01'
     ]);
   });
-
+//integration test
   it('sorts cards by date in descending order', () => {
     const sortFilter = document.getElementById('sort-filter');
     sortFilter.value = 'desc';
     sortFilter.dispatchEvent(new Event('change'));
 
-    // only paragraphs in the container, in order
     const dates = Array.from(
       document.querySelectorAll('.row.row-cols-1 .col .mb-2')
     ).map(p => p.textContent.trim());
@@ -100,7 +98,7 @@ describe('AnalyseFilter functionality', () => {
       'Last Visited: 2021-03-01'
     ]);
   });
-
+//integration test
   it('handles empty filters gracefully', () => {
     const statusFilter = document.getElementById('status-filter');
     const sortFilter = document.getElementById('sort-filter');

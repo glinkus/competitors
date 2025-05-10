@@ -131,7 +131,7 @@ class PageSEOAnalysis():
         
         if metadata_keywords and len(metadata_keywords) > 0:
             self.warnings.append("Keywords should be avoided as they are a spam indicator and no longer used by Search Engines")
-        # print(raw_html)
+
         # Extract main content as JSON.
         content = trafilatura.extract(
             raw_html,
@@ -144,13 +144,11 @@ class PageSEOAnalysis():
         if content:
             self.content = json.loads(content)
             self.content["url"] = self.url
-        # print (f"Content: {self.content}")
-
 
         if self.content and "text" in self.content:
             self.process_text(self.content["text"])
 
-        # Run various analyses.
+        # Run analyses.
         self.validate_title()
         self.validate_description()
         self.validate_og(raw_html)
@@ -288,7 +286,6 @@ class PageSEOAnalysis():
         for image in images:
             src = image.get("src") or image.get("data-src") or ""
             if not image.get("alt"):
-                # lowercase 'missing' so tests match exactly
                 self.warnings.append(f"missing alt tag: {src}")
 
     def verify_h1_tags(self, raw_html):

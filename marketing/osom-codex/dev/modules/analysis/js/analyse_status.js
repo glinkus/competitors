@@ -55,7 +55,7 @@ export default class AnalyseStatus {
             } else if (data.crawling_in_progress) {
                 statusEl.innerHTML = '🟡 In Progress';
                 statusEl.className = 'badge bg-warning text-dark mb-3 status';
-                // recursive call goes through public method (so spy fires)
+
                 setTimeout(() => this.checkScrapingStatus(websiteId), 2000);
             }
         } catch (error) {
@@ -121,7 +121,6 @@ export default class AnalyseStatus {
             if (!confirm("Are you sure you want to delete this website?")) {
                 return Promise.resolve();
             }
-            // return the promise so tests can await
             return fetch("/analysis/analyse/", {
                 method: 'POST',
                 headers: {

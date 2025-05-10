@@ -15,7 +15,6 @@ class AnalyseViewTests(TestCase):
         self.factory = RequestFactory()
         self.user = User.objects.create_user(username="tester", password="pass")
         self.default_date = timezone.now().date()
-        # enable client usage for non-AJAX test
         self.client.login(username="tester", password="pass")
 
     def _login_request(self, req):
@@ -24,12 +23,10 @@ class AnalyseViewTests(TestCase):
 
     def test_normalize_url(self):
         v = AnalyseView()
-        # trailing slash removal, lowercasing, enforce https
         self.assertEqual(
             v.normalize_url("http://Example.COM/foo/"),
             "https://example.com/foo"
         )
-        # root path default
         self.assertEqual(
             v.normalize_url("example.com"),
             "https://example.com/"
@@ -58,6 +55,7 @@ class AnalyseViewTests(TestCase):
         self.assertEqual(resp.status_code, 302)
         self.assertIn("error=invalid_url", resp.url)
 
+    # integration test
     def test_post_creates_new_website_and_page(self):
         url = "http://new.com/path/"
         req = self.factory.post("/", {"url": url})
@@ -69,6 +67,7 @@ class AnalyseViewTests(TestCase):
         self.assertEqual(pages.count(), 1)
         self.assertEqual(pages.first().url, site.start_url)
 
+    # integration test
     def test_post_reuses_existing_website_and_resets(self):
         base = "https://reuse.com/"
         site = Website.objects.create(
@@ -95,9 +94,9 @@ class AnalyseViewTests(TestCase):
         resp = AnalyseView.as_view()(self._login_request(req))
         self.assertEqual(json.loads(resp.content), {"error": "Website not found"})
 
+    # integration test
     def test_get_ajax_with_good_website_id(self):
         site = Website.objects.create(start_url="https://x.com", last_visited=self.default_date)
-        # create some pages with unique URLs
         for idx, visited in enumerate((True, False, True), start=1):
             Page.objects.create(website=site, url=f"{site.start_url}?{idx}", visited=visited)
         req = self.factory.get("/", {"website_id": site.id}, HTTP_X_REQUESTED_WITH="XMLHttpRequest")
@@ -122,7 +121,8 @@ class ScrapingControlTests(TestCase):
             start_url="https://ctrl.com", last_visited=timezone.now().date(),
             crawling_in_progress=True, scraping_stopped=False
         )
-
+        
+    # integration test
     def test_stop_scraping_success(self):
         req = self.factory.post("/", {})
         resp = stop_scraping(req, website_id=self.site.id)
@@ -140,9 +140,9 @@ class ScrapingControlTests(TestCase):
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(json.loads(resp.content)["error"], "Invalid or already stopped")
 
+    # integration test
     @patch("modules.analysis.views.analysis_analyse_view.run_one_page_spider")
     def test_continue_scraping_success(self, mock_spider):
-        # mark site as stopped
         self.site.crawling_in_progress = False
         self.site.scraping_stopped = True
         self.site.save()
@@ -157,7 +157,6 @@ class ScrapingControlTests(TestCase):
         )
 
     def test_continue_scraping_invalid(self):
-        # still in progress
         self.site.crawling_in_progress = True
         self.site.save()
         req = self.factory.post("/", {})

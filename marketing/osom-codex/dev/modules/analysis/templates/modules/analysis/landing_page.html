@@ -3,73 +3,69 @@
 
 {% block content %}
 <div style="background-color: #f7f2e4;">
-<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
-  <div class="col-md-6 p-lg-5 mx-auto my-5">
-    <h1 class="display-3 fw-bold">Designed for marketing experts</h1>
-    <h3 class="fw-normal text-muted mb-3">Get insights on competitors</h3>
-    <div class="d-flex gap-3 justify-content-center lead fw-normal">
-      <a class="icon-link grow-hover" href="{% url 'modules.analysis:analyse'%}">
-        Delve into analysis
-        <svg class="bi" aria-hidden="true">
-          <use xlink:href="#chevron-right" />
-        </svg>
-      </a>
+  <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
+    <div class="col-md-6 p-lg-5 mx-auto my-5">
+      <h1 class="display-3 fw-bold">Designed for marketing experts</h1>
+      <h3 class="fw-normal text-muted mb-3">Get insights on competitors</h3>
+      <div class="d-flex gap-3 justify-content-center lead fw-normal">
+        <a class="icon-link grow-hover" href="{% url 'modules.analysis:analyse'%}">
+          Delve into analysis
+          <svg class="bi" aria-hidden="true">
+            <use xlink:href="#chevron-right" />
+          </svg>
+        </a>
+      </div>
     </div>
+    <div class="product-device shadow-sm d-none d-md-block"></div>
+    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
   </div>
-  <div class="product-device shadow-sm d-none d-md-block"></div>
-  <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
-</div>
 
-<div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-  <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-    <div class="my-3 p-3">
-      <h2 class="landing">Understand</h2>
-      <p class="lead">Which audience competitors are targeting</p>
+  <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+    <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+      <div class="my-3 p-3">
+        <h2 class="landing">Understand</h2>
+        <p class="lead">Which audience competitors are targeting</p>
+      </div>
+      <img src="{% static 'analysis/templates/modules/assets/img/undraw_segment-analysis_cl30.svg' %}"
+        alt="Understand audience" class="shadow-my mx-auto d-block"
+        style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
     </div>
-    <img src="{% static 'analysis/templates/modules/assets/img/undraw_segment-analysis_cl30.svg' %}" 
-    alt="Understand audience"
-    class="shadow-my mx-auto d-block"
-    style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
-  </div>
-  <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-    <div class="my-3 p-3">
-      <h2 class="landing">Learn</h2>
-      <p class="lead">Which keywords they use the most</p>
+    <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+      <div class="my-3 p-3">
+        <h2 class="landing">Learn</h2>
+        <p class="lead">Which keywords they use the most</p>
+      </div>
+      <img src="{% static 'analysis/templates/modules/assets/img/undraw_presenting_pjjk.svg' %}"
+        alt="Understand audience" class="shadow-my mx-auto d-block"
+        style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
     </div>
-    <img src="{% static 'analysis/templates/modules/assets/img/undraw_presenting_pjjk.svg' %}" 
-    alt="Understand audience"
-    class="shadow-my mx-auto d-block"
-    style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
   </div>
-</div>
 
-<div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-  <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-    <div class="my-3 p-3">
-      <h2 class="landing">Receive</h2>
-      <p class="lead">SEO rating and analysis</p>
+  <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+    <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+      <div class="my-3 p-3">
+        <h2 class="landing">Receive</h2>
+        <p class="lead">SEO rating and analysis</p>
+      </div>
+      <img src="{% static 'analysis/templates/modules/assets/img/undraw_data-input_whqw.svg' %}"
+        alt="Understand audience" class="shadow-my mx-auto d-block"
+        style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
     </div>
-    <img src="{% static 'analysis/templates/modules/assets/img/undraw_data-input_whqw.svg' %}" 
-    alt="Understand audience"
-    class="shadow-my mx-auto d-block"
-    style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
-  </div>
-  <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-    <div class="my-3 p-3">
-      <h2 class="landing">Compare</h2>
-      <p class="lead">Your company and competitors and more</p>
+    <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+      <div class="my-3 p-3">
+        <h2 class="landing">Compare</h2>
+        <p class="lead">Your company and competitors and more</p>
+      </div>
+      <img src="{% static 'analysis/templates/modules/assets/img/undraw_split-testing_lkzx.svg' %}"
+        alt="Understand audience" class="shadow-my mx-auto d-block"
+        style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
     </div>
-    <img src="{% static 'analysis/templates/modules/assets/img/undraw_split-testing_lkzx.svg' %}" 
-    alt="Understand audience"
-    class="shadow-my mx-auto d-block"
-    style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
   </div>
-</div>
-<div class="d-flex gap-3 justify-content-center lead fw-normal">
-  <button class="button-landing" onclick="window.location.href='{% url 'modules.analysis:analyse' %}'">
-    Learn more about competitors
-  </button>
-</div>
+  <div class="d-flex gap-3 justify-content-center lead fw-normal">
+    <button class="button-landing" onclick="window.location.href='{% url 'modules.analysis:analyse' %}'">
+      Learn more about competitors
+    </button>
+  </div>
 </div>
 <script defer src="../assets/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"></script>

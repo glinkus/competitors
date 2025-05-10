@@ -2,6 +2,7 @@ import pytest
 from django.urls import reverse
 from django.contrib.auth.models import User
 
+# integration test
 @pytest.mark.django_db
 def test_logout(client):
     user = User.objects.create_user(username="testUser", password="p12345678")

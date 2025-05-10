@@ -3,7 +3,6 @@ import json
 import re
 from modules.analysis.utils import page_seo_analysis
 
-# Dummy in‑memory models to replace Django ORM
 class DummyWebsite:
     def __init__(self, start_url):
         self.start_url = start_url
@@ -38,10 +37,8 @@ class DummyPageAnalysisManager:
 
 @pytest.fixture(autouse=True)
 def patch_models(monkeypatch):
-    # replace Page and PageAnalysis in module under test
     monkeypatch.setattr(page_seo_analysis, 'Page', DummyPage)
     monkeypatch.setattr(page_seo_analysis, 'PageAnalysis', DummyPageAnalysis)
-    # attach the manager for PageAnalysis.objects.get_or_create
     monkeypatch.setattr(page_seo_analysis.PageAnalysis, 'objects', DummyPageAnalysisManager(), raising=False)
 
 def make_analyzer(monkeypatch, html, url="http://example.com/path"):
@@ -113,21 +110,15 @@ def test_analyze_a_tags_and_links(monkeypatch):
     a = make_analyzer(monkeypatch, html)
     a.warnings = []; a.links = []
     a.analyze_a_tags(html)
-    # missing title:
     assert any("Anchor missing title" in w for w in a.warnings)
-    # generic text:
     assert any("generic text" in w for w in a.warnings)
-    # img extension skipped in links:
     assert all(not l.endswith("img.png") for l in a.links)
-    # classification:
     assert any(e["url"].startswith("http://external.com") for e in a.external_links)
     assert any(i["url"].endswith("/foo") for i in a.internal_links)
 
 def test_normalize_url_cases(monkeypatch):
     a = make_analyzer(monkeypatch, "")
-    # absolute untouched
     assert a.normalize_url("http://x.com") == "http://x.com"
-    # query param on same URL
     a.url = "http://ex.com/page?x=1"
     assert a.normalize_url("?y=2") == "http://ex.com/page?y=2"
 
@@ -152,11 +143,9 @@ def test_process_text_counts(monkeypatch):
     a.process_text(text)
     assert a.total_word_count == 3
     assert a.wordcount["world"] == 2
-    # bigram "Hello world"
     assert ("hello world") in a.bigrams
 
 def test_full_analyze_short_circuit(monkeypatch):
-    # no raw_html
     a = make_analyzer(monkeypatch, "")
     a.page.raw_html = ""
     a.raw_html = ""

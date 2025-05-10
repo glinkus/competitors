@@ -1,5 +1,4 @@
 from django.urls import path
-
 from .views.analysis_analyse_view import AnalyseView, stop_scraping, continue_scraping
 from .views.analysis_website_page_view import URLView
 from .views.analysis_overview_view import OverviewView, website_insight_status, target_audience_status, technology_status

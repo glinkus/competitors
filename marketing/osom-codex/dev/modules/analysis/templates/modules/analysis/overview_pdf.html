@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Website Overview - {{ website_url }}</title>
@@ -12,25 +13,38 @@
       line-height: 1.6;
       color: #333;
     }
-    h1, h2, h3, h4, h5 {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
       page-break-after: avoid;
       page-break-before: auto;
     }
-    ul, ol, p {
+
+    ul,
+    ol,
+    p {
       page-break-inside: avoid;
     }
+
     .section {
       margin-top: 40px;
     }
+
     .section-break {
       page-break-before: always;
       margin-top: 40px;
     }
-    h3, h4 {
+
+    h3,
+    h4 {
       margin-top: 20px;
     }
   </style>
 </head>
+
 <body>
   <div class="container py-5 overview-container">
     <h1>Website Overview</h1>
@@ -51,9 +65,9 @@
       <h3>Top 10 Keywords</h3>
       <ul>
         {% for item in keyword_summary|slice:":10" %}
-          <li>{{ item.keyword }}</li>
+        <li>{{ item.keyword }}</li>
         {% empty %}
-          <li>No keywords available.</li>
+        <li>No keywords available.</li>
         {% endfor %}
       </ul>
     </div>
@@ -61,13 +75,13 @@
     <div class="section-break">
       <h3>Target Audience</h3>
       {% if target_audience %}
-        <ul>
-          {% for segment, description in target_audience.items %}
-            <li><strong>{{ segment }}:</strong> {{ description }}</li>
-          {% endfor %}
-        </ul>
+      <ul>
+        {% for segment, description in target_audience.items %}
+        <li><strong>{{ segment }}:</strong> {{ description }}</li>
+        {% endfor %}
+      </ul>
       {% else %}
-        <p>No target audience detected yet.</p>
+      <p>No target audience detected yet.</p>
       {% endif %}
     </div>
 
@@ -89,13 +103,13 @@
     <div class="section">
       <h3>Partners</h3>
       {% if partners %}
-        <ul>
-          {% for partner in partners %}
-            <li>{{ partner }}</li>
-          {% endfor %}
-        </ul>
+      <ul>
+        {% for partner in partners %}
+        <li>{{ partner }}</li>
+        {% endfor %}
+      </ul>
       {% else %}
-        <p>No partners detected.</p>
+      <p>No partners detected.</p>
       {% endif %}
     </div>
 
@@ -117,13 +131,13 @@
     <div class="section">
       <h3>Social Media & Contacts</h3>
       {% if social_links %}
-        <ul>
-          {% for link in social_links %}
-            <li>{{ link }}</li>
-          {% endfor %}
-        </ul>
+      <ul>
+        {% for link in social_links %}
+        <li>{{ link }}</li>
+        {% endfor %}
+      </ul>
       {% else %}
-        <p>No social links available.</p>
+      <p>No social links available.</p>
       {% endif %}
     </div>
 
@@ -137,4 +151,5 @@
     </div>
   </div>
 </body>
+
 </html>
