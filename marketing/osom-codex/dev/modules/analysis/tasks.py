@@ -28,7 +28,6 @@ from django.conf import settings
 
 nltk.download('stopwords')
 
-genai.configure(api_key=settings.GENAI_API_KEY)
 @shared_task
 def run_one_page_spider(website_id, website_name):
     env = os.environ.copy()
@@ -61,7 +60,7 @@ def run_one_page_spider(website_id, website_name):
                 analyze_top_keywords_trends.delay(website_id)
                 generate_target_audience.apply_async(args=[website_id], countdown=0)
                 positioning_insights.apply_async(args=[website_id], countdown=15)
-                generate_website_insight.apply_async(args=[website_id], countdown=60)
+                generate_website_insight.apply_async(args=[website_id], countdown=30)
             else:
                 raise Exception(f"Website with id {website_id} not found.")
             return "No more unvisited pages found."
@@ -90,9 +89,9 @@ def run_one_page_spider(website_id, website_name):
 
                 analyze_keywords.delay(page_url)
                 classify_page.apply_async(args=[page_url], countdown=0)
-                text_read_analysis.apply_async(args=[page_url], countdown=20)
-                run_seo_analysis.apply_async(args=[page_url], countdown=40)
-            sleep(50)
+                text_read_analysis.apply_async(args=[page_url], countdown=10)
+                run_seo_analysis.apply_async(args=[page_url], countdown=20)
+            sleep(30)
 
             website = Website.objects.filter(id=website_id).first()
             if not website or not website.crawling_in_progress:

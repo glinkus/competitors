@@ -20,4 +20,4 @@ msgstr ""
 
 #: dev/main/urls.py:22
 msgid "ADMIN_AREA_TITLE"
-msgstr "Indeform OSOM.Codex (Sandbox edition) Admin"
+msgstr "Competitors analysis Admin"

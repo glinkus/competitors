@@ -90,8 +90,6 @@
       <td>
         {% if row.social_media %}
         <ul class="list-unstyled mb-0 d-flex flex-column gap-1">
-          {% for link in row.social_media|safe|default:"[]"|json_script:"media_links_"|json_script %}
-          {% endfor %}
           {% for link in row.social_media %}
           {% if "linkedin.com" in link %}
           <a href="{{ link }}" target="_blank" class="text-decoration-none">

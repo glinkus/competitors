@@ -1,6 +1,9 @@
 import os
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "0b6#8bvn=jt__=2q7ebp!oj86!%al%^o8f6yv)!4#jk775%8g#"
