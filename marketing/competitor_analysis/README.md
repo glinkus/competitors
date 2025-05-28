@@ -1,5 +1,3 @@
-# Osom Codex
-
 Marketing analytics and competitor analysis platform. It provides tools for website analysis, SEO insights, keyword tracking, and reporting to help businesses be competitive in the market.
 
 ## Features
