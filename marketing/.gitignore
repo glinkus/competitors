@@ -141,3 +141,12 @@ node_modules
 
 # Ruff
 .ruff_cache/
+
+__pycache__
+.pytest_cache
+coverage
+htmlcov
+.coverage
+babel.config.json
+eslint.config.mjs
+
