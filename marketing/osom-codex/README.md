@@ -1,5 +1,3 @@
-# Welcome to OSOM.Codex Sandbox!
-
 ## Getting started
 Follow the steps below to set up the project for the first time. After completing the setup, check the [Development](#development) section for instructions on running the project.
 
