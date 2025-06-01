@@ -72,6 +72,10 @@ class AnalyseView(LoginRequiredMixin, TemplateView):
         
         website_qs = Website.objects.filter(start_url=url)
         if website_qs.exists():
+            return render(request, 'modules/analysis/confirm_overwrite.html', {
+                'existing_website': website_qs.first(),
+                'url': url,
+            })
             website = website_qs.first()
             website.last_visited = timezone.now().date()
             website.crawling_in_progress = True
@@ -115,7 +119,6 @@ class AnalyseView(LoginRequiredMixin, TemplateView):
                     }
                 except Website.DoesNotExist:
                     data = {'error': 'Website not found'}
-                print("Data: ", data)
                 return JsonResponse(data)
             return JsonResponse({'error': 'No website_id provided'})
         else:

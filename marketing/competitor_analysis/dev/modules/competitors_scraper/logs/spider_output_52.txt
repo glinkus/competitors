@@ -1,0 +1,322 @@
+[32mINFO    [0m [34mScrapy 2.13.1 started (bot: competitors_scraper)[0m
+2025-05-30 21:16:26 [scrapy.utils.log] INFO: Scrapy 2.13.1 started (bot: competitors_scraper)
+[32mINFO    [0m [34mVersions:
+{'lxml': '5.4.0',
+ 'libxml2': '2.13.8',
+ 'cssselect': '1.3.0',
+ 'parsel': '1.10.0',
+ 'w3lib': '2.3.1',
+ 'Twisted': '24.11.0',
+ 'Python': '3.11.2 (main, Nov 30 2024, 21:22:50) [GCC 12.2.0]',
+ 'pyOpenSSL': '25.1.0 (OpenSSL 3.5.0 8 Apr 2025)',
+ 'cryptography': '45.0.3',
+ 'Platform': 'Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36'}[0m
+2025-05-30 21:16:26 [scrapy.utils.log] INFO: Versions:
+{'lxml': '5.4.0',
+ 'libxml2': '2.13.8',
+ 'cssselect': '1.3.0',
+ 'parsel': '1.10.0',
+ 'w3lib': '2.3.1',
+ 'Twisted': '24.11.0',
+ 'Python': '3.11.2 (main, Nov 30 2024, 21:22:50) [GCC 12.2.0]',
+ 'pyOpenSSL': '25.1.0 (OpenSSL 3.5.0 8 Apr 2025)',
+ 'cryptography': '45.0.3',
+ 'Platform': 'Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36'}
+[32mINFO    [0m [34mEnabled addons:
+[][0m
+2025-05-30 21:16:26 [scrapy.addons] INFO: Enabled addons:
+[]
+[37mDEBUG   [0m [34mUsing selector: EpollSelector[0m
+2025-05-30 21:16:26 [asyncio] DEBUG: Using selector: EpollSelector
+[37mDEBUG   [0m [34mUsing reactor: twisted.internet.asyncioreactor.AsyncioSelectorReactor[0m
+2025-05-30 21:16:26 [scrapy.utils.log] DEBUG: Using reactor: twisted.internet.asyncioreactor.AsyncioSelectorReactor
+[37mDEBUG   [0m [34mUsing asyncio event loop: asyncio.unix_events._UnixSelectorEventLoop[0m
+2025-05-30 21:16:26 [scrapy.utils.log] DEBUG: Using asyncio event loop: asyncio.unix_events._UnixSelectorEventLoop
+[32mINFO    [0m [34mTelnet Password: 657f3511bdaf4039[0m
+2025-05-30 21:16:26 [scrapy.extensions.telnet] INFO: Telnet Password: 657f3511bdaf4039
+[32mINFO    [0m [34mEnabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats'][0m
+2025-05-30 21:16:26 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+[32mINFO    [0m [34mOverridden settings:
+{'BOT_NAME': 'competitors_scraper',
+ 'DOWNLOAD_DELAY': 1,
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'NEWSPIDER_MODULE': 'competitors_scraper.spiders',
+ 'ROBOTSTXT_OBEY': True,
+ 'SPIDER_MODULES': ['competitors_scraper.spiders']}[0m
+2025-05-30 21:16:26 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'competitors_scraper',
+ 'DOWNLOAD_DELAY': 1,
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'NEWSPIDER_MODULE': 'competitors_scraper.spiders',
+ 'ROBOTSTXT_OBEY': True,
+ 'SPIDER_MODULES': ['competitors_scraper.spiders']}
+[32mINFO    [0m [34mEnabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats'][0m
+2025-05-30 21:16:26 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+[32mINFO    [0m [34mEnabled spider middlewares:
+['scrapy.spidermiddlewares.start.StartSpiderMiddleware',
+ 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware'][0m
+2025-05-30 21:16:26 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.start.StartSpiderMiddleware',
+ 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+[32mINFO    [0m [34mEnabled item pipelines:
+['competitors_scraper.pipelines.PagePipeline'][0m
+2025-05-30 21:16:26 [scrapy.middleware] INFO: Enabled item pipelines:
+['competitors_scraper.pipelines.PagePipeline']
+[32mINFO    [0m [34mSpider opened[0m
+2025-05-30 21:16:26 [scrapy.core.engine] INFO: Spider opened
+[33mWARNING [0m [34m/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy/core/spidermw.py:433: ScrapyDeprecationWarning: competitors_scraper.spiders.one_page_spider.OnePageSpider defines the deprecated start_requests() method. start_requests() has been deprecated in favor of a new method, start(), to support asynchronous code execution. start_requests() will stop being called in a future version of Scrapy. If you use Scrapy 2.13 or higher only, replace start_requests() with start(); note that start() is a coroutine (async def). If you need to maintain compatibility with lower Scrapy versions, when overriding start_requests() in a spider class, override start() as well; you can use super() to reuse the inherited start() implementation without copy-pasting. See the release notes of Scrapy 2.13 for details: https://docs.scrapy.org/en/2.13/news.html
+  warn(
+[0m
+2025-05-30 21:16:26 [py.warnings] WARNING: /home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy/core/spidermw.py:433: ScrapyDeprecationWarning: competitors_scraper.spiders.one_page_spider.OnePageSpider defines the deprecated start_requests() method. start_requests() has been deprecated in favor of a new method, start(), to support asynchronous code execution. start_requests() will stop being called in a future version of Scrapy. If you use Scrapy 2.13 or higher only, replace start_requests() with start(); note that start() is a coroutine (async def). If you need to maintain compatibility with lower Scrapy versions, when overriding start_requests() in a spider class, override start() as well; you can use super() to reuse the inherited start() implementation without copy-pasting. See the release notes of Scrapy 2.13 for details: https://docs.scrapy.org/en/2.13/news.html
+  warn(
+
+[32mINFO    [0m [34mCrawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)[0m
+2025-05-30 21:16:26 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+[32mINFO    [0m [34mTelnet console listening on 127.0.0.1:6023[0m
+2025-05-30 21:16:26 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+[32mINFO    [0m [34mStarting download handler[0m
+2025-05-30 21:16:26 [scrapy-playwright] INFO: Starting download handler
+[32mINFO    [0m [34mStarting download handler[0m
+2025-05-30 21:16:26 [scrapy-playwright] INFO: Starting download handler
+[32mINFO    [0m [34mInitial URLs from DB: {'https://www.indeform.com/'}[0m
+2025-05-30 21:16:26 [one_page_spider] INFO: Initial URLs from DB: {'https://www.indeform.com/'}
+[37mDEBUG   [0m [34mCrawled (404) <GET https://www.indeform.com/robots.txt> (referer: None)[0m
+2025-05-30 21:16:27 [scrapy.core.engine] DEBUG: Crawled (404) <GET https://www.indeform.com/robots.txt> (referer: None)
+[37mDEBUG   [0m [34mRule at line 26 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 26 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 27 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 27 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 28 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 28 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 29 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 29 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 30 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 30 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 31 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 31 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 34 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 34 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 39 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 39 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 40 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 40 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 41 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 41 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 57 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 57 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 99 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 99 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 100 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 100 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 104 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 104 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 105 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 105 without any user agent to enforce it on.
+[37mDEBUG   [0m [34mRule at line 106 without any user agent to enforce it on.[0m
+2025-05-30 21:16:27 [protego] DEBUG: Rule at line 106 without any user agent to enforce it on.
+[32mINFO    [0m [34mLaunching browser chromium[0m
+2025-05-30 21:16:27 [scrapy-playwright] INFO: Launching browser chromium
+[31mERROR   [0m [34mError downloading <GET https://www.indeform.com/>[0m
+Traceback (most recent call last):
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/twisted/internet/defer.py", line 2013, in _inlineCallbacks
+    result = context.run(
+             ^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/twisted/python/failure.py", line 467, in throwExceptionIntoGenerator
+    return g.throw(self.value.with_traceback(self.tb))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy/core/downloader/middleware.py", line 68, in process_request
+    return (yield download_func(request, spider))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/twisted/internet/defer.py", line 1253, in adapt
+    extracted: _SelfResultT | Failure = result.result()
+                                        ^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 380, in _download_request
+    return await self._download_request_with_retry(request=request, spider=spider)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 399, in _download_request_with_retry
+    page = await self._create_page(request=request, spider=spider)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 297, in _create_page
+    ctx_wrapper = await self._create_browser_context(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 258, in _create_browser_context
+    await self._maybe_launch_browser()
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 206, in _maybe_launch_browser
+    self.browser = await self.browser_type.launch(**self.config.launch_options)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/playwright/async_api/_generated.py", line 14451, in launch
+    await self._impl_obj.launch(
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/playwright/_impl/_browser_type.py", line 97, in launch
+    Browser, from_channel(await self._channel.send("launch", params))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/playwright/_impl/_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/playwright/_impl/_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at /home/gustas/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2025-05-30 21:16:27 [scrapy.core.scraper] ERROR: Error downloading <GET https://www.indeform.com/>
+Traceback (most recent call last):
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/twisted/internet/defer.py", line 2013, in _inlineCallbacks
+    result = context.run(
+             ^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/twisted/python/failure.py", line 467, in throwExceptionIntoGenerator
+    return g.throw(self.value.with_traceback(self.tb))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy/core/downloader/middleware.py", line 68, in process_request
+    return (yield download_func(request, spider))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/twisted/internet/defer.py", line 1253, in adapt
+    extracted: _SelfResultT | Failure = result.result()
+                                        ^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 380, in _download_request
+    return await self._download_request_with_retry(request=request, spider=spider)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 399, in _download_request_with_retry
+    page = await self._create_page(request=request, spider=spider)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 297, in _create_page
+    ctx_wrapper = await self._create_browser_context(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 258, in _create_browser_context
+    await self._maybe_launch_browser()
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/scrapy_playwright/handler.py", line 206, in _maybe_launch_browser
+    self.browser = await self.browser_type.launch(**self.config.launch_options)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/playwright/async_api/_generated.py", line 14451, in launch
+    await self._impl_obj.launch(
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/playwright/_impl/_browser_type.py", line 97, in launch
+    Browser, from_channel(await self._channel.send("launch", params))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/playwright/_impl/_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustas/indeform_praktika/marketing/competitor_analysis/.venv/lib/python3.11/site-packages/playwright/_impl/_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at /home/gustas/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+[32mINFO    [0m [34mClosing spider (finished)[0m
+2025-05-30 21:16:27 [scrapy.core.engine] INFO: Closing spider (finished)
+[32mINFO    [0m [34mDumping Scrapy stats:
+{'downloader/exception_count': 1,
+ 'downloader/exception_type_count/playwright._impl._errors.Error': 1,
+ 'downloader/request_bytes': 452,
+ 'downloader/request_count': 2,
+ 'downloader/request_method_count/GET': 2,
+ 'downloader/response_bytes': 6074,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 1.362329,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2025, 5, 30, 18, 16, 27, 942777, tzinfo=datetime.timezone.utc),
+ 'items_per_minute': 0.0,
+ 'log_count/DEBUG': 20,
+ 'log_count/ERROR': 1,
+ 'log_count/INFO': 14,
+ 'log_count/WARNING': 1,
+ 'memusage/max': 574078976,
+ 'memusage/startup': 574078976,
+ 'response_received_count': 1,
+ 'responses_per_minute': 60.0,
+ 'robotstxt/request_count': 1,
+ 'robotstxt/response_count': 1,
+ 'robotstxt/response_status_count/404': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2025, 5, 30, 18, 16, 26, 580448, tzinfo=datetime.timezone.utc)}[0m
+2025-05-30 21:16:27 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/exception_count': 1,
+ 'downloader/exception_type_count/playwright._impl._errors.Error': 1,
+ 'downloader/request_bytes': 452,
+ 'downloader/request_count': 2,
+ 'downloader/request_method_count/GET': 2,
+ 'downloader/response_bytes': 6074,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 1.362329,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2025, 5, 30, 18, 16, 27, 942777, tzinfo=datetime.timezone.utc),
+ 'items_per_minute': 0.0,
+ 'log_count/DEBUG': 20,
+ 'log_count/ERROR': 1,
+ 'log_count/INFO': 14,
+ 'log_count/WARNING': 1,
+ 'memusage/max': 574078976,
+ 'memusage/startup': 574078976,
+ 'response_received_count': 1,
+ 'responses_per_minute': 60.0,
+ 'robotstxt/request_count': 1,
+ 'robotstxt/response_count': 1,
+ 'robotstxt/response_status_count/404': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2025, 5, 30, 18, 16, 26, 580448, tzinfo=datetime.timezone.utc)}
+[32mINFO    [0m [34mSpider closed (finished)[0m
+2025-05-30 21:16:27 [scrapy.core.engine] INFO: Spider closed (finished)
+[32mINFO    [0m [34mClosing download handler[0m
+2025-05-30 21:16:27 [scrapy-playwright] INFO: Closing download handler
+[32mINFO    [0m [34mClosing download handler[0m
+2025-05-30 21:16:27 [scrapy-playwright] INFO: Closing download handler
+[33mWARNING [0m [34msys:1: RuntimeWarning: coroutine 'SyncToAsync.__call__' was never awaited
+[0m
+2025-05-30 21:16:28 [py.warnings] WARNING: sys:1: RuntimeWarning: coroutine 'SyncToAsync.__call__' was never awaited
+

@@ -1,0 +1,16 @@
+{% extends 'rarea/layout.html' %}
+
+{% block content %}
+<div class="container py-5" style="background-color: aliceblue; border-radius: 2rem; display: flex; flex-direction: column; align-items: center;">
+  <h2>This website was already analyzed:</h2>
+  <p><strong>{{ existing_website.start_url }}</strong></p>
+  <p>Would you like to <strong>re-analyze</strong> it? This will delete the old data.</p>
+
+  <form style="background-color: transparent;" action="{% url 'modules.analysis:analyse_confirm' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="url" value="{{ url }}">
+    <button type="submit" class="button-analyze">Continue</button>
+    <a href="{% url 'modules.analysis:analyse' %}" class="button-logout m-4">Cancel</a>
+  </form>
+</div>
+{% endblock %}

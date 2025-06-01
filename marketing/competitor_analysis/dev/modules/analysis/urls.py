@@ -5,6 +5,7 @@ from .views.analysis_overview_view import OverviewView, website_insight_status, 
 from .views.analysis_landing_view import LandingView
 from .views.analysis_compare_view import CompareView
 from .views.analysis_generate_pdf_view import GeneratePDFView
+from .views.analysis_confirm_view import ConfirmReanalyseView
 
 app_name = "modules.analysis" 
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path('analyse/compare/', CompareView.as_view(), name='compare'),
     path("api/technology-status/<int:website_id>/", technology_status, name="technology_status"),
     path('analyse/overview/pdf/<int:website_id>/', GeneratePDFView.as_view(), name='generate_pdf'),
+    path('analyse/confirm/', ConfirmReanalyseView.as_view(), name='analyse_confirm'),
 ]

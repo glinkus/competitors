@@ -21,9 +21,9 @@ from modules.analysis.utils.seo_insights import SEOInsights
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from statistics import mean
-from google import genai
 from google.genai import types
 import google.generativeai as genai_model
+from google import genai
 from django.conf import settings
 
 nltk.download('stopwords')
@@ -414,7 +414,7 @@ def generate_website_insight(website_id):
         "keywords": dict(keywords_by_page),
     })
     
-    client = genai.Client(api_key=settings.GENAI_API_KEY)
+    client = genai.Client(api_key=settings.GENAI_API_KEY) 
 
     max_tokens = 200000
 

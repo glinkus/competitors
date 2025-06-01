@@ -239,10 +239,10 @@ class OverviewView(LoginRequiredMixin, TemplateView):
             speed_metrics["loaded"].append(round(loading_time.fully_loaded or 0, 1))
 
         avg_metrics = {
-            "avg_ttfb": round(mean(speed_metrics["ttfb"]), 0) if speed_metrics["ttfb"] else None,
-            "avg_fcp": round(mean(speed_metrics["fcp"]), 0) if speed_metrics["fcp"] else None,
-            "avg_lcp": round(mean(speed_metrics["lcp"]), 0) if speed_metrics["lcp"] else None,
-            "avg_loaded": round(mean(speed_metrics["loaded"]), 0) if speed_metrics["loaded"] else None,
+            "avg_ttfb": int(round(mean(speed_metrics["ttfb"]), 0)) if speed_metrics["ttfb"] else None,
+            "avg_fcp": int(round(mean(speed_metrics["fcp"]), 0)) if speed_metrics["fcp"] else None,
+            "avg_lcp": int(round(mean(speed_metrics["lcp"]), 0)) if speed_metrics["lcp"] else None,
+            "avg_loaded": int(round(mean(speed_metrics["loaded"]), 0)) if speed_metrics["loaded"] else None,
         }
         
         return speed_metrics, avg_metrics
